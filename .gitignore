@@ -1,6 +1,7 @@
 nbproject/**
 !nbproject/build-impl.xml
 !nbproject/project.xml
+!nbproject/project.properties
 dist/**
 build/**
 manifest.mf
