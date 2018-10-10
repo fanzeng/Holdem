@@ -1,5 +1,5 @@
 nbproject/**
+!nbproject/build-impl.xml
 dist/**
 build/**
-build.xml
 manifest.mf
