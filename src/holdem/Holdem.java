@@ -152,6 +152,16 @@ public class Holdem {
         return river;
     }
     
+    class showDown {
+        class showDownresult {
+            String bestHandType;
+            Holdem.Deck.Card[] bestHand;
+        }
+        Holdem.Deck.Card[] candidateCards[];
+        showDown() {
+        
+        }
+    }
 
     public Integer player1Stack = 1000;
     public Integer player2Stack = 1000;
