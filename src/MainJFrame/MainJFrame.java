@@ -1,6 +1,7 @@
 package MainJFrame;
 
 import java.util.*;
+import holdem.*;
 
 public class MainJFrame extends javax.swing.JFrame {
 
@@ -288,79 +289,79 @@ public class MainJFrame extends javax.swing.JFrame {
     private void btnShuffleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShuffleMouseClicked
         // TODO add your handling code here:
         for (int i = 0; i < 52; i++) {
-            Cards[i] = i + 1;
+            holdem.cards[i] = i + 1;
         }
-        shuffle(Cards);
+        holdem.shuffle();
         lblBoard.setText("");
     }//GEN-LAST:event_btnShuffleMouseClicked
 
     private void btnPlayer1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1MouseClicked
         // TODO add your handling code here:
-        if (Player1Show == false) {
-            lblPlayer1Card.setText(getCard(Cards[1]) + ' ' + getCard(Cards[2]));
-            Player1Show = true;
+        if (holdem.player1Show == false) {
+            lblPlayer1Card.setText(holdem.toString(holdem.cards[1]) + ' ' + holdem.toString(holdem.cards[2]));
+            holdem.player1Show = true;
         } else {
             lblPlayer1Card.setText("");
-            Player1Show = false;
+            holdem.player1Show = false;
         }
     }//GEN-LAST:event_btnPlayer1MouseClicked
 
     private void btnPlayer2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2MouseClicked
         // TODO add your handling code here:
-        if (Player2Show == false) {
-            lblPlayer2Card.setText(getCard(Cards[3]) + ' ' + getCard(Cards[4]));
-            Player2Show = true;
+        if (holdem.player2Show == false) {
+            lblPlayer2Card.setText(holdem.toString(holdem.cards[3]) + ' ' + holdem.toString(holdem.cards[4]));
+            holdem.player2Show = true;
         } else {
             lblPlayer2Card.setText("");
-            Player2Show = false;
+            holdem.player2Show = false;
         }
     }//GEN-LAST:event_btnPlayer2MouseClicked
 
     private void btnDealFlopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealFlopMouseClicked
         // TODO add your handling code here:
-        lblBoard.setText(getCard(Cards[5]) + ' ' + getCard(Cards[6]) + ' ' + getCard(Cards[7]));
+        lblBoard.setText(holdem.toString(holdem.cards[5]) + ' ' + holdem.toString(holdem.cards[6]) + ' ' + holdem.toString(holdem.cards[7]));
     }//GEN-LAST:event_btnDealFlopMouseClicked
 
     private void btnDealTurnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealTurnMouseClicked
         // TODO add your handling code here:
-        lblBoard.setText(getCard(Cards[5]) + ' ' + getCard(Cards[6]) + ' ' + getCard(Cards[7]) + ' ' + getCard(Cards[8]));
+        lblBoard.setText(holdem.toString(holdem.cards[5]) + ' ' + holdem.toString(holdem.cards[6]) + ' ' + holdem.toString(holdem.cards[7]) + ' ' + holdem.toString(holdem.cards[8]));
     }//GEN-LAST:event_btnDealTurnMouseClicked
 
     private void btnDealRiverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealRiverMouseClicked
         // TODO add your handling code here:
-        lblBoard.setText(getCard(Cards[5]) + ' ' + getCard(Cards[6]) + ' ' + getCard(Cards[7]) + ' ' + getCard(Cards[8]) + ' ' + getCard(Cards[9]));
+        lblBoard.setText(holdem.toString(holdem.cards[5]) + ' ' + holdem.toString(holdem.cards[6]) + ' ' + holdem.toString(holdem.cards[7]) + ' ' + holdem.toString(holdem.cards[8]) + ' ' + holdem.toString(holdem.cards[9]));
     }//GEN-LAST:event_btnDealRiverMouseClicked
 
     private void btnPlayer1BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1BetMouseClicked
         // TODO add your handling code here:
-        Player1Stack -= Integer.parseInt(txtPlayer1Bet.getText());
-        lblPlayer1Stack.setText(Integer.toString(Player1Stack));
-        Pot += Integer.parseInt(txtPlayer1Bet.getText());
-        lblPotValue.setText(Integer.toString(Pot));
+        holdem.player1Stack -= Integer.parseInt(txtPlayer1Bet.getText());
+        lblPlayer1Stack.setText(Integer.toString(holdem.player1Stack));
+        holdem.pot += Integer.parseInt(txtPlayer1Bet.getText());
+        lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer1BetMouseClicked
 
     private void btnPlayer2BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2BetMouseClicked
         // TODO add your handling code here:
-        Player2Stack -= Integer.parseInt(txtPlayer2Bet.getText());
-        lblPlayer2Stack.setText(Integer.toString(Player2Stack));
-        Pot += Integer.parseInt(txtPlayer2Bet.getText());
-        lblPotValue.setText(Integer.toString(Pot));
+        holdem.player2Stack -= Integer.parseInt(txtPlayer2Bet.getText());
+        lblPlayer2Stack.setText(Integer.toString(holdem.player2Stack));
+        holdem.pot += Integer.parseInt(txtPlayer2Bet.getText());
+        lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer2BetMouseClicked
 
     private void btnPlayer1WinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1WinMouseClicked
         // TODO add your handling code here:
-        Player1Stack += Pot;
-        lblPlayer1Stack.setText(Integer.toString(Player1Stack));
-        Pot = 0;
-        lblPotValue.setText(Integer.toString(Pot));
+        holdem.player1Stack += holdem.pot;
+        lblPlayer1Stack.setText(Integer.toString(holdem.player1Stack));
+        holdem.pot = 0;
+        lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer1WinMouseClicked
 
     private void btnPlayer2WinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2WinMouseClicked
         // TODO add your handling code here:
-        Player2Stack += Pot;
-        lblPlayer2Stack.setText(Integer.toString(Player2Stack));
-        Pot = 0;
-        lblPotValue.setText(Integer.toString(Pot));
+        holdem.player2Stack += holdem.pot;
+        lblPlayer2Stack.setText(Integer.toString(holdem.player2Stack));
+        holdem.pot = 0;
+        lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer2WinMouseClicked
 
     /**
@@ -397,64 +398,8 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
     }
-    private int[] Cards = new int[52];
+    private Holdem holdem = new Holdem();
 
-    public static void shuffle(int[] arr) {
-        Random rand = new Random();
-        for (int i = arr.length - 1; i > 0; i--) {
-            swap(arr, i, rand.nextInt(i + 1));
-        }
-    }
-
-    public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-
-    private String getCard(int Card) {
-        String Suit;
-        String Value;
-
-        switch (Card / 13) {
-            case 0:
-                Suit = "S";
-                break;
-            case 1:
-                Suit = "H";
-                break;
-            case 2:
-                Suit = "C";
-                break;
-            case 3:
-                Suit = "D";
-                break;
-            default:
-                Suit = "D";
-        }
-        switch (Card % 13) {
-            case 11:
-                Value = "J";
-                break;
-            case 12:
-                Value = "Q";
-                break;
-            case 0:
-                Value = "K";
-                break;
-            case 1:
-                Value = "A";
-                break;
-            default:
-                Value = Integer.toString(Card % 13);
-        }
-        return Suit + Value;
-    }
-    private boolean Player1Show = false;
-    private boolean Player2Show = false;
-    private Integer Player1Stack = 1000;
-    private Integer Player2Stack = 1000;
-    private Integer Pot = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDealFlop;
     private javax.swing.JButton btnDealRiver;
