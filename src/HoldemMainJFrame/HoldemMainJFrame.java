@@ -38,21 +38,25 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         btnShuffle = new javax.swing.JButton();
         btnPlayer1Bet = new javax.swing.JButton();
         btnPlayer2Bet = new javax.swing.JButton();
-        btnPlayer1Win = new javax.swing.JButton();
-        btnPlayer2Win = new javax.swing.JButton();
-        txtPlayer1Bet = new javax.swing.JTextField();
-        txtPlayer2Bet = new javax.swing.JTextField();
         lblPlayer1Stack = new javax.swing.JLabel();
         lblPlayer2Stack = new javax.swing.JLabel();
         lblPot = new javax.swing.JLabel();
         lblPotValue = new javax.swing.JLabel();
-        btnShowBoardImage = new javax.swing.JToggleButton();
-        pnlBoardImage = new javax.swing.JPanel();
-        lblBoardImg2 = new javax.swing.JLabel();
-        lblBoardImg4 = new javax.swing.JLabel();
-        lblBoardImg1 = new javax.swing.JLabel();
-        lblBoardImg3 = new javax.swing.JLabel();
+        pnlBoardImg = new javax.swing.JPanel();
         lblBoardImg0 = new javax.swing.JLabel();
+        lblBoardImg1 = new javax.swing.JLabel();
+        lblBoardImg2 = new javax.swing.JLabel();
+        lblBoardImg3 = new javax.swing.JLabel();
+        lblBoardImg4 = new javax.swing.JLabel();
+        btnShowBoardImage = new javax.swing.JToggleButton();
+        pnlPlayer2Img = new javax.swing.JPanel();
+        lblPlayer2Img0 = new javax.swing.JLabel();
+        lblPlayer2Img1 = new javax.swing.JLabel();
+        pnlPlayer1Img = new javax.swing.JPanel();
+        lblPlayer1Img0 = new javax.swing.JLabel();
+        lblPlayer1Img1 = new javax.swing.JLabel();
+        jSliderPlayer1 = new javax.swing.JSlider();
+        jSliderPlayer2 = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,7 +129,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
 
         lblPlayer2Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
-        lblBoard.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        lblBoard.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         btnShuffle.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         btnShuffle.setText("Shuffle");
@@ -156,31 +160,11 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             }
         });
 
-        btnPlayer1Win.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        btnPlayer1Win.setText("Player 1 Win");
-        btnPlayer1Win.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer1WinMouseClicked(evt);
-            }
-        });
-
-        btnPlayer2Win.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        btnPlayer2Win.setText("Player 2 Win");
-        btnPlayer2Win.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer2WinMouseClicked(evt);
-            }
-        });
-
-        txtPlayer1Bet.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-
-        txtPlayer2Bet.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-
         lblPlayer1Stack.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblPlayer1Stack.setText("jLabel1");
 
         lblPlayer2Stack.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        lblPlayer2Stack.setText("jLabel1");
+        lblPlayer2Stack.setText("jLabel2");
 
         lblPot.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblPot.setText("Pot");
@@ -188,6 +172,36 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPotValue.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblPotValue.setText("jLabel3");
 
+        javax.swing.GroupLayout pnlBoardImgLayout = new javax.swing.GroupLayout(pnlBoardImg);
+        pnlBoardImg.setLayout(pnlBoardImgLayout);
+        pnlBoardImgLayout.setHorizontalGroup(
+            pnlBoardImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBoardImgLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBoardImg0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblBoardImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(lblBoardImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblBoardImg3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblBoardImg4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+        pnlBoardImgLayout.setVerticalGroup(
+            pnlBoardImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBoardImgLayout.createSequentialGroup()
+                .addGap(0, 22, Short.MAX_VALUE)
+                .addGroup(pnlBoardImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBoardImg0, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoardImg1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoardImg2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoardImg3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBoardImg4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        btnShowBoardImage.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         btnShowBoardImage.setText("Show Image");
         btnShowBoardImage.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -200,34 +214,43 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout pnlBoardImageLayout = new javax.swing.GroupLayout(pnlBoardImage);
-        pnlBoardImage.setLayout(pnlBoardImageLayout);
-        pnlBoardImageLayout.setHorizontalGroup(
-            pnlBoardImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBoardImageLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlPlayer2ImgLayout = new javax.swing.GroupLayout(pnlPlayer2Img);
+        pnlPlayer2Img.setLayout(pnlPlayer2ImgLayout);
+        pnlPlayer2ImgLayout.setHorizontalGroup(
+            pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlayer2ImgLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblBoardImg0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(lblBoardImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(lblBoardImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(lblBoardImg3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(lblBoardImg4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(lblPlayer2Img0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblPlayer2Img1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
-        pnlBoardImageLayout.setVerticalGroup(
-            pnlBoardImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBoardImageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlBoardImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblBoardImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBoardImg0, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBoardImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBoardImg3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBoardImg4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+        pnlPlayer2ImgLayout.setVerticalGroup(
+            pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlayer2ImgLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPlayer2Img0, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPlayer2Img1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        javax.swing.GroupLayout pnlPlayer1ImgLayout = new javax.swing.GroupLayout(pnlPlayer1Img);
+        pnlPlayer1Img.setLayout(pnlPlayer1ImgLayout);
+        pnlPlayer1ImgLayout.setHorizontalGroup(
+            pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlayer1ImgLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(lblPlayer1Img0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblPlayer1Img1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pnlPlayer1ImgLayout.setVerticalGroup(
+            pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlayer1ImgLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPlayer1Img0, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPlayer1Img1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -238,94 +261,109 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnPlayer1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnPlayer2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnDealTurn)
+                                    .addComponent(btnDealRiver))
+                                .addGap(18, 18, 18)
+                                .addComponent(pnlBoardImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnDealFlop)
+                                .addGap(26, 26, 26)
+                                .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPlayer1Stack))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnPlayer1Bet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPlayer2Bet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(pnlPlayer2Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(lblPlayer2Stack))))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(btnPlayer1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlPlayer1Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(355, 355, 355)
+                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 9, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPlayer1Bet)
+                        .addGap(28, 28, 28)
+                        .addComponent(jSliderPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPlayer2Bet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPlayer1Bet, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(txtPlayer2Bet)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnDealFlop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74))
-                    .addComponent(btnShuffle)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDealTurn)
-                            .addComponent(btnDealRiver))
-                        .addGap(65, 65, 65)
-                        .addComponent(pnlBoardImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnShowBoardImage)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(lblPot))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPlayer2Stack, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblPlayer1Stack))))
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPlayer1Win)
-                    .addComponent(btnPlayer2Win)
-                    .addComponent(lblPotValue))
-                .addContainerGap())
+                        .addComponent(btnPlayer2))))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(btnShuffle)
+                .addGap(43, 43, 43)
+                .addComponent(lblPot)
+                .addGap(31, 31, 31)
+                .addComponent(lblPotValue)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnShowBoardImage))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlBoardImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPot)
-                            .addComponent(lblPotValue)
-                            .addComponent(btnShuffle))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPlayer1)
                             .addComponent(btnPlayer1Bet)
-                            .addComponent(txtPlayer1Bet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPlayer1Stack)
-                            .addComponent(btnPlayer1Win))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btnPlayer2Win)
-                            .addComponent(lblPlayer2Stack)
-                            .addComponent(txtPlayer2Bet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPlayer2Bet)
-                            .addComponent(btnPlayer2)
-                            .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btnDealFlop)
-                            .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnPlayer1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnPlayer2)
+                                .addComponent(btnPlayer2Bet))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jSliderPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pnlPlayer1Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDealTurn)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDealRiver))
+                                .addGap(6, 6, 6)
+                                .addComponent(lblPlayer1Stack)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(99, 99, 99)
-                                .addComponent(btnShowBoardImage)))))
-                .addContainerGap(53, Short.MAX_VALUE))
+                                .addComponent(lblPlayer2Stack)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(pnlPlayer2Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(btnDealFlop)
+                    .addComponent(lblBoard, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlBoardImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnDealTurn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDealRiver)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnShowBoardImage)
+                    .addComponent(btnShuffle)
+                    .addComponent(lblPot)
+                    .addComponent(lblPotValue)))
         );
 
         pack();
@@ -359,8 +397,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         holdem.shuffle();
         lblBoard.setText("");
-        for (String s : board) {
-            s = null;
+        for (int i = 0; i < board.length; i++) {
+            board[i] = null;
         }
         hideBoardImage();
     }//GEN-LAST:event_btnShuffleMouseClicked
@@ -369,6 +407,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (player1Show == false) {
             lblPlayer1Card.setText(toString(holdem.getPlayerCard1(), " "));
+            showPlayerImage(1);
             player1Show = true;
         } else {
             lblPlayer1Card.setText("");
@@ -380,6 +419,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (player2Show == false) {
             lblPlayer2Card.setText(toString(holdem.getPlayerCard2(), " "));
+            showPlayerImage(2);
             player2Show = true;
         } else {
             lblPlayer2Card.setText("");
@@ -420,35 +460,21 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
 
     private void btnPlayer1BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1BetMouseClicked
         // TODO add your handling code here:
-        holdem.player1Stack -= Integer.parseInt(txtPlayer1Bet.getText());
+        int player1BetValue = jSliderPlayer1.getValue();
+        holdem.player1Stack -= player1BetValue;
         lblPlayer1Stack.setText(Integer.toString(holdem.player1Stack));
-        holdem.pot += Integer.parseInt(txtPlayer1Bet.getText());
+        holdem.pot += jSliderPlayer1.getValue();
         lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer1BetMouseClicked
 
     private void btnPlayer2BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2BetMouseClicked
         // TODO add your handling code here:
-        holdem.player2Stack -= Integer.parseInt(txtPlayer2Bet.getText());
+        int player2BetValue = jSliderPlayer2.getValue();
+        holdem.player2Stack -= player2BetValue;
         lblPlayer2Stack.setText(Integer.toString(holdem.player2Stack));
-        holdem.pot += Integer.parseInt(txtPlayer2Bet.getText());
+        holdem.pot += player2BetValue;
         lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer2BetMouseClicked
-
-    private void btnPlayer1WinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1WinMouseClicked
-        // TODO add your handling code here:
-        holdem.player1Stack += holdem.pot;
-        lblPlayer1Stack.setText(Integer.toString(holdem.player1Stack));
-        holdem.pot = 0;
-        lblPotValue.setText(Integer.toString(holdem.pot));
-    }//GEN-LAST:event_btnPlayer1WinMouseClicked
-
-    private void btnPlayer2WinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2WinMouseClicked
-        // TODO add your handling code here:
-        holdem.player2Stack += holdem.pot;
-        lblPlayer2Stack.setText(Integer.toString(holdem.player2Stack));
-        holdem.pot = 0;
-        lblPotValue.setText(Integer.toString(holdem.pot));
-    }//GEN-LAST:event_btnPlayer2WinMouseClicked
 
     private void btnShowBoardImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowBoardImageActionPerformed
         // TODO add your handling code here:
@@ -515,38 +541,69 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         }
         return s;
     }
-    
-    
+
     private void hideBoardImage() {
         for (int i = 0; i < board.length; i++) {
             hideBoardImageAt(i);
         }
     }
-    
+
     private void hideBoardImageAt(int i) {
-        JLabel lblBoardImg = (JLabel) pnlBoardImage.getComponent(i);
+        JLabel lblBoardImg = (JLabel) pnlBoardImg.getComponent(i);
         lblBoardImg.setIcon(null);
     }
-    
+
     private void showBoardImage() {
         for (int i = 0; i < board.length; i++) {
-            if (board[i] == null) break;
+            if (board[i] == null) {
+                break;
+            }
             showBoardImageAt(i);
         }
     }
-    
+
+    private void showPlayerImage(int playerNum) {
+        String[] playerCardString1 = holdem.getPlayerCard1();
+        String[] playerCardString2 = holdem.getPlayerCard2();
+        String[] playerCardString = playerCardString1;
+        JLabel[] cardLabel = new JLabel[2];
+        JLabel lblPlayerCardImg0 = new JLabel();
+        JLabel lblPlayerCardImg1 = new JLabel();
+        if (playerNum == 1) {
+            playerCardString = playerCardString1;
+            lblPlayerCardImg0 = (JLabel) pnlPlayer1Img.getComponent(0);
+            lblPlayerCardImg1 = (JLabel) pnlPlayer1Img.getComponent(1);
+        } else {
+            playerCardString = playerCardString2;
+            lblPlayerCardImg0 = (JLabel) pnlPlayer2Img.getComponent(0);
+            lblPlayerCardImg1 = (JLabel) pnlPlayer2Img.getComponent(1);
+        }
+        cardLabel[0] = lblPlayerCardImg0;
+        cardLabel[1] = lblPlayerCardImg1;
+        for (int i = 0; i < playerCardString.length; i++) {
+            showCardImage(playerCardString[i], cardLabel[i]);
+
+        }
+    }
+
     private int showBoardImageAt(int i) {
-        BufferedImage image = null;
         if (i >= board.length) {
             return 1;
         }
+        JLabel lblBoardImg = (JLabel) pnlBoardImg.getComponent(i);
+        showCardImage(board[i], lblBoardImg);
+        return 0;
+    }
+
+    int showCardImage(String cardString, JLabel cardLabel) {
+        BufferedImage image = null;
         try {
-            System.out.println(board[i]);
-            File imageFile = new File("resources/deck/" + board[i] + ".png");
+            System.out.println(cardString);
+            File imageFile = new File("resources/deck/" + cardString + ".png");
             if (!imageFile.exists()) {
                 String cardName = "";
-                if (board[i].charAt(0) == 'T') {
-                    cardName = "10" + board[i].charAt(1);
+                if (cardString.charAt(0) == 'T') {
+                    cardName = "10" + cardString.charAt(1);
                 }
                 imageFile = new File("resources/deck/" + cardName + ".png");
             }
@@ -554,27 +611,26 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             System.out.println(ex);
         }
-        int imageWidth = lblBoardImg0.getWidth();
-        int imageHeight = lblBoardImg0.getHeight();
+        int imageWidth = cardLabel.getWidth();
+        int imageHeight = cardLabel.getHeight();
         Image cardImage = image.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
         ImageIcon cardImageIcon = new ImageIcon(cardImage);
-        JLabel lblBoardImg = (JLabel) pnlBoardImage.getComponent(i);
-        lblBoardImg.setIcon(cardImageIcon);
+        cardLabel.setIcon(cardImageIcon);
         return 0;
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDealFlop;
     private javax.swing.JButton btnDealRiver;
     private javax.swing.JButton btnDealTurn;
     private javax.swing.JButton btnPlayer1;
     private javax.swing.JButton btnPlayer1Bet;
-    private javax.swing.JButton btnPlayer1Win;
     private javax.swing.JButton btnPlayer2;
     private javax.swing.JButton btnPlayer2Bet;
-    private javax.swing.JButton btnPlayer2Win;
     private javax.swing.JToggleButton btnShowBoardImage;
     private javax.swing.JButton btnShuffle;
+    private javax.swing.JSlider jSliderPlayer1;
+    private javax.swing.JSlider jSliderPlayer2;
     private javax.swing.JLabel lblBoard;
     private javax.swing.JLabel lblBoardImg0;
     private javax.swing.JLabel lblBoardImg1;
@@ -582,13 +638,17 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblBoardImg3;
     private javax.swing.JLabel lblBoardImg4;
     private javax.swing.JLabel lblPlayer1Card;
+    private javax.swing.JLabel lblPlayer1Img0;
+    private javax.swing.JLabel lblPlayer1Img1;
     private javax.swing.JLabel lblPlayer1Stack;
     private javax.swing.JLabel lblPlayer2Card;
+    private javax.swing.JLabel lblPlayer2Img0;
+    private javax.swing.JLabel lblPlayer2Img1;
     private javax.swing.JLabel lblPlayer2Stack;
     private javax.swing.JLabel lblPot;
     private javax.swing.JLabel lblPotValue;
-    private javax.swing.JPanel pnlBoardImage;
-    private javax.swing.JTextField txtPlayer1Bet;
-    private javax.swing.JTextField txtPlayer2Bet;
+    private javax.swing.JPanel pnlBoardImg;
+    private javax.swing.JPanel pnlPlayer1Img;
+    private javax.swing.JPanel pnlPlayer2Img;
     // End of variables declaration//GEN-END:variables
 }
