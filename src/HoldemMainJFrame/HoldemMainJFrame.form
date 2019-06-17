@@ -45,9 +45,11 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblPlayer1Card" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                              <Component id="lblPlayer1Card" min="-2" pref="104" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="lblPlayer1Stack" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -58,14 +60,14 @@
               </Group>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <Component id="btnPlayer1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnPlayer1Show" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="pnlPlayer1Img" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="355" max="-2" attributes="0"/>
                       <Component id="lblPlayer2Card" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="58" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="btnPlayer1Bet" min="-2" max="-2" attributes="0"/>
@@ -76,7 +78,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnPlayer2Bet" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnPlayer2" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnPlayer2Show" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -87,7 +89,11 @@
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Component id="lblPotValue" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnShowBoardImage" min="-2" max="-2" attributes="0"/>
+              <Component id="btnShowCardImage" min="-2" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="btnShowDown" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,16 +102,9 @@
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnPlayer1Bet" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnPlayer1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="btnPlayer2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnPlayer2Show" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnPlayer2Bet" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -118,31 +117,27 @@
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="btnPlayer1Show" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnPlayer1Bet" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="pnlPlayer1Img" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  <Component id="pnlPlayer1Img" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblPlayer1Stack" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Component id="lblPlayer1Card" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="lblPlayer1Stack" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblPlayer1Card" min="-2" pref="35" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblPlayer2Stack" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblPlayer2Card" min="-2" pref="35" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="pnlPlayer2Img" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="lblPlayer2Stack" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblPlayer2Card" min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="pnlPlayer2Img" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="11" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="btnDealFlop" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="lblBoard" alignment="0" min="-2" pref="53" max="-2" attributes="0"/>
@@ -156,9 +151,11 @@
                       <Component id="btnDealRiver" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnShowDown" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnShowBoardImage" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnShowCardImage" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnShuffle" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPot" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPotValue" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -168,16 +165,16 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="btnPlayer1">
+    <Component class="javax.swing.JButton" name="btnPlayer1Show">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Player 1"/>
+        <Property name="text" type="java.lang.String" value="Show"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPlayer1MouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayer1ActionPerformed"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPlayer1ShowMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayer1ShowActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnDealRiver">
@@ -192,16 +189,16 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDealRiverActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnPlayer2">
+    <Component class="javax.swing.JButton" name="btnPlayer2Show">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Player 2"/>
+        <Property name="text" type="java.lang.String" value="Show"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPlayer2MouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayer2ActionPerformed"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPlayer2ShowMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayer2ShowActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnDealFlop">
@@ -288,7 +285,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="jLabel1"/>
+        <Property name="text" type="java.lang.String" value="Player1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPlayer2Stack">
@@ -296,7 +293,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="jLabel2"/>
+        <Property name="text" type="java.lang.String" value="Player2"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPot">
@@ -363,7 +360,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JToggleButton" name="btnShowBoardImage">
+    <Component class="javax.swing.JToggleButton" name="btnShowCardImage">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="36" style="0"/>
@@ -371,8 +368,8 @@
         <Property name="text" type="java.lang.String" value="Show Image"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnShowBoardImageMouseClicked"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowBoardImageActionPerformed"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnShowCardImageMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowCardImageActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="pnlPlayer2Img">
@@ -443,6 +440,18 @@
     <Component class="javax.swing.JSlider" name="jSliderPlayer1">
     </Component>
     <Component class="javax.swing.JSlider" name="jSliderPlayer2">
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="btnShowDown">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="36" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Show Down"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnShowDownMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowDownActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

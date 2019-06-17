@@ -1,20 +1,33 @@
 package holdem;
 
 import java.util.Random;
+import java.util.Arrays;
 
 public class Holdem {
-
+    enum BEST_HAND_TYPE {
+        ROYAL_FLUSH, 
+        STRAIGHT_FLUSH, 
+        FOUR_OF_A_KIND,
+        FULL_HOUSE, 
+        FLUSH, 
+        STRAIGHT, 
+        THREE_OF_A_KIND, 
+        TWO_PAIR, 
+        PAIR, 
+        HIGH_CARD
+    };
     class Deck{
         public Card[] cards;
         class Card {
             int value;
+            String rank;
+            int rankNum;
+            String suit;
+            int suitNum;
             public Card(int i) {
                 value = i;
-            }
-            public String toString() {
-                String suit;
-                String rank;
-                switch (value / 13) {
+                suitNum = value / 13;
+                switch (suitNum) {
                     case 0:
                         suit = "S";
                         break;
@@ -30,7 +43,8 @@ public class Holdem {
                     default:
                         suit = "D";
                 }
-                switch (value % 13) {
+                rankNum = value % 13;
+                switch (rankNum) {
                     case 10:
                         rank = "T";
                         break;
@@ -49,6 +63,48 @@ public class Holdem {
                     default:
                         rank = Integer.toString(value % 13);
                 }
+            }
+            
+            public Card(String cardString) {
+                rank = cardString.substring(0,1);
+                switch (rank) {
+                    case "T":
+                        rankNum = 10;
+                        break;
+                    case "J":
+                        rankNum = 11;
+                        break;
+                    case "Q":
+                        rankNum = 12;
+                        break;
+                    case "K":
+                        rankNum = 0;
+                        break;
+                    case "A":
+                        rankNum = 1;
+                        break;
+                    default:
+                        rankNum = Integer.parseInt(rank);
+                }
+                suit = cardString.substring(1);
+                switch (suit) {
+                    case "S":
+                        suitNum = 0;
+                        break;
+                    case "H":
+                        suitNum = 1;
+                        break;
+                    case "C":
+                        suitNum = 2;
+                        break;
+                    case "D":
+                        suitNum = 3;
+                        break;
+                }
+                value = suitNum*13 + rankNum;
+            }
+            
+            public String toString() {
                 return rank + suit;
             }
         }
@@ -70,29 +126,58 @@ public class Holdem {
             arr[j] = tmp;
         }
     }
+    
+    public class Player {
+        int stack;
+        String[] privateCard;
+        Player (int initialStack) {
+            stack = initialStack;
+        }
+
+        public String[] getPrivateCard() {
+            return privateCard;
+        }
+        public int incrStack(int incr) {
+            stack += incr;
+            return stack;
+        }
+    }
 
     private final Deck deck;
     int posInDeck;
-    String[] playerCard1 = null;
-    String[] playerCard2 = null;
+    int playerNum;
+    public Player[] players = null;
+    String[] board = null;
     String[] flop = null;
     String turn = "";
     String river = "";
+    public int pot;
     
-    public Holdem() {
+    public Holdem(int playerNum_) {
+        int initialStack = 1000;
+        playerNum = playerNum_;
         deck = new Deck();
         deck.shuffle();
         posInDeck = 0;
+        board = new String[5];
+        players = new Player[playerNum];
+        for (int i = 0; i < playerNum; i++) {
+            Player player = new Player(initialStack);
+            players[i] = player;
+        }
+        pot = 0;
     }
     
     public void shuffle() {
         deck.shuffle();
         posInDeck = 0;
-        playerCard1 = null;
-        playerCard2 = null;
+        for (int i = 0; i < playerNum; i++) {
+            players[i].privateCard = null;
+        }
         flop = null;
         turn = "";
         river = "";
+        board = new String[5];
     }
     
     private String getCardAt(int i) {
@@ -108,26 +193,19 @@ public class Holdem {
         return getCardAt(posInDeck++);
     }
 
-    public String[] getPlayerCard1() {
-        if (playerCard1 == null) {
-            playerCard1 = new String[2];
+    public void dealCardForPlayer(int playerID) {
+        if (players[playerID].privateCard == null) {
+            players[playerID].privateCard = new String[2];
             for (int i = 0; i < 2; i++) {
-                playerCard1[i] = dealCard();
+                players[playerID].privateCard[i] = dealCard();
             }
         }
-        return playerCard1;
+    }
+    public String[] getPlayerCard(int playerID) {
+        return players[playerID].privateCard;
     }
 
-    public String[] getPlayerCard2() {
-        if (playerCard2 == null) {
-            playerCard2 = new String[2];
-            for (int i = 0; i < 2; i++) {
-                playerCard2[i] = dealCard();
-            }
-        }
-        return playerCard2;
-    }
-        
+       
     public String[] getFlop() {
         if (flop == null) {
             flop = new String[3];
@@ -135,35 +213,185 @@ public class Holdem {
                 flop[i] = dealCard();
             }
         }
+        System.arraycopy(flop, 0, board, 0, flop.length);
         return flop;
     }
     
-    public String getTurn() {
+    public String dealTurn() {
         if (turn.isEmpty()) {
            turn = dealCard();
         }
+        board[3] = turn;
         return turn;
     }
     
-    public String getRiver() {
+    public String dealRiver() {
         if (river.isEmpty()) {
            river = dealCard();
         }
+        board[4] = river;
         return river;
     }
     
-    class showDown {
-        class showDownresult {
-            String bestHandType;
+    public void showDown() {
+        for (int i = 0; i < Holdem.this.players.length; i++) {
+            Holdem.Player player = Holdem.this.players[i];
+            System.out.println("bestHand of Player " + i + ":");
+            ShowDown showDown = new ShowDown();
+            showDown.getshowDownResult(player);
+        }
+    }
+    
+    class ShowDown {
+        class ShowDownResult {
+            BEST_HAND_TYPE bestHandType;
             Holdem.Deck.Card[] bestHand;
         }
-        Holdem.Deck.Card[] candidateCards[];
-        showDown() {
+        String[] candidateCards = new String[7];
+        int[] suitCount = new int[4];
+        int[] rankCount = new int[13];
+        int[] ranks = new int[7];
+        String[] pickedCards = null;
+        int maxSuitCount = 0;
+        int maxCountSuit;
+        int maxRankCount = 0;
+        int maxCountRank;
         
+        void countCards() {
+            Arrays.fill(ranks, 14);
+            for (int i  = 0; i < candidateCards.length; i++) {
+                String card = candidateCards[i];
+                Holdem.Deck deck = Holdem.this.new Deck();
+                Holdem.Deck.Card c = deck.new Card(card);
+                int rank = c.rankNum;
+                if (rank == 0) rank = 13;
+                if (rank == 1) rank = 14;
+                suitCount[c.suitNum]++;
+                rankCount[c.rankNum]++;
+                // insertion sort the cards by rank
+                ranks[i] = rank;
+                for (int j = i; j > 0; j--) {
+                    if (ranks[j] < ranks[j-1]) {
+                        ranks[j] = ranks[j-1];
+                        ranks[j-1] = rank;
+                    }
+                }
+
+            }
+            for (int i = 0; i < 4; i++) {
+                System.out.println("Suit " + i + "=" + suitCount[i]);
+            }
+            for (int i = 0; i < 13; i++) {
+                System.out.println("Rank " + i + "=" + rankCount[i]);
+            }
+        }
+        
+        boolean checkStraight(String[] candidateCards) {
+            return false;
+        }
+        
+        boolean checkRoyalFlush() {
+            if (!checkFlush()) {
+                return false;
+            } else {
+                Arrays.sort(pickedCards);
+                if (Integer.parseInt(pickedCards[0]) != 14) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        boolean checkStraightFlush() {
+            if (maxCountSuit < 5) {
+                return false;
+            } else {
+                checkStraight(candidateCards);
+            }
+            return false;
+        }
+
+        boolean checkFourOfAKind() {
+            return maxRankCount == 4;
+        }
+        
+        boolean checkFullHouse() {
+            return false;
+        }
+
+        boolean checkFlush() {
+            return maxSuitCount  == 5;
+        }
+        boolean checkStraight() {
+            return false;
+        }
+
+        boolean checkThreeOfAKind() {
+            return maxRankCount == 3;
+        }
+        boolean checkTwoPair() {
+            return false;
+        }
+
+        boolean checkPair() {
+            return maxRankCount == 2;
+        }
+            
+        ShowDownResult getshowDownResult(Holdem.Player player) {
+                String[] privateCard = player.getPrivateCard();
+                String[] board = Holdem.this.board;
+                System.arraycopy(board, 0, candidateCards, 0, board.length);
+                candidateCards[5] = privateCard[0];
+                candidateCards[6] = privateCard[1];
+            
+            ShowDownResult res = new ShowDownResult();
+            countCards();
+
+            for (int i = 0; i < 4; i++) {
+                if (suitCount[i] > maxSuitCount) {
+                    maxSuitCount= suitCount[i];
+                    maxCountSuit = i;
+                }
+            }
+            
+            for (int i = 0; i < 13; i++) {
+                if (rankCount[i] > maxRankCount) {
+                    maxRankCount = rankCount[i];
+                    maxCountRank = i;
+                }
+            }
+            System.out.println("MaxRankCount=" + maxRankCount);
+            System.out.println("MaxSuitCount=" + maxSuitCount);
+            System.out.println("ranks=");
+            for (int rank : ranks) {
+                System.out.println(rank + ", ");
+            }
+            
+            if (checkRoyalFlush()) {
+                System.out.println("RoyalFlush");
+            } else if (checkStraightFlush()) {
+                System.out.println("StraightFlush");
+            } else if (checkFourOfAKind()) {
+                System.out.println("FourOfAKind");
+            } else if (checkFullHouse()) {
+                System.out.println("FullHouse");
+            } else if (checkFlush()) {
+                System.out.println("Flush");
+            } else if (checkStraight()) {
+                System.out.println("Straight");
+            } else if (checkThreeOfAKind()) {
+                System.out.println("ThreeOfAKind");
+            } else if (checkTwoPair()) {
+                System.out.println("TwoPair");
+            } else if (checkPair()) {
+                System.out.println("Pair");
+            } else {
+                System.out.println("HighCard");
+            }
+            
+      
+            return res;
         }
     }
 
-    public Integer player1Stack = 1000;
-    public Integer player2Stack = 1000;
-    public Integer pot = 0;
 }
