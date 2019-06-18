@@ -245,96 +245,384 @@ public class Holdem {
     class ShowDown {
         class ShowDownResult {
             BEST_HAND_TYPE bestHandType;
-            Holdem.Deck.Card[] bestHand;
-        }
-        String[] candidateCards = new String[7];
-        int[] suitCount = new int[4];
-        int[] rankCount = new int[13];
-        int[] ranks = new int[7];
-        String[] pickedCards = null;
-        int maxSuitCount = 0;
-        int maxCountSuit;
-        int maxRankCount = 0;
-        int maxCountRank;
-        
-        void countCards() {
-            Arrays.fill(ranks, 14);
-            for (int i  = 0; i < candidateCards.length; i++) {
-                String card = candidateCards[i];
+            String bestHandTypeStr;
+            CountResult countResult;
+            int bestHandTypeInt;
+            String[] candidateCards;
+            String[] kickers = null;
+            Holdem.Deck.Card[] bestHand = null;
+            
+            ShowDownResult(BEST_HAND_TYPE bestHandType_, String[] candidateCards_, CountResult countResult_) {
+                bestHandType = bestHandType_;
+                candidateCards = candidateCards_;
+                countResult = countResult_;
+
+                switch(bestHandType) {
+                    case ROYAL_FLUSH:
+                        bestHandTypeStr = "RoyalFlush";
+                        bestHandTypeInt = 7;
+                        break;
+                    case STRAIGHT_FLUSH:
+                        bestHandTypeStr = "StraightFlush";
+                        bestHandTypeInt = 6;
+                        break;
+                    case FOUR_OF_A_KIND:
+                        bestHandTypeStr = "FourOfAKind";
+                        bestHandTypeInt = 6;
+                        break;
+                    case FULL_HOUSE:
+                        bestHandTypeStr = "FullHouse";
+                        bestHandTypeInt = 7;
+                        break;
+                    case FLUSH:
+                        bestHandTypeStr = "Flush";
+                        bestHandTypeInt = 5;
+                        break;
+                    case STRAIGHT:
+                        bestHandTypeStr = "Straight";
+                        bestHandTypeInt = 4;
+                        break;
+                    case THREE_OF_A_KIND:
+                        bestHandTypeStr = "ThreeOfAKind";
+                        bestHandTypeInt = 3;
+                        break;
+                    case TWO_PAIR:
+                        bestHandTypeStr = "TwoPair";
+                        bestHandTypeInt = 2;
+                        break;
+                    case PAIR:
+                        bestHandTypeStr = "Pair";
+                        bestHandTypeInt = 1;
+                        break;
+                    default:
+                        bestHandTypeStr = "HighCard";
+                        bestHandTypeInt = 0;
+                }
+
+            }
+            void computeKickers() {
                 Holdem.Deck deck = Holdem.this.new Deck();
+                Holdem.Deck.Card c = deck.new Card(countResult.ranks[0]);
+                int j;
+                switch(bestHandType) {
+                    case ROYAL_FLUSH:
+                        kickers = new String[1];
+                        kickers[0] = ("Royal Flush is unbeatable");
+                        break;
+                    case STRAIGHT_FLUSH:
+                        kickers = countResult.straightCards;
+                        break;
+                    case FOUR_OF_A_KIND:
+                        kickers = new String[2];
+                        c = deck.new Card(countResult.maxCountRank);
+                        kickers[0] = c.rank;
+                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                            if (nextHigh == countResult.maxCountRank) continue;
+                            if (countResult.rankCount[nextHigh] > 0) {
+                                c = deck.new Card(nextHigh);
+                                kickers[1] = c.rank;
+                                break;
+                            }
+                        }
+                        break;
+                    case FULL_HOUSE:
+                        kickers = new String[2];
+                        c = deck.new Card(countResult.maxCountRank);
+                        kickers[0] = c.rank;
+                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                            if (nextHigh == countResult.maxCountRank) continue;
+                            if (countResult.rankCount[nextHigh] > 1) {
+                                c = deck.new Card(nextHigh);
+                                kickers[1] = c.rank;
+                                break;
+                            }
+                        }
+                        break;
+                    case FLUSH:
+                        kickers = countResult.flushCards;
+                        break;
+                    case STRAIGHT:
+                        kickers = countResult.straightCards;
+                        break;
+                    case THREE_OF_A_KIND:
+                        kickers = new String[3];
+                        c = deck.new Card(countResult.maxCountRank);
+                        kickers[0] = c.rank;
+                        j = 1;
+                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                            if (nextHigh == countResult.maxCountRank) continue;
+                            if (countResult.rankCount[nextHigh] > 0) {
+                                c = deck.new Card(nextHigh);
+                                kickers[j] = c.rank;
+                                j++;
+                                if (j > 2) break;
+                            }
+                        }
+                        break;
+                    case TWO_PAIR:
+                        kickers = new String[3];
+                        int[] pairRanks = new int[3];
+                        j = 0;
+                        for (int pairRank = 12; pairRank >= 0; pairRank--) {
+                            if (countResult.rankCount[pairRank] == 2) {
+                                pairRanks[j] = pairRank;
+                                j++;
+                                if (j > 2) break;
+                            }
+                        }
+                        if (j == 3) {
+                            Arrays.sort(pairRanks);
+//                            kickers[0] = pairRanks[2];
+                        }
+//                        kickers[0] = pairRanks[0];
+//                        kickers[1] = pairRanks[1];
+                        break;
+                    case PAIR:
+                        kickers = new String[4];
+                        c = deck.new Card(countResult.maxCountRank);
+                        kickers[0] = c.rank;
+                        j = 1;
+                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                            if (nextHigh == countResult.maxCountRank) continue;
+                            if (countResult.rankCount[nextHigh] > 0) {
+                                c = deck.new Card(nextHigh);
+                                kickers[j] = c.rank;
+                                j++;
+                                if (j > 3) break;
+                            }
+                        }
+                        break;
+                    default:
+                        kickers = new String[5];
+                        for (int i = 0; i < 5; i++) {
+                            c = deck.new Card(countResult.ranks[i]);
+                            kickers[i] = c.rank;
+                        }
+                }
+            }
+            
+            String[] getKickers() {
+                if (kickers == null) {
+                    computeKickers();
+                }
+                return kickers;
+            }
+            
+            void computeBestHand () {
+                
+            }
+            
+            Holdem.Deck.Card[] getBestHand() {
+                if (bestHand == null) {
+                    computeBestHand();
+                }
+                return bestHand;
+            }
+            public String toString() {
+                String s = bestHandTypeStr + " with kickers: ";
+                if (kickers == null) {
+                    computeKickers();
+                }
+                for (String k : kickers) {
+                    s += k + ", ";
+                }
+                
+                return s;
+            }
+        }
+        
+        class CountResult {
+            String[] candidateCards;
+            int[] suitCount = new int[4];
+            int[] rankCount = new int[13];
+            int[] ranks = new int[7]; // In ranks of this class, A = 14, K = 13.
+            String[] pickedCards = null;
+            int maxSuitCount = 0;
+            int maxCountSuit;
+            int maxRankCount = 0;
+            int maxCountRank;
+            int setCount = 0;
+            int pairCount = 0;
+            boolean isStraight;
+            boolean isFlush;
+            String[] flushCards = null; // This will contain all cards of the 
+            // flushed suit, if there is a flushed suit.
+            String[] straightCards = null; // This will contain the longest 
+            // straight, if there is a flushed suit.
+            
+            CountResult (String[] candidateCards_) {
+                candidateCards = candidateCards_;
+            }
+            
+            public String toString() {
+                String s = "isStraight = " + isStraight + "\n";
+                s += "isFlush = " + isFlush + "\n";
+
+                for (int i = 0; i < 4; i++) {
+                    s += "Suit " + i + " = " + suitCount[i] + "\n";
+                }
+                for (int i = 0; i < 13; i++) {
+                    s += "Rank " + i + " = " + rankCount[i] + "\n";
+                }
+                
+                s += "MaxRankCount = " + maxRankCount + "\n";
+                s += "MaxSuitCount = " + maxSuitCount + "\n";
+                s += "ranks = \n";
+                
+                for (int rank : ranks) {
+                    System.out.println(rank + ", ");
+                }
+                return s;
+            }
+        }
+        
+        String[] candidateCards = new String[7];
+
+        ShowDownResult showDownResult;
+        
+        CountResult countCards(String[] cards) {
+            CountResult countResult = new CountResult(candidateCards);
+            int[] ranks = new int[7];
+            Arrays.fill(ranks, -1);
+            Holdem.Deck deck = Holdem.this.new Deck();
+
+            for (int i  = 0; i < cards.length; i++) {
+                String card = cards[i];
                 Holdem.Deck.Card c = deck.new Card(card);
                 int rank = c.rankNum;
                 if (rank == 0) rank = 13;
                 if (rank == 1) rank = 14;
-                suitCount[c.suitNum]++;
-                rankCount[c.rankNum]++;
-                // insertion sort the cards by rank
+                countResult.suitCount[c.suitNum]++;
+                countResult.rankCount[c.rankNum]++;
+                // insertion sort the cards by rank from high to low
                 ranks[i] = rank;
                 for (int j = i; j > 0; j--) {
-                    if (ranks[j] < ranks[j-1]) {
+                    if (ranks[j] > ranks[j-1]) {
                         ranks[j] = ranks[j-1];
                         ranks[j-1] = rank;
                     }
                 }
-
+                countResult.ranks = ranks;
             }
-            for (int i = 0; i < 4; i++) {
-                System.out.println("Suit " + i + "=" + suitCount[i]);
-            }
+            
             for (int i = 0; i < 13; i++) {
-                System.out.println("Rank " + i + "=" + rankCount[i]);
-            }
-        }
-        
-        boolean checkStraight(String[] candidateCards) {
-            return false;
-        }
-        
-        boolean checkRoyalFlush() {
-            if (!checkFlush()) {
-                return false;
-            } else {
-                Arrays.sort(pickedCards);
-                if (Integer.parseInt(pickedCards[0]) != 14) {
-                    return false;
+                if (countResult.rankCount[i] == 3) {
+                    countResult.setCount++;
+                } else if (countResult.rankCount[i] == 2 ) {
+                    countResult.pairCount++;
                 }
             }
-            return true;
+            
+            // check for straight
+            int straightLength = 0;
+            countResult.straightCards = new String[7];
+            Holdem.Deck.Card c = deck.new Card(countResult.ranks[0]);
+            countResult.straightCards[0] = c.rank;
+
+            for (int i = 1; i < countResult.ranks.length; i++) {
+                
+                if (countResult.ranks[i-1] - countResult.ranks[i] == 1 || 
+                        (straightLength == 4 && countResult.ranks[i-1] == 2 
+                        && countResult.ranks[i] == 14)) {
+
+                    straightLength++;
+                    c = deck.new Card(countResult.ranks[i]);
+                    countResult.straightCards[straightLength] = c.rank;
+
+                } else {
+                    straightLength = 0;
+                    countResult.straightCards = new String[7];
+                    c = deck.new Card(countResult.ranks[i]);
+                    countResult.straightCards[0] = c.rank;
+                }
+            }
+            countResult.isStraight = (straightLength >= 5);
+            
+
+            // Check for Flush
+            for (int i = 0; i < 4; i++) {
+                if (countResult.suitCount[i] > countResult.maxSuitCount) {
+                    countResult.maxSuitCount= countResult.suitCount[i];
+                    countResult.maxCountSuit = i;
+                }
+            }
+            
+            if (countResult.maxSuitCount >= 5) {
+                countResult.isFlush = true;
+                countResult.flushCards = new String[countResult.maxSuitCount];
+                for (int i = 0; i < countResult.maxSuitCount; i++) {
+                    String card = candidateCards[i];
+                    c = deck.new Card(card);
+                    if (c.suitNum == countResult.maxCountSuit) {
+                        countResult.flushCards[i] = card;
+                    }
+                }
+            } else {
+                countResult.isFlush = false;
+            }
+            
+            for (int i = 0; i < 13; i++) {
+                if (countResult.rankCount[i] > countResult.maxRankCount) {
+                    countResult.maxRankCount = countResult.rankCount[i];
+                    countResult.maxCountRank = i;
+                }
+            }
+            
+            System.out.println("countResult = \n" + countResult);
+            return countResult;
         }
         
-        boolean checkStraightFlush() {
-            if (maxCountSuit < 5) {
+        // These checking functions should be run in order high to low.
+        // 
+
+        
+        boolean checkRoyalFlush(CountResult countResult) {
+            if (!checkStraightFlush(countResult)) {
+                return false;
+            } else if (countResult.straightCards[-1].equals("A")) {
+                    return true;
+            }
+            return false;
+        }
+        
+        boolean checkStraightFlush(CountResult countResult) {
+            if (!countResult.isFlush) {
                 return false;
             } else {
-                checkStraight(candidateCards);
+                CountResult flushCountResult = 
+                        new CountResult(countResult.flushCards);
+                if (flushCountResult.isStraight) {
+                    return true;
+                }
             }
             return false;
         }
 
-        boolean checkFourOfAKind() {
-            return maxRankCount == 4;
+        boolean checkFourOfAKind(CountResult countResult) {
+            return countResult.maxRankCount == 4;
         }
         
-        boolean checkFullHouse() {
-            return false;
+        boolean checkFullHouse(CountResult countResult) {
+            return (countResult.setCount == 2 || 
+                    (countResult.setCount == 1 && countResult.pairCount > 0));
         }
 
-        boolean checkFlush() {
-            return maxSuitCount  == 5;
+        boolean checkFlush(CountResult countResult) {
+            return countResult.maxSuitCount >= 5;
         }
-        boolean checkStraight() {
-            return false;
-        }
-
-        boolean checkThreeOfAKind() {
-            return maxRankCount == 3;
-        }
-        boolean checkTwoPair() {
-            return false;
+        boolean checkStraight(CountResult countResult) {
+            return countResult.isStraight;
         }
 
-        boolean checkPair() {
-            return maxRankCount == 2;
+        boolean checkThreeOfAKind(CountResult countResult) {
+            return countResult.setCount > 0;
+        }
+        boolean checkTwoPair(CountResult countResult) {
+            return countResult.pairCount >= 2;
+        }
+
+        boolean checkPair(CountResult countResult) {
+            return countResult.pairCount >= 1;
         }
             
         ShowDownResult getshowDownResult(Holdem.Player player) {
@@ -344,52 +632,33 @@ public class Holdem {
                 candidateCards[5] = privateCard[0];
                 candidateCards[6] = privateCard[1];
             
-            ShowDownResult res = new ShowDownResult();
-            countCards();
-
-            for (int i = 0; i < 4; i++) {
-                if (suitCount[i] > maxSuitCount) {
-                    maxSuitCount= suitCount[i];
-                    maxCountSuit = i;
-                }
-            }
-            
-            for (int i = 0; i < 13; i++) {
-                if (rankCount[i] > maxRankCount) {
-                    maxRankCount = rankCount[i];
-                    maxCountRank = i;
-                }
-            }
-            System.out.println("MaxRankCount=" + maxRankCount);
-            System.out.println("MaxSuitCount=" + maxSuitCount);
-            System.out.println("ranks=");
-            for (int rank : ranks) {
-                System.out.println(rank + ", ");
-            }
-            
-            if (checkRoyalFlush()) {
-                System.out.println("RoyalFlush");
-            } else if (checkStraightFlush()) {
-                System.out.println("StraightFlush");
-            } else if (checkFourOfAKind()) {
-                System.out.println("FourOfAKind");
-            } else if (checkFullHouse()) {
-                System.out.println("FullHouse");
-            } else if (checkFlush()) {
-                System.out.println("Flush");
-            } else if (checkStraight()) {
-                System.out.println("Straight");
-            } else if (checkThreeOfAKind()) {
-                System.out.println("ThreeOfAKind");
-            } else if (checkTwoPair()) {
-                System.out.println("TwoPair");
-            } else if (checkPair()) {
-                System.out.println("Pair");
+            CountResult countResult = countCards(candidateCards);
+            BEST_HAND_TYPE bestHandType;
+            if (checkRoyalFlush(countResult)) {
+                bestHandType = BEST_HAND_TYPE.ROYAL_FLUSH;
+            } else if (checkStraightFlush(countResult)) {
+                bestHandType = BEST_HAND_TYPE.STRAIGHT_FLUSH;
+            } else if (checkFourOfAKind(countResult)) {
+                bestHandType = BEST_HAND_TYPE.FOUR_OF_A_KIND;
+            } else if (checkFullHouse(countResult)) {
+                bestHandType = BEST_HAND_TYPE.FULL_HOUSE;
+            } else if (checkFlush(countResult)) {
+                bestHandType = BEST_HAND_TYPE.FLUSH;
+            } else if (checkStraight(countResult)) {
+                bestHandType = BEST_HAND_TYPE.STRAIGHT;
+            } else if (checkThreeOfAKind(countResult)) {
+                bestHandType = BEST_HAND_TYPE.THREE_OF_A_KIND;
+            } else if (checkTwoPair(countResult)) {
+                bestHandType = BEST_HAND_TYPE.TWO_PAIR;
+            } else if (checkPair(countResult)) {
+                bestHandType = BEST_HAND_TYPE.PAIR;
             } else {
-                System.out.println("HighCard");
+                bestHandType = BEST_HAND_TYPE.HIGH_CARD;
             }
             
-      
+            ShowDownResult res = new ShowDownResult(bestHandType, candidateCards, countResult);
+            System.out.println("showDownResult = " + res);
+
             return res;
         }
     }

@@ -284,7 +284,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnDealFlop)
                                 .addGap(26, 26, 26)
-                                .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,9 +567,10 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     
     private String toString(String[] stringArray, String delimiter) {
         String s = "";
-        for (String sa : stringArray) {
-            s += sa + delimiter;
+        for (int i = 0; i < stringArray.length-1; i++) {
+            s += stringArray[i] + delimiter;
         }
+        s += stringArray[stringArray.length-1];
         return s;
     }
 
