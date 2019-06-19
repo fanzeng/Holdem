@@ -65,9 +65,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="pnlPlayer1Img" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="355" max="-2" attributes="0"/>
-                      <Component id="lblPlayer2Card" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="58" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="446" max="-2" attributes="0"/>
+                      <Component id="lblPlayer2Card" min="-2" pref="123" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="btnPlayer1Bet" min="-2" max="-2" attributes="0"/>
@@ -92,7 +92,8 @@
               <Component id="btnShowCardImage" min="-2" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="lblMessage" min="-2" pref="620" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="btnShowDown" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -137,7 +138,7 @@
                   </Group>
                   <Component id="pnlPlayer2Img" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="11" max="32767" attributes="0"/>
+              <EmptySpace min="11" pref="6" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="btnDealFlop" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="lblBoard" alignment="0" min="-2" pref="53" max="-2" attributes="0"/>
@@ -152,7 +153,10 @@
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnShowDown" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnShowDown" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMessage" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnShowCardImage" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -452,6 +456,11 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnShowDownMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowDownActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMessage">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Message:"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

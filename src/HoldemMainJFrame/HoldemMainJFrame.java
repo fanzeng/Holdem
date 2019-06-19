@@ -57,6 +57,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         jSliderPlayer1 = new javax.swing.JSlider();
         jSliderPlayer2 = new javax.swing.JSlider();
         btnShowDown = new javax.swing.JToggleButton();
+        lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -266,6 +267,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             }
         });
 
+        lblMessage.setText("Message:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -302,9 +305,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlPlayer1Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(355, 355, 355)
-                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 58, Short.MAX_VALUE))
+                        .addGap(446, 446, 446)
+                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnPlayer1Bet)
                         .addGap(28, 28, 28)
@@ -324,7 +327,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnShowCardImage))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnShowDown))
         );
         layout.setVerticalGroup(
@@ -357,7 +361,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlPlayer2Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnDealFlop)
                     .addComponent(lblBoard, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,7 +373,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDealRiver)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnShowDown)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnShowDown)
+                    .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnShowCardImage)
@@ -512,7 +518,10 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnShowCardImageMouseClicked
 
     private void btnShowDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowDownMouseClicked
-        holdem.showDown();
+        String[] showDownResultString = holdem.showDown();
+        String s = "<html>" + showDownResultString[0] + 
+                "<br>" + showDownResultString[1];
+        lblMessage.setText(s);
     }//GEN-LAST:event_btnShowDownMouseClicked
 
     private void btnShowDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDownActionPerformed
@@ -669,8 +678,12 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 }
                 imageFile = new File("resource/deck/" + cardName + ".png");
             }
+            if (!imageFile.exists()) {
+                throw new IOException("resource folder does not exist.");
+            }
             image = ImageIO.read(imageFile);
         } catch (IOException ex) {
+            lblMessage.setText(ex.toString());
             System.out.println(ex);
         }
         int imageWidth = cardLabel.getWidth();
@@ -712,6 +725,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblBoardImg2;
     private javax.swing.JLabel lblBoardImg3;
     private javax.swing.JLabel lblBoardImg4;
+    private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblPlayer1Card;
     private javax.swing.JLabel lblPlayer1Img0;
     private javax.swing.JLabel lblPlayer1Img1;

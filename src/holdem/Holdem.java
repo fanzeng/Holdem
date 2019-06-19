@@ -233,13 +233,16 @@ public class Holdem {
         return river;
     }
     
-    public void showDown() {
+    public String[] showDown() {
+        String[] showDownResultString = new String[Holdem.this.players.length];
         for (int i = 0; i < Holdem.this.players.length; i++) {
             Holdem.Player player = Holdem.this.players[i];
-            System.out.println("bestHand of Player " + i + ":");
             ShowDown showDown = new ShowDown();
-            showDown.getshowDownResult(player);
+            ShowDown.ShowDownResult showDownResult = showDown.getshowDownResult(player);
+            showDownResultString[i] = "bestHand of Player " + (i+1) + ":" + showDownResult.toString();
+            System.out.println(showDownResultString[i]);
         }
+        return showDownResultString;
     }
     
     class ShowDown {
@@ -316,9 +319,9 @@ public class Holdem {
                         kickers = new String[2];
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
-                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh] > 0) {
+                            if (countResult.rankCount[nextHigh%13] > 0) {
                                 c = deck.new Card(nextHigh);
                                 kickers[1] = c.rank;
                                 break;
@@ -329,9 +332,9 @@ public class Holdem {
                         kickers = new String[2];
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
-                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh] > 1) {
+                            if (countResult.rankCount[nextHigh%13] > 1) {
                                 c = deck.new Card(nextHigh);
                                 kickers[1] = c.rank;
                                 break;
@@ -349,9 +352,9 @@ public class Holdem {
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         j = 1;
-                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh] > 0) {
+                            if (countResult.rankCount[nextHigh%13] > 0) {
                                 c = deck.new Card(nextHigh);
                                 kickers[j] = c.rank;
                                 j++;
@@ -363,8 +366,8 @@ public class Holdem {
                         kickers = new String[3];
                         int[] pairRanks = new int[3];
                         j = 0;
-                        for (int pairRank = 12; pairRank >= 0; pairRank--) {
-                            if (countResult.rankCount[pairRank] == 2) {
+                        for (int pairRank = 14; pairRank >= 2; pairRank--) {
+                            if (countResult.rankCount[pairRank%13] == 2) {
                                 pairRanks[j] = pairRank;
                                 j++;
                                 if (j > 2) break;
@@ -382,9 +385,9 @@ public class Holdem {
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         j = 1;
-                        for (int nextHigh = 12; nextHigh >= 0; nextHigh--) {
+                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh] > 0) {
+                            if (countResult.rankCount[nextHigh%13] > 0) {
                                 c = deck.new Card(nextHigh);
                                 kickers[j] = c.rank;
                                 j++;
