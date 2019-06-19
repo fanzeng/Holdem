@@ -11,6 +11,8 @@ import java.net.URL;
 import java.net.URISyntaxException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class HoldemMainJFrame extends javax.swing.JFrame {
 
@@ -25,6 +27,11 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             }
         } catch (URISyntaxException ex) {
             System.err.println(ex.toString());
+        } catch(IllegalArgumentException ex) {
+            System.err.println(ex.toString());
+            System.out.println("Are you running on a network drive, e.g. your desktop could be one?");
+            System.out.println("Does the path contain space?");
+            System.out.println("Please try running it in a more regular directory.");
         }
         lblMessage.setText("Current directory: " + System.getProperty("user.dir"));
         shuffle();
@@ -782,16 +789,17 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         BufferedImage image = null;
         try {
             System.out.println(cardString);
-            File imageFile = new File(System.getProperty("user.dir") + "/resource/deck/" + cardString + ".png");
+            File imageFile = Paths.get(System.getProperty("user.dir"), "resource", "deck", cardString + ".png").toFile();
             if (!imageFile.exists()) {
                 String cardName = "";
                 if (cardString.charAt(0) == 'T') {
                     cardName = "10" + cardString.charAt(1);
                 }
-                imageFile = new File("resource/deck/" + cardName + ".png");
+                
+                imageFile = Paths.get("resource", "deck", cardName + ".png").toFile();
             }
             if (!imageFile.exists()) {
-                throw new IOException("resource folder does not exist.");
+                throw new IOException("Cannot load card image. Maybe resource folder does not exist?");
             }
             image = ImageIO.read(imageFile);
         } catch (IOException ex) {
