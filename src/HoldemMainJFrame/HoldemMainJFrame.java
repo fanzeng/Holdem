@@ -661,13 +661,13 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         BufferedImage image = null;
         try {
             System.out.println(cardString);
-            File imageFile = new File("resources/deck/" + cardString + ".png");
+            File imageFile = new File("resource/deck/" + cardString + ".png");
             if (!imageFile.exists()) {
                 String cardName = "";
                 if (cardString.charAt(0) == 'T') {
                     cardName = "10" + cardString.charAt(1);
                 }
-                imageFile = new File("resources/deck/" + cardName + ".png");
+                imageFile = new File("resource/deck/" + cardName + ".png");
             }
             image = ImageIO.read(imageFile);
         } catch (IOException ex) {
