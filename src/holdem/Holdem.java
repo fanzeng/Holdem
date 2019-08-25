@@ -2,6 +2,8 @@ package holdem;
 
 import java.util.Random;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Holdem {
     enum BEST_HAND_TYPE {
@@ -119,6 +121,8 @@ public class Holdem {
             for (int i = cards.length - 1; i > 0; i--) {
                 swap(cards, i, rand.nextInt(i + 1));
             }
+            winners = new ArrayList<>();
+
         }
         private void swap(Card[] arr, int i, int j) {
             Card tmp = arr[i];
@@ -152,7 +156,8 @@ public class Holdem {
     String turn = "";
     String river = "";
     public int pot;
-    
+    List<Integer> winners = new ArrayList<>();
+
     public Holdem(int playerNum_) {
         int initialStack = 1000;
         playerNum = playerNum_;
@@ -234,17 +239,44 @@ public class Holdem {
     }
     
     public String[] showDown() {
-        String[] showDownResultString = new String[Holdem.this.players.length];
+        String[] showDownResultString = new String[Holdem.this.players.length + 1]; // result for each player and an overall result
+        int[] showDownResultValue = new int[Holdem.this.players.length];
+
         for (int i = 0; i < Holdem.this.players.length; i++) {
             Holdem.Player player = Holdem.this.players[i];
             ShowDown showDown = new ShowDown();
             ShowDown.ShowDownResult showDownResult = showDown.getshowDownResult(player);
-            showDownResultString[i] = "bestHand of Player " + (i+1) + ":" + showDownResult.toString();
+            showDownResultString[i] = "bestHand of Player " + (i+1) + ": " + showDownResult.toString();
+            showDownResultValue[i] = showDownResult.getValue();
             System.out.println(showDownResultString[i]);
         }
+        int maxShowDownResultValue = 0;
+        for (int i = 0; i < Holdem.this.players.length; i++) {
+            if (showDownResultValue[i] > maxShowDownResultValue) {
+                maxShowDownResultValue = showDownResultValue[i];
+            }
+        }
+        
+        showDownResultString[showDownResultString.length-1] = "Player ";
+        for (int i = 0; i < Holdem.this.players.length; i++) {
+            if (showDownResultValue[i] == maxShowDownResultValue) {
+                String winnerString = "";
+                if (!winners.isEmpty()) {
+                    winnerString += ", ";
+                }
+                winnerString += Integer.toString(i+1);
+                showDownResultString[showDownResultString.length-1] += winnerString;
+                winners.add(i);
+            } 
+        }
+        showDownResultString[showDownResultString.length-1] += " has the best hand.";
+
         return showDownResultString;
     }
-    
+
+    public List<Integer> getWinners() {
+        return winners;
+    }
     class ShowDown {
         class ShowDownResult {
             BEST_HAND_TYPE bestHandType;
@@ -253,6 +285,7 @@ public class Holdem {
             int bestHandTypeInt;
             String[] candidateCards;
             String[] kickers = null;
+            int value;
             Holdem.Deck.Card[] bestHand = null;
             
             ShowDownResult(BEST_HAND_TYPE bestHandType_, String[] candidateCards_, CountResult countResult_) {
@@ -390,6 +423,37 @@ public class Holdem {
                     computeKickers();
                 }
                 return kickers;
+            }
+            
+            int getValue() {
+                int weight = 10000000; // ten to the power of seven
+                value = bestHandTypeInt*weight;
+                weight /= 100;
+                if (bestHandType == bestHandType.ROYAL_FLUSH) return value;
+                if (kickers == null) {
+                    computeKickers();
+                }
+                Holdem.Deck.Card c;
+                String cardString;
+                for (int i = 0; i < kickers.length; i++) {
+                    if (kickers[i].length() == 1) {
+                        cardString = kickers[i] + "S"; 
+                    } else if (kickers[i].length() == 2) {
+                        cardString = kickers[i];
+                    } else {
+                        break;
+                    }
+                    c = deck.new Card(kickers[i]);
+                    int rankValue = c.rankNum;
+                    if (rankValue == 0 || rankValue == 1) {
+                        rankValue += 13;
+                    }
+                    System.out.println(kickers[i] + "=>" + rankValue*weight);
+                    value += rankValue*weight;
+                    weight /= 10;
+                }
+                System.out.println("value = " + value);
+                return value;
             }
             
             void computeBestHand () {

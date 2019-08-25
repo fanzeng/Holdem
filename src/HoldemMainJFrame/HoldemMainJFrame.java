@@ -252,7 +252,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPlayer1Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         lblPlayer1Stack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lblPlayer1Stack.setText("Player1");
+        lblPlayer1Stack.setText("Player 1: 1000");
 
         javax.swing.GroupLayout pnlPlayer1Layout = new javax.swing.GroupLayout(pnlPlayer1);
         pnlPlayer1.setLayout(pnlPlayer1Layout);
@@ -330,7 +330,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         );
 
         lblPotValue.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lblPotValue.setText("jLabel3");
+        lblPotValue.setText("0");
 
         lblPot.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblPot.setText("Pot");
@@ -401,7 +401,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         });
 
         lblPlayer2Stack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lblPlayer2Stack.setText("Player2");
+        lblPlayer2Stack.setText("Player 2: 1000");
 
         btnPlayer2Fold.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         btnPlayer2Fold.setText("Fold");
@@ -435,32 +435,32 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                         .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlayer2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlPlayer2Layout.createSequentialGroup()
                         .addComponent(btnPlayer2Bet)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPlayer2Fold)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPlayer2Stack)
-                            .addComponent(btnPlayer2Show))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlayer2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlPlayer2Layout.createSequentialGroup()
+                                .addComponent(btnPlayer2Fold)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnPlayer2Show)))
+                        .addGap(0, 20, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlPlayer2Layout.setVerticalGroup(
             pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                        .addComponent(lblPlayer2Stack)
-                        .addGap(0, 0, 0)
-                        .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPlayer2Fold)
-                            .addComponent(btnPlayer2Show)
-                            .addComponent(btnPlayer2Bet)))
-                    .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblPlayer2Stack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnPlayer2Fold)
+                        .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPlayer2Show)
+                    .addComponent(btnPlayer2Bet, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlPlayer2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -599,7 +599,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int player1BetValue = jSliderPlayer1.getValue();
         holdem.players[0].incrStack(-player1BetValue);
-        lblPlayer1Stack.setText(Integer.toString(holdem.players[0].incrStack(0)));
+        lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
         holdem.pot += player1BetValue;
         lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer1BetMouseClicked
@@ -608,7 +608,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int player2BetValue = jSliderPlayer2.getValue();
         holdem.players[1].incrStack(-player2BetValue);
-        lblPlayer2Stack.setText(Integer.toString(holdem.players[1].incrStack(0)));
+        lblPlayer2Stack.setText("Player 2: " +Integer.toString(holdem.players[1].incrStack(0)));
         holdem.pot += player2BetValue;
         lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnPlayer2BetMouseClicked
@@ -631,8 +631,26 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     private void btnShowDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowDownMouseClicked
         String[] showDownResultString = holdem.showDown();
         String s = "<html>" + showDownResultString[0] + 
-                "<br>" + showDownResultString[1];
+                "<br>" + showDownResultString[1] + 
+                "<br>" + showDownResultString[2];
         lblMessage.setText(s);
+        List<Integer> winners = holdem.getWinners();
+        int numOfWinners = winners.size();
+        System.out.println("distributing the pot among " + numOfWinners + " winners.");
+        double prize = holdem.pot * 1.0 / numOfWinners;
+        holdem.pot = 0;
+        for (int i = 0; i < holdem.players.length; i++) {
+            for (int j = 0; j < winners.size(); j++) {
+                if (i == winners.get(j)) {
+                    System.out.println("Adding " + prize + " to Player " + j + "'s stack.");
+                    holdem.players[i].incrStack((int)prize);
+                    continue;
+                }
+            }
+        }
+        lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
+        lblPlayer2Stack.setText("Player 2: " + Integer.toString(holdem.players[1].incrStack(0)));
+        lblPotValue.setText(Integer.toString(holdem.pot));
     }//GEN-LAST:event_btnShowDownMouseClicked
 
     private void btnShowDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDownActionPerformed
