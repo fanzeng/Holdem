@@ -305,7 +305,7 @@ public class Holdem {
             }
             void computeKickers() {
                 Holdem.Deck deck = Holdem.this.new Deck();
-                Holdem.Deck.Card c = deck.new Card(countResult.ranks[0]);
+                Holdem.Deck.Card c;
                 int j;
                 switch(bestHandType) {
                     case ROYAL_FLUSH:
@@ -319,27 +319,11 @@ public class Holdem {
                         kickers = new String[2];
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
-                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
-                            if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh%13] > 0) {
-                                c = deck.new Card(nextHigh);
-                                kickers[1] = c.rank;
-                                break;
-                            }
-                        }
                         break;
                     case FULL_HOUSE:
-                        kickers = new String[2];
+                        kickers = new String[1];
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
-                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
-                            if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh%13] > 1) {
-                                c = deck.new Card(nextHigh);
-                                kickers[1] = c.rank;
-                                break;
-                            }
-                        }
                         break;
                     case FLUSH:
                         kickers = countResult.flushCards;
@@ -348,37 +332,34 @@ public class Holdem {
                         kickers = countResult.straightCards;
                         break;
                     case THREE_OF_A_KIND:
-                        kickers = new String[3];
+                        kickers = new String[1];
                         c = deck.new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
-                        j = 1;
-                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
-                            if (nextHigh == countResult.maxCountRank) continue;
-                            if (countResult.rankCount[nextHigh%13] > 0) {
-                                c = deck.new Card(nextHigh);
-                                kickers[j] = c.rank;
-                                j++;
-                                if (j > 2) break;
-                            }
-                        }
                         break;
                     case TWO_PAIR:
                         kickers = new String[3];
-                        int[] pairRanks = new int[3];
+                        int[] pairRanks = new int[2];
                         j = 0;
                         for (int pairRank = 14; pairRank >= 2; pairRank--) {
                             if (countResult.rankCount[pairRank%13] == 2) {
                                 pairRanks[j] = pairRank;
+                                System.out.println(j + " of two pair = " + pairRank);
+                                c = deck.new Card(pairRank);
+                                kickers[j] = c.rank;                                
                                 j++;
-                                if (j > 2) break;
+                                if (j == 2) break;
                             }
                         }
-                        if (j == 3) {
-                            Arrays.sort(pairRanks);
-//                            kickers[0] = pairRanks[2];
+                        
+                        for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
+                            if (nextHigh == pairRanks[0] || nextHigh == pairRanks[1]) continue;
+                            if (countResult.rankCount[nextHigh%13] > 0) {
+                                c = deck.new Card(nextHigh);
+                                kickers[j] = c.rank;
+                                break;
+                            }
                         }
-//                        kickers[0] = pairRanks[0];
-//                        kickers[1] = pairRanks[1];
+
                         break;
                     case PAIR:
                         kickers = new String[4];
@@ -553,11 +534,13 @@ public class Holdem {
             if (countResult.maxSuitCount >= 5) {
                 countResult.isFlush = true;
                 countResult.flushCards = new String[countResult.maxSuitCount];
-                for (int i = 0; i < countResult.maxSuitCount; i++) {
+                int flushCount = 0;
+                for (int i = 0; i < candidateCards.length; i++) {
                     String card = candidateCards[i];
                     c = deck.new Card(card);
                     if (c.suitNum == countResult.maxCountSuit) {
-                        countResult.flushCards[i] = card;
+                        countResult.flushCards[flushCount] = card;
+                        flushCount++;
                     }
                 }
             } else {
