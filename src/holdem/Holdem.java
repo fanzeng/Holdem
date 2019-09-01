@@ -1,6 +1,5 @@
 package holdem;
 
-import java.util.Random;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,118 +17,6 @@ public class Holdem {
         PAIR, 
         HIGH_CARD
     };
-    class Deck{
-        public Card[] cards;
-        class Card {
-            int value;
-            String rank;
-            int rankNum;
-            String suit;
-            int suitNum;
-            public Card(int i) {
-                value = i;
-                suitNum = value / 13;
-                switch (suitNum) {
-                    case 0:
-                        suit = "S";
-                        break;
-                    case 1:
-                        suit = "H";
-                        break;
-                    case 2:
-                        suit = "C";
-                        break;
-                    case 3:
-                        suit = "D";
-                        break;
-                    default:
-                        suit = "D";
-                }
-                rankNum = value % 13;
-                switch (rankNum) {
-                    case 10:
-                        rank = "T";
-                        break;
-                    case 11:
-                        rank = "J";
-                        break;
-                    case 12:
-                        rank = "Q";
-                        break;
-                    case 0:
-                        rank = "K";
-                        break;
-                    case 1:
-                        rank = "A";
-                        break;
-                    default:
-                        rank = Integer.toString(value % 13);
-                }
-            }
-            
-            public Card(String cardString) {
-                rank = cardString.substring(0,1);
-                switch (rank) {
-                    case "T":
-                        rankNum = 10;
-                        break;
-                    case "J":
-                        rankNum = 11;
-                        break;
-                    case "Q":
-                        rankNum = 12;
-                        break;
-                    case "K":
-                        rankNum = 0;
-                        break;
-                    case "A":
-                        rankNum = 1;
-                        break;
-                    default:
-                        rankNum = Integer.parseInt(rank);
-                }
-                suit = cardString.substring(1);
-                switch (suit) {
-                    case "S":
-                        suitNum = 0;
-                        break;
-                    case "H":
-                        suitNum = 1;
-                        break;
-                    case "C":
-                        suitNum = 2;
-                        break;
-                    case "D":
-                        suitNum = 3;
-                        break;
-                }
-                value = suitNum*13 + rankNum;
-            }
-            
-            public String toString() {
-                return rank + suit;
-            }
-        }
-        public Deck () {
-            cards = new Card[52];
-            for (int i = 0; i < 52; i++) {
-                cards[i] = new Card(i + 1);
-            }
-        }
-        public void shuffle() {
-            Random rand = new Random(System.currentTimeMillis());
-            for (int i = cards.length - 1; i > 0; i--) {
-                swap(cards, i, rand.nextInt(i + 1));
-            }
-            winners = new ArrayList<>();
-
-        }
-        private void swap(Card[] arr, int i, int j) {
-            Card tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
-        }
-    }
     
     public class Player {
         int stack;
@@ -148,7 +35,7 @@ public class Holdem {
     }
 
     private final Deck deck;
-    int posInDeck;
+    private int posInDeck;
     int playerNum;
     public Player[] players = null;
     String[] board = null;
@@ -171,6 +58,7 @@ public class Holdem {
             players[i] = player;
         }
         pot = 0;
+        winners = new ArrayList<>();
     }
     
     public void shuffle() {
@@ -286,7 +174,7 @@ public class Holdem {
             String[] candidateCards;
             String[] kickers = null;
             int value;
-            Holdem.Deck.Card[] bestHand = null;
+            Card[] bestHand = null;
             
             ShowDownResult(BEST_HAND_TYPE bestHandType_, String[] candidateCards_, CountResult countResult_) {
                 bestHandType = bestHandType_;
@@ -337,8 +225,7 @@ public class Holdem {
 
             }
             void computeKickers() {
-                Holdem.Deck deck = Holdem.this.new Deck();
-                Holdem.Deck.Card c;
+                Card c;
                 int j;
                 switch(bestHandType) {
                     case ROYAL_FLUSH:
@@ -350,12 +237,12 @@ public class Holdem {
                         break;
                     case FOUR_OF_A_KIND:
                         kickers = new String[2];
-                        c = deck.new Card(countResult.maxCountRank);
+                        c = new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         break;
                     case FULL_HOUSE:
                         kickers = new String[1];
-                        c = deck.new Card(countResult.maxCountRank);
+                        c = new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         break;
                     case FLUSH:
@@ -366,7 +253,7 @@ public class Holdem {
                         break;
                     case THREE_OF_A_KIND:
                         kickers = new String[1];
-                        c = deck.new Card(countResult.maxCountRank);
+                        c = new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         break;
                     case TWO_PAIR:
@@ -377,7 +264,7 @@ public class Holdem {
                             if (countResult.rankCount[pairRank%13] == 2) {
                                 pairRanks[j] = pairRank;
                                 System.out.println(j + " of two pair = " + pairRank);
-                                c = deck.new Card(pairRank);
+                                c = new Card(pairRank);
                                 kickers[j] = c.rank;                                
                                 j++;
                                 if (j == 2) break;
@@ -387,7 +274,7 @@ public class Holdem {
                         for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == pairRanks[0] || nextHigh == pairRanks[1]) continue;
                             if (countResult.rankCount[nextHigh%13] > 0) {
-                                c = deck.new Card(nextHigh);
+                                c = new Card(nextHigh);
                                 kickers[j] = c.rank;
                                 break;
                             }
@@ -396,13 +283,13 @@ public class Holdem {
                         break;
                     case PAIR:
                         kickers = new String[4];
-                        c = deck.new Card(countResult.maxCountRank);
+                        c = new Card(countResult.maxCountRank);
                         kickers[0] = c.rank;
                         j = 1;
                         for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                             if (nextHigh == countResult.maxCountRank) continue;
                             if (countResult.rankCount[nextHigh%13] > 0) {
-                                c = deck.new Card(nextHigh);
+                                c = new Card(nextHigh);
                                 kickers[j] = c.rank;
                                 j++;
                                 if (j > 3) break;
@@ -412,7 +299,7 @@ public class Holdem {
                     default:
                         kickers = new String[5];
                         for (int i = 0; i < 5; i++) {
-                            c = deck.new Card(countResult.ranks[i]);
+                            c = new Card(countResult.ranks[i]);
                             kickers[i] = c.rank;
                         }
                 }
@@ -433,7 +320,7 @@ public class Holdem {
                 if (kickers == null) {
                     computeKickers();
                 }
-                Holdem.Deck.Card c;
+                Card c;
                 String cardString;
                 for (int i = 0; i < kickers.length; i++) {
                     if (kickers[i].length() == 1) {
@@ -443,7 +330,7 @@ public class Holdem {
                     } else {
                         break;
                     }
-                    c = deck.new Card(kickers[i]);
+                    c = new Card(kickers[i]);
                     int rankValue = c.rankNum;
                     if (rankValue == 0 || rankValue == 1) {
                         rankValue += 13;
@@ -460,7 +347,7 @@ public class Holdem {
                 
             }
             
-            Holdem.Deck.Card[] getBestHand() {
+            Card[] getBestHand() {
                 if (bestHand == null) {
                     computeBestHand();
                 }
@@ -532,11 +419,11 @@ public class Holdem {
             CountResult countResult = new CountResult(candidateCards);
             int[] ranks = new int[7];
             Arrays.fill(ranks, -1);
-            Holdem.Deck deck = Holdem.this.new Deck();
+//            Holdem.Deck deck = Holdem.this.new Deck();
 
             for (int i  = 0; i < cards.length; i++) {
                 String card = cards[i];
-                Holdem.Deck.Card c = deck.new Card(card);
+                Card c = new Card(card);
                 int rank = c.rankNum;
                 if (rank == 0) rank = 13;
                 if (rank == 1) rank = 14;
@@ -564,7 +451,7 @@ public class Holdem {
             // check for straight
             int straightLength = 0;
             countResult.straightCards = new String[7];
-            Holdem.Deck.Card c = deck.new Card(countResult.ranks[0]);
+            Card c = new Card(countResult.ranks[0]);
             countResult.straightCards[0] = c.rank;
 
             for (int i = 1; i < countResult.ranks.length; i++) {
@@ -574,13 +461,13 @@ public class Holdem {
                         && countResult.ranks[i] == 14)) {
 
                     straightLength++;
-                    c = deck.new Card(countResult.ranks[i]);
+                    c = new Card(countResult.ranks[i]);
                     countResult.straightCards[straightLength] = c.rank;
 
                 } else {
                     straightLength = 0;
                     countResult.straightCards = new String[7];
-                    c = deck.new Card(countResult.ranks[i]);
+                    c = new Card(countResult.ranks[i]);
                     countResult.straightCards[0] = c.rank;
                 }
             }
@@ -601,7 +488,7 @@ public class Holdem {
                 int flushCount = 0;
                 for (int i = 0; i < candidateCards.length; i++) {
                     String card = candidateCards[i];
-                    c = deck.new Card(card);
+                    c = new Card(card);
                     if (c.suitNum == countResult.maxCountSuit) {
                         countResult.flushCards[flushCount] = card;
                         flushCount++;
