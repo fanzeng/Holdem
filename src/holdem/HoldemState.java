@@ -3,62 +3,46 @@ import java.util.Scanner;
 
 public class HoldemState {
     int cardStage;
-    int betStage;
+    int playerStage;  // Player0 always acts first
+    int[] playerBets; // array of total bet amount of each single player
     boolean roundCompleted;
-    int[] playerBet;
-    HoldemState(int cardStage_, int betStage_, int[] playerBet_, boolean roundCompleted_) {
+    HoldemState(int cardStage_, int betStage_, int[] playerBets_, boolean roundCompleted_) {
         cardStage = cardStage_;
-        betStage = betStage_;
-        playerBet = playerBet_;
+        playerStage = betStage_;
+        playerBets = playerBets_;
         roundCompleted = roundCompleted_;
     }
 
     public HoldemState next() {
-        int nextCardStage = cardStage;
         int nextBetStage;
-
-        System.out.println("Player 0 bets: " + playerBet[0] + ", Player 1 bets: " + playerBet[1]);
-        System.out.println("Enter player" + betStage + "'s next bet:");
+        System.out.println("cardStage: " + cardStage + ", betStage: " + playerStage);
+        System.out.println("Player 0's bet: " + playerBets[0] + ", Player 1's bet: " + playerBets[1]);
+        System.out.println("Enter player" + playerStage + "'s next bet:");
         Scanner sc = new Scanner(System.in);
-        playerBet[betStage] = sc.nextInt();
-        if (playerBet[betStage] < playerBet[1-betStage]) {
-            System.out.println("Player " + betStage + " folded.");
-            return new HoldemState(nextCardStage, -1, playerBet, false);
-        }
-        if (betStage == 1) roundCompleted = true;
-        if (playerBet[betStage] == playerBet[1-betStage] && roundCompleted) {
-            nextBetStage = -1;
-        } else {
-            nextBetStage = 1 - betStage;
-        }
-        System.out.println("nextBetStage = " + nextBetStage);
-        if (nextBetStage == -1) {
-            nextCardStage = cardStage+1;
-            roundCompleted = false;
-            if (nextCardStage == 4) {
+        playerBets[playerStage] = sc.nextInt();
+        if (playerStage == 1) roundCompleted = true;
+        if (playerBets[playerStage] < playerBets[1-playerStage]) {
+            System.out.println("Player " + playerStage + " folded.");
+            System.out.println("Game ended at cardStage " + cardStage);
+            return new HoldemState(0, 0, new int[2], false);
+        } else if (playerBets[playerStage] == playerBets[1 - playerStage] && roundCompleted) {
+            cardStage += 1;
+            if (cardStage > 3) {
+                System.out.println("Show down.");
                 return new HoldemState(0, 0, new int[2], false);
+            } else {
+                return new HoldemState(cardStage, 0, playerBets, false);
             }
-            nextBetStage = 0;
+        } else {
+            return new HoldemState(cardStage, 1 - playerStage, playerBets, roundCompleted); 
         }
-        System.out.println("nextCardStage = " + nextCardStage);
-
-        return new HoldemState(nextCardStage, nextBetStage, playerBet, roundCompleted);
     }
     
     public static void main(String[] args) {
         HoldemState hs = new HoldemState(0, 0, new int[2], false);
         while(true) {
-            System.out.println("cardStage = " + hs.cardStage + ", betStage = " + hs.betStage);
-            HoldemState nextHoldemState = hs.next();
-            if (nextHoldemState.betStage == -1) {
-                System.out.println("Game ended at cardStage " + nextHoldemState.cardStage);
-                hs = new HoldemState(0, 0, new int[2], false);
-            } else {
-                hs = nextHoldemState;
-            }
+            hs = hs.next();
             System.out.println();
-            System.out.println();
-
         }
     }
 }

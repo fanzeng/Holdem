@@ -271,7 +271,6 @@ class ShowDown {
         CountResult countResult = new CountResult(candidateCards);
         int[] ranks = new int[7];
         Arrays.fill(ranks, -1);
-//            Holdem.Deck deck = Holdem.this.new Deck();
 
         for (int i = 0; i < cards.length; i++) {
             String card = cards[i];

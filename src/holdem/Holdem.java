@@ -18,8 +18,6 @@ public class Holdem {
         HIGH_CARD
     };
     
-
-
     private final Deck deck;
     private int posInDeck;
     int playerNum;
