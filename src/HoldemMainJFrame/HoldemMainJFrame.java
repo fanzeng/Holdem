@@ -84,6 +84,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         btnPlayer2Fold = new javax.swing.JButton();
         jSliderPlayer2 = new javax.swing.JSlider();
         btnPlayer2Show = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -471,6 +472,19 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
+        btnNext.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        btnNext.setText("Next");
+        btnNext.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNextMouseClicked(evt);
+            }
+        });
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -479,8 +493,12 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addComponent(pnlPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(pnlPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(pnlGameControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNext))
+                .addComponent(pnlGameControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,9 +506,12 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
-                .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNext)
+                        .addGap(18, 18, 18)))
                 .addComponent(pnlGameControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -602,6 +623,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
         holdem.pot += player1BetValue;
         lblPotValue.setText(Integer.toString(holdem.pot));
+        int[] playerBets = holdem.holdemState.getPlayerBets();
+        playerBets[0] += player1BetValue;
+        holdem.holdemState.next(playerBets);
     }//GEN-LAST:event_btnPlayer1BetMouseClicked
 
     private void btnPlayer2BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2BetMouseClicked
@@ -611,6 +635,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPlayer2Stack.setText("Player 2: " +Integer.toString(holdem.players[1].incrStack(0)));
         holdem.pot += player2BetValue;
         lblPotValue.setText(Integer.toString(holdem.pot));
+        int[] playerBets = holdem.holdemState.getPlayerBets();
+        playerBets[1] += player2BetValue;
+        holdem.holdemState.next(playerBets);
     }//GEN-LAST:event_btnPlayer2BetMouseClicked
 
     private void btnShowCardImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowCardImageActionPerformed
@@ -665,6 +692,15 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPlayer2FoldMouseClicked
 
+    private void btnNextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseClicked
+        // TODO add your handling code here:
+//        holdem.holdemState.next();
+    }//GEN-LAST:event_btnNextMouseClicked
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNextActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -701,8 +737,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         });
     }
     
-    int playerNum = 2;
-    private Holdem holdem = new Holdem(playerNum);
+    int numOfPlayers = 2;
+    private Holdem holdem = new Holdem(numOfPlayers);
     String[] board = new String[5];
     String flop;
     String turn;
@@ -745,7 +781,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     }
 
     private void showPlayerImage() {
-        for (int i = 0; i < playerNum; i++) {
+        for (int i = 0; i < numOfPlayers; i++) {
             showPlayerImage(i);
         }
     }
@@ -771,7 +807,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     }
 
     private void hidePlayerImage() {
-        for (int i = 0; i < playerNum; i++) {
+        for (int i = 0; i < numOfPlayers; i++) {
             hidePlayerImage(i);
         }
     }
@@ -820,15 +856,15 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 throw new IOException("Cannot load card image. Maybe resource folder does not exist?");
             }
             image = ImageIO.read(imageFile);
+            int imageWidth = cardLabel.getWidth();
+            int imageHeight = cardLabel.getHeight();
+            Image cardImage = image.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+            ImageIcon cardImageIcon = new ImageIcon(cardImage);
+            cardLabel.setIcon(cardImageIcon);
         } catch (IOException ex) {
             lblMessage.setText(ex.toString());
             System.err.println(ex);
         }
-        int imageWidth = cardLabel.getWidth();
-        int imageHeight = cardLabel.getHeight();
-        Image cardImage = image.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
-        ImageIcon cardImageIcon = new ImageIcon(cardImage);
-        cardLabel.setIcon(cardImageIcon);
         return 0;
     }
 
@@ -839,7 +875,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             board[i] = null;
         }
         hideBoardImage();
-        for (int i = 0; i < playerNum; i++) {
+        for (int i = 0; i < numOfPlayers; i++) {
             holdem.dealCardForPlayer(i);
         }
         btnShowDown.disable();
@@ -848,6 +884,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDealFlop;
     private javax.swing.JButton btnDealRiver;
     private javax.swing.JButton btnDealTurn;
+    private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPlayer1Bet;
     private javax.swing.JButton btnPlayer1Fold;
     private javax.swing.JButton btnPlayer1Show;

@@ -28,7 +28,7 @@ public class Holdem {
     String river = "";
     public int pot;
     List<Integer> winners = new ArrayList<>();
-
+    public HoldemState holdemState = new HoldemState();
     public Holdem(int playerNum_) {
         int initialStack = 1000;
         playerNum = playerNum_;
