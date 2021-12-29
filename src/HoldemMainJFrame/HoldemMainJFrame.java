@@ -19,8 +19,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     public HoldemMainJFrame() {
         initComponents();
         try {
-            System.out.println("a");
-            
             URL holdenMainJFrameURL = HoldemMainJFrame.class.getResource("HoldemMainJFrame.class");
             if (holdenMainJFrameURL.getProtocol()=="jar") {
                 System.setProperty("user.dir", new File(HoldemMainJFrame.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent());
@@ -583,9 +581,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             hidePlayerImage();
         }
     }//GEN-LAST:event_btnPlayer2ShowMouseClicked
-
-    private void btnDealFlopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealFlopMouseClicked
-        // TODO add your handling code here:
+    private void dealFlop() {
         String[] flopArray = holdem.getFlop();
         flop = toString(flopArray, " ");
         System.arraycopy(flopArray, 0, board, 0, flopArray.length);
@@ -593,27 +589,37 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         if (cardImageShow) {
             showBoardImage();
         }
+    }
+    private void btnDealFlopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealFlopMouseClicked
+        // TODO add your handling code here:
+        dealFlop();
     }//GEN-LAST:event_btnDealFlopMouseClicked
 
-    private void btnDealTurnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealTurnMouseClicked
-        // TODO add your handling code here:
+    private void dealTurn() {
         turn = holdem.dealTurn();
         board[3] = turn;
         lblBoard.setText(flop + " " + turn);
         if (cardImageShow) {
             showBoardImage();
         }
+    }
+    private void btnDealTurnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealTurnMouseClicked
+        // TODO add your handling code here:
+        dealTurn();
     }//GEN-LAST:event_btnDealTurnMouseClicked
 
-    private void btnDealRiverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealRiverMouseClicked
-        // TODO add your handling code here:
+    private void dealRiver() {
         river = holdem.dealRiver();
         board[4] = river;
         lblBoard.setText(flop + " " + turn + " " + river);
         if (cardImageShow) {
             showBoardImage();
-        }
-        btnShowDown.enable();
+        }            
+    }
+    
+    private void btnDealRiverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealRiverMouseClicked
+        // TODO add your handling code here:
+        dealRiver();
     }//GEN-LAST:event_btnDealRiverMouseClicked
 
     private void btnPlayer1BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1BetMouseClicked
@@ -625,7 +631,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPotValue.setText(Integer.toString(holdem.pot));
         int[] playerBets = holdem.holdemState.getPlayerBets();
         playerBets[0] += player1BetValue;
-        holdem.holdemState.next(playerBets);
+        holdem.holdemState = holdem.holdemState.next(playerBets);
+        onStageChange();
     }//GEN-LAST:event_btnPlayer1BetMouseClicked
 
     private void btnPlayer2BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2BetMouseClicked
@@ -637,9 +644,30 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPotValue.setText(Integer.toString(holdem.pot));
         int[] playerBets = holdem.holdemState.getPlayerBets();
         playerBets[1] += player2BetValue;
-        holdem.holdemState.next(playerBets);
+        holdem.holdemState = holdem.holdemState.next(playerBets);
+        onStageChange();
     }//GEN-LAST:event_btnPlayer2BetMouseClicked
 
+    private void onStageChange() {
+        switch (holdem.holdemState.cardStage) {
+            case PRE_FLOP:
+                shuffle();
+                break;
+            case FLOP:
+                dealFlop();
+                break;
+            case TURN:
+                dealTurn();
+                break;
+            case RIVER:
+                dealRiver();
+                break;
+            case SHOW_DOWN:
+                showDown();
+                break;
+        }
+    }
+    
     private void btnShowCardImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowCardImageActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnShowCardImageActionPerformed
@@ -655,7 +683,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         cardImageShow = !cardImageShow;
     }//GEN-LAST:event_btnShowCardImageMouseClicked
 
-    private void btnShowDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowDownMouseClicked
+    private void showDown() {
         String[] showDownResultString = holdem.showDown();
         String s = "<html>" + showDownResultString[0] + 
                 "<br>" + showDownResultString[1] + 
@@ -678,6 +706,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
         lblPlayer2Stack.setText("Player 2: " + Integer.toString(holdem.players[1].incrStack(0)));
         lblPotValue.setText(Integer.toString(holdem.pot));
+    }
+    private void btnShowDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowDownMouseClicked
+        showDown();
     }//GEN-LAST:event_btnShowDownMouseClicked
 
     private void btnShowDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDownActionPerformed
