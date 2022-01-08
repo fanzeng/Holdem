@@ -205,14 +205,24 @@ class ShowDown {
         }
 
         public String toString() {
-            String s = bestHandTypeStr + " with kickers: ";
+            return toString(0);
+        }
+        
+        public String toString(int indentationLevel) {
+            String indent = new String();
+            for (int i = 0; i < indentationLevel; i++) {
+                indent += "  ";
+            }
+            String s = indent + bestHandTypeStr + " with kickers: ";
             if (kickers == null) {
                 computeKickers();
             }
-            for (String k : kickers) {
-                s += k + ", ";
+            for (int i = 0; i < kickers.length; i++) {
+                s += kickers[i];
+                if (i < kickers.length - 1) {
+                    s += ", ";
+                }
             }
-
             return s;
         }
     }
@@ -235,30 +245,43 @@ class ShowDown {
         String[] flushCards = null; // This will contain all cards of the 
         // flushed suit, if there is a flushed suit.
         String[] straightCards = null; // This will contain the longest 
-        // straight, if there is a flushed suit.
+        // straight, if there is a straight.
 
         CountResult(String[] candidateCards_) {
             candidateCards = candidateCards_;
         }
 
         public String toString() {
-            String s = "isStraight = " + isStraight + "\n";
-            s += "isFlush = " + isFlush + "\n";
+            return toString(0);
+        }
+        public String toString(int indentationLevel) {
+            String indent = new String();
+            for (int i = 0; i < indentationLevel; i++) {
+                indent += "  ";
+            }
+            String s = indent + "Candidate cards: ";
+            for (int i = 0; i < candidateCards.length; i++) {
+                s += candidateCards[i] + " ";
+            }
+            s += "\n" + indent + "isStraight = " + isStraight + "\n";
+            s += indent + "isFlush = " + isFlush + "\n";
 
             for (int i = 0; i < 4; i++) {
-                s += "Suit " + i + " = " + suitCount[i] + "\n";
+                s += indent + "Suit " + i + " = " + suitCount[i] + "\n";
             }
             for (int i = 0; i < 13; i++) {
-                s += "Rank " + i + " = " + rankCount[i] + "\n";
+                s +=  indent + "Rank " + i + " = " + rankCount[i] + "\n";
             }
-
-            s += "MaxRankCount = " + maxRankCount + "\n";
-            s += "MaxSuitCount = " + maxSuitCount + "\n";
-            s += "ranks = \n";
-
-            for (int rank : ranks) {
-                System.out.println(rank + ", ");
+            s += indent + "MaxRankCount = " + maxRankCount + "\n";
+            s += indent + "MaxSuitCount = " + maxSuitCount + "\n";
+            s += indent + "ranks = \n" + indent;
+            for (int i = 0; i < ranks.length; i++) {
+                s += ranks[i];
+                if (i < ranks.length-1) {
+                    s += ", ";
+                }
             }
+            s += "\n";
             return s;
         }
     }
@@ -271,15 +294,14 @@ class ShowDown {
         CountResult countResult = new CountResult(candidateCards);
         int[] ranks = new int[7];
         Arrays.fill(ranks, -1);
-
         for (int i = 0; i < cards.length; i++) {
             String card = cards[i];
             Card c = new Card(card);
             int rank = c.rankNum;
-            if (rank == 0) {
+            if (rank == 0) { // K
                 rank = 13;
             }
-            if (rank == 1) {
+            if (rank == 1) { // A
                 rank = 14;
             }
             countResult.suitCount[c.suitNum]++;
@@ -306,28 +328,28 @@ class ShowDown {
         // check for straight
         int straightLength = 0;
         countResult.straightCards = new String[7];
-        Card c = new Card(countResult.ranks[0]);
-        countResult.straightCards[0] = c.rank;
+        for (int j = 0; j < 3; j++) {
+            Card c = new Card(countResult.ranks[j]);
+            countResult.straightCards[0] = c.rank;
+            for (int i = 1; i < countResult.ranks.length; i++) {
+                if (countResult.ranks[i - 1] - countResult.ranks[i] == 1
+                        || (straightLength == 4 && countResult.ranks[i - 1] == 2
+                        && countResult.ranks[i] == 14)) {
 
-        for (int i = 1; i < countResult.ranks.length; i++) {
+                    straightLength++;
+                    c = new Card(countResult.ranks[i]);
+                    countResult.straightCards[straightLength] = c.rank;
 
-            if (countResult.ranks[i - 1] - countResult.ranks[i] == 1
-                    || (straightLength == 4 && countResult.ranks[i - 1] == 2
-                    && countResult.ranks[i] == 14)) {
-
-                straightLength++;
-                c = new Card(countResult.ranks[i]);
-                countResult.straightCards[straightLength] = c.rank;
-
-            } else {
-                straightLength = 0;
-                countResult.straightCards = new String[7];
-                c = new Card(countResult.ranks[i]);
-                countResult.straightCards[0] = c.rank;
+                } else {
+                    straightLength = 0;
+                    countResult.straightCards = new String[7];
+                    c = new Card(countResult.ranks[i]);
+                    countResult.straightCards[0] = c.rank;
+                    break;
+                }
             }
+            countResult.isStraight = (straightLength >= 5);
         }
-        countResult.isStraight = (straightLength >= 5);
-
         // Check for Flush
         for (int i = 0; i < 4; i++) {
             if (countResult.suitCount[i] > countResult.maxSuitCount) {
@@ -342,7 +364,7 @@ class ShowDown {
             int flushCount = 0;
             for (int i = 0; i < candidateCards.length; i++) {
                 String card = candidateCards[i];
-                c = new Card(card);
+                Card c = new Card(card);
                 if (c.suitNum == countResult.maxCountSuit) {
                     countResult.flushCards[flushCount] = card;
                     flushCount++;
@@ -359,7 +381,7 @@ class ShowDown {
             }
         }
 
-        System.out.println("countResult = \n" + countResult);
+        System.out.println("countResult: \n" + countResult.toString(1));
         return countResult;
     }
 
@@ -447,7 +469,7 @@ class ShowDown {
         }
 
         ShowDownResult res = new ShowDownResult(bestHandType, candidateCards, countResult);
-        System.out.println("showDownResult = " + res);
+        System.out.println("showDownResult: " + res);
 
         return res;
     }

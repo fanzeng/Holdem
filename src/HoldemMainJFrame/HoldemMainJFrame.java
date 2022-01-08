@@ -2,6 +2,7 @@ package HoldemMainJFrame;
 
 import java.util.*;
 import holdem.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
 import javax.imageio.ImageIO;
@@ -11,8 +12,13 @@ import java.net.URL;
 import java.net.URISyntaxException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 public class HoldemMainJFrame extends javax.swing.JFrame {
 
@@ -32,6 +38,12 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             System.out.println("Please try running it in a more regular directory.");
         }
         lblMessage.setText("Current directory: " + System.getProperty("user.dir"));
+        arrLblPlayerCard[0] = lblPlayer1Card;
+        arrLblPlayerCard[1] = lblPlayer2Card;
+        arrPnlPlayer[0] = pnlPlayer1;
+        arrPnlPlayer[1] = pnlPlayer2;
+        arrLblPlayerStack[0] = lblPlayer1Stack;
+        arrLblPlayerStack[1] = lblPlayer2Stack;
         shuffle();
     }
 
@@ -43,25 +55,12 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         pnlGameControl = new javax.swing.JPanel();
         btnShuffle = new javax.swing.JButton();
-        btnShowDown = new javax.swing.JToggleButton();
         btnShowCardImage = new javax.swing.JToggleButton();
         lblMessage = new javax.swing.JLabel();
-        btnDealFlop = new javax.swing.JButton();
-        btnDealTurn = new javax.swing.JButton();
-        btnDealRiver = new javax.swing.JButton();
-        pnlPlayer1 = new javax.swing.JPanel();
-        btnPlayer1Bet = new javax.swing.JButton();
-        btnPlayer1Fold = new javax.swing.JButton();
-        pnlPlayer1Img = new javax.swing.JPanel();
-        lblPlayer1Img0 = new javax.swing.JLabel();
-        lblPlayer1Img1 = new javax.swing.JLabel();
-        btnPlayer1Show = new javax.swing.JButton();
-        lblPlayer1Card = new javax.swing.JLabel();
-        lblPlayer1Stack = new javax.swing.JLabel();
-        jSliderPlayer1 = new javax.swing.JSlider();
         pnlBoard = new javax.swing.JPanel();
         pnlBoardImg = new javax.swing.JPanel();
         lblBoardImg0 = new javax.swing.JLabel();
@@ -69,25 +68,50 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblBoardImg2 = new javax.swing.JLabel();
         lblBoardImg3 = new javax.swing.JLabel();
         lblBoardImg4 = new javax.swing.JLabel();
-        lblPotValue = new javax.swing.JLabel();
-        lblPot = new javax.swing.JLabel();
         lblBoard = new javax.swing.JLabel();
+        jPanelPot = new javax.swing.JPanel();
+        lblPot = new javax.swing.JLabel();
+        lblPotValue = new javax.swing.JLabel();
+        jPanelPlayerConsole = new javax.swing.JPanel();
+        btnPlayerBet = new javax.swing.JButton();
+        btnPlayerFold = new javax.swing.JButton();
+        jSliderPlayer = new javax.swing.JSlider();
+        btnPlayerShow = new javax.swing.JButton();
+        jPanelPlayers = new javax.swing.JPanel();
+        pnlPlayer1 = new javax.swing.JPanel();
+        pnlPlayer1Img = new javax.swing.JPanel();
+        lblPlayer1Img0 = new javax.swing.JLabel();
+        lblPlayer1Img1 = new javax.swing.JLabel();
+        lblPlayer1Card = new javax.swing.JLabel();
+        lblPlayer1Stack = new javax.swing.JLabel();
         pnlPlayer2 = new javax.swing.JPanel();
         pnlPlayer2Img = new javax.swing.JPanel();
         lblPlayer2Img0 = new javax.swing.JLabel();
         lblPlayer2Img1 = new javax.swing.JLabel();
         lblPlayer2Card = new javax.swing.JLabel();
-        btnPlayer2Bet = new javax.swing.JButton();
         lblPlayer2Stack = new javax.swing.JLabel();
-        btnPlayer2Fold = new javax.swing.JButton();
-        jSliderPlayer2 = new javax.swing.JSlider();
-        btnPlayer2Show = new javax.swing.JButton();
-        btnNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(null);
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {200};
+        layout.rowHeights = new int[] {100};
+        getContentPane().setLayout(layout);
+
+        pnlGameControl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pnlGameControl.setMaximumSize(null);
+        pnlGameControl.setMinimumSize(null);
+        pnlGameControl.setName(""); // NOI18N
+        pnlGameControl.setPreferredSize(null);
+        pnlGameControl.setLayout(new java.awt.GridBagLayout());
 
         btnShuffle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnShuffle.setText("Shuffle");
+        btnShuffle.setText("New round");
+        btnShuffle.setMaximumSize(null);
+        btnShuffle.setMinimumSize(null);
+        btnShuffle.setPreferredSize(null);
         btnShuffle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnShuffleMouseClicked(evt);
@@ -98,22 +122,18 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 btnShuffleActionPerformed(evt);
             }
         });
-
-        btnShowDown.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnShowDown.setText("Show Down");
-        btnShowDown.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnShowDownMouseClicked(evt);
-            }
-        });
-        btnShowDown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnShowDownActionPerformed(evt);
-            }
-        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlGameControl.add(btnShuffle, gridBagConstraints);
 
         btnShowCardImage.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         btnShowCardImage.setText("Show Image");
+        btnShowCardImage.setMaximumSize(null);
+        btnShowCardImage.setMinimumSize(null);
+        btnShowCardImage.setPreferredSize(null);
         btnShowCardImage.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnShowCardImageMouseClicked(evt);
@@ -124,418 +144,350 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 btnShowCardImageActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlGameControl.add(btnShowCardImage, gridBagConstraints);
 
         lblMessage.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblMessage.setText("Message:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 753;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlGameControl.add(lblMessage, gridBagConstraints);
 
-        btnDealFlop.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnDealFlop.setText("Deal Flop");
-        btnDealFlop.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDealFlopMouseClicked(evt);
-            }
-        });
-        btnDealFlop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDealFlopActionPerformed(evt);
-            }
-        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        getContentPane().add(pnlGameControl, gridBagConstraints);
 
-        btnDealTurn.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnDealTurn.setText("Deal Turn");
-        btnDealTurn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDealTurnMouseClicked(evt);
-            }
-        });
-        btnDealTurn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDealTurnActionPerformed(evt);
-            }
-        });
+        pnlBoard.setLayout(new java.awt.GridBagLayout());
 
-        btnDealRiver.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnDealRiver.setText("Deal River");
-        btnDealRiver.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDealRiverMouseClicked(evt);
-            }
-        });
-        btnDealRiver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDealRiverActionPerformed(evt);
-            }
-        });
+        pnlBoardImg.setBorder(new javax.swing.border.MatteBorder(null));
+        pnlBoardImg.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout pnlGameControlLayout = new javax.swing.GroupLayout(pnlGameControl);
-        pnlGameControl.setLayout(pnlGameControlLayout);
-        pnlGameControlLayout.setHorizontalGroup(
-            pnlGameControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGameControlLayout.createSequentialGroup()
-                .addComponent(btnShuffle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDealFlop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDealTurn)
-                .addGap(1, 1, 1)
-                .addComponent(btnDealRiver)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnShowDown)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnShowCardImage))
-            .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        pnlGameControlLayout.setVerticalGroup(
-            pnlGameControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGameControlLayout.createSequentialGroup()
-                .addGroup(pnlGameControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnShuffle)
-                    .addComponent(btnShowDown)
-                    .addComponent(btnShowCardImage)
-                    .addComponent(btnDealFlop)
-                    .addComponent(btnDealTurn)
-                    .addComponent(btnDealRiver))
-                .addGap(0, 0, 0)
-                .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
+        lblBoardImg0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblBoardImg0.setMaximumSize(null);
+        lblBoardImg0.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblBoardImg0.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoardImg.add(lblBoardImg0, gridBagConstraints);
 
-        btnPlayer1Bet.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer1Bet.setText("Bet");
-        btnPlayer1Bet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer1BetMouseClicked(evt);
-            }
-        });
+        lblBoardImg1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblBoardImg1.setMaximumSize(null);
+        lblBoardImg1.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblBoardImg1.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoardImg.add(lblBoardImg1, gridBagConstraints);
 
-        btnPlayer1Fold.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer1Fold.setText("Fold");
-        btnPlayer1Fold.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer1FoldMouseClicked(evt);
-            }
-        });
+        lblBoardImg2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblBoardImg2.setMaximumSize(null);
+        lblBoardImg2.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblBoardImg2.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoardImg.add(lblBoardImg2, gridBagConstraints);
 
-        javax.swing.GroupLayout pnlPlayer1ImgLayout = new javax.swing.GroupLayout(pnlPlayer1Img);
-        pnlPlayer1Img.setLayout(pnlPlayer1ImgLayout);
-        pnlPlayer1ImgLayout.setHorizontalGroup(
-            pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer1ImgLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblPlayer1Img0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblPlayer1Img1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        pnlPlayer1ImgLayout.setVerticalGroup(
-            pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer1ImgLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(pnlPlayer1ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPlayer1Img0, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPlayer1Img1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        lblBoardImg3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblBoardImg3.setMaximumSize(null);
+        lblBoardImg3.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblBoardImg3.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoardImg.add(lblBoardImg3, gridBagConstraints);
 
-        btnPlayer1Show.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer1Show.setText("Show");
-        btnPlayer1Show.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer1ShowMouseClicked(evt);
-            }
-        });
-        btnPlayer1Show.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPlayer1ShowActionPerformed(evt);
-            }
-        });
+        lblBoardImg4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblBoardImg4.setMaximumSize(null);
+        lblBoardImg4.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblBoardImg4.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoardImg.add(lblBoardImg4, gridBagConstraints);
 
-        lblPlayer1Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlBoard.add(pnlBoardImg, gridBagConstraints);
 
-        lblPlayer1Stack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lblPlayer1Stack.setText("Player 1: 1000");
-
-        javax.swing.GroupLayout pnlPlayer1Layout = new javax.swing.GroupLayout(pnlPlayer1);
-        pnlPlayer1.setLayout(pnlPlayer1Layout);
-        pnlPlayer1Layout.setHorizontalGroup(
-            pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPlayer1Stack)
-                            .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                                .addComponent(btnPlayer1Show)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPlayer1Bet)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnPlayer1Fold)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addComponent(jSliderPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(pnlPlayer1Img, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        pnlPlayer1Layout.setVerticalGroup(
-            pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addComponent(lblPlayer1Stack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnPlayer1Show)
-                            .addComponent(btnPlayer1Bet)
-                            .addComponent(btnPlayer1Fold)))
-                    .addComponent(jSliderPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlPlayer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addComponent(lblPlayer1Card, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 62, Short.MAX_VALUE))
-                    .addGroup(pnlPlayer1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(pnlPlayer1Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        );
-
-        javax.swing.GroupLayout pnlBoardImgLayout = new javax.swing.GroupLayout(pnlBoardImg);
-        pnlBoardImg.setLayout(pnlBoardImgLayout);
-        pnlBoardImgLayout.setHorizontalGroup(
-            pnlBoardImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBoardImgLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(lblBoardImg0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(lblBoardImg1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(lblBoardImg3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(lblBoardImg4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(lblBoardImg2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
-        pnlBoardImgLayout.setVerticalGroup(
-            pnlBoardImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblBoardImg0, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-            .addComponent(lblBoardImg1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblBoardImg3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblBoardImg4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblBoardImg2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        lblPotValue.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lblPotValue.setText("0");
+        lblBoard.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblBoard.setMaximumSize(new java.awt.Dimension(10000, 10000));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 0, 12);
+        pnlBoard.add(lblBoard, gridBagConstraints);
 
         lblPot.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblPot.setText("Pot");
 
-        lblBoard.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblPotValue.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lblPotValue.setText("0");
 
-        javax.swing.GroupLayout pnlBoardLayout = new javax.swing.GroupLayout(pnlBoard);
-        pnlBoard.setLayout(pnlBoardLayout);
-        pnlBoardLayout.setHorizontalGroup(
-            pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBoardLayout.createSequentialGroup()
-                .addComponent(lblPot)
-                .addGap(87, 87, 87)
-                .addComponent(lblPotValue)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlBoardLayout.createSequentialGroup()
-                .addGroup(pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlBoardImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        pnlBoardLayout.setVerticalGroup(
-            pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBoardLayout.createSequentialGroup()
-                .addComponent(lblBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlBoardImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        javax.swing.GroupLayout jPanelPotLayout = new javax.swing.GroupLayout(jPanelPot);
+        jPanelPot.setLayout(jPanelPotLayout);
+        jPanelPotLayout.setHorizontalGroup(
+            jPanelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 402, Short.MAX_VALUE)
+            .addGroup(jPanelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelPotLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(lblPot)
-                    .addComponent(lblPotValue))
-                .addGap(0, 0, 0))
+                    .addGap(87, 87, 87)
+                    .addComponent(lblPotValue)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanelPotLayout.setVerticalGroup(
+            jPanelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelPotLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanelPotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblPot)
+                        .addComponent(lblPotValue))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        javax.swing.GroupLayout pnlPlayer2ImgLayout = new javax.swing.GroupLayout(pnlPlayer2Img);
-        pnlPlayer2Img.setLayout(pnlPlayer2ImgLayout);
-        pnlPlayer2ImgLayout.setHorizontalGroup(
-            pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-            .addGroup(pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlPlayer2ImgLayout.createSequentialGroup()
-                    .addGap(21, 21, 21)
-                    .addComponent(lblPlayer2Img0, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(lblPlayer2Img1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(21, Short.MAX_VALUE)))
-        );
-        pnlPlayer2ImgLayout.setVerticalGroup(
-            pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 115, Short.MAX_VALUE)
-            .addGroup(pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlPlayer2ImgLayout.createSequentialGroup()
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        pnlBoard.add(jPanelPot, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        getContentPane().add(pnlBoard, gridBagConstraints);
+
+        jPanelPlayerConsole.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        btnPlayerBet.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        btnPlayerBet.setText("Bet");
+        btnPlayerBet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPlayerBetMouseClicked(evt);
+            }
+        });
+        btnPlayerBet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayerBetActionPerformed(evt);
+            }
+        });
+
+        btnPlayerFold.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        btnPlayerFold.setText("Fold");
+        btnPlayerFold.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPlayerFoldMouseClicked(evt);
+            }
+        });
+
+        btnPlayerShow.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
+        btnPlayerShow.setText("Show");
+        btnPlayerShow.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPlayerShowMouseClicked(evt);
+            }
+        });
+        btnPlayerShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayerShowActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelPlayerConsoleLayout = new javax.swing.GroupLayout(jPanelPlayerConsole);
+        jPanelPlayerConsole.setLayout(jPanelPlayerConsoleLayout);
+        jPanelPlayerConsoleLayout.setHorizontalGroup(
+            jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 832, Short.MAX_VALUE)
+            .addGroup(jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelPlayerConsoleLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(pnlPlayer2ImgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lblPlayer2Img0, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblPlayer2Img1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSliderPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(btnPlayerBet)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(btnPlayerFold)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(btnPlayerShow)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanelPlayerConsoleLayout.setVerticalGroup(
+            jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelPlayerConsoleLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelPlayerConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnPlayerFold)
+                                .addComponent(btnPlayerShow))
+                            .addComponent(jSliderPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnPlayerBet, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        lblPlayer2Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(jPanelPlayerConsole, gridBagConstraints);
 
-        btnPlayer2Bet.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer2Bet.setText("Bet");
-        btnPlayer2Bet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer2BetMouseClicked(evt);
-            }
-        });
+        jPanelPlayers.setLayout(new java.awt.GridBagLayout());
+
+        pnlPlayer1.setBorder(javax.swing.BorderFactory.createTitledBorder("Player 1"));
+        pnlPlayer1.setMinimumSize(null);
+        pnlPlayer1.setLayout(new java.awt.GridBagLayout());
+
+        pnlPlayer1Img.setLayout(new java.awt.GridBagLayout());
+
+        lblPlayer1Img0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPlayer1Img0.setMaximumSize(null);
+        lblPlayer1Img0.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblPlayer1Img0.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer1Img.add(lblPlayer1Img0, gridBagConstraints);
+
+        lblPlayer1Img1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPlayer1Img1.setMaximumSize(null);
+        lblPlayer1Img1.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblPlayer1Img1.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer1Img.add(lblPlayer1Img1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer1.add(pnlPlayer1Img, gridBagConstraints);
+
+        lblPlayer1Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblPlayer1Card.setMaximumSize(null);
+        lblPlayer1Card.setMinimumSize(null);
+        lblPlayer1Card.setPreferredSize(new java.awt.Dimension(129, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer1.add(lblPlayer1Card, gridBagConstraints);
+
+        lblPlayer1Stack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lblPlayer1Stack.setText("Player 1: 1000");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer1.add(lblPlayer1Stack, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanelPlayers.add(pnlPlayer1, gridBagConstraints);
+
+        pnlPlayer2.setBorder(javax.swing.BorderFactory.createTitledBorder("Player 2"));
+        pnlPlayer2.setMinimumSize(null);
+        pnlPlayer2.setLayout(new java.awt.GridBagLayout());
+
+        pnlPlayer2Img.setMinimumSize(null);
+        pnlPlayer2Img.setPreferredSize(null);
+        pnlPlayer2Img.setLayout(new java.awt.GridBagLayout());
+
+        lblPlayer2Img0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPlayer2Img0.setMaximumSize(null);
+        lblPlayer2Img0.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblPlayer2Img0.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer2Img.add(lblPlayer2Img0, gridBagConstraints);
+
+        lblPlayer2Img1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPlayer2Img1.setMaximumSize(null);
+        lblPlayer2Img1.setMinimumSize(new java.awt.Dimension(80, 120));
+        lblPlayer2Img1.setPreferredSize(new java.awt.Dimension(80, 120));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer2Img.add(lblPlayer2Img1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer2.add(pnlPlayer2Img, gridBagConstraints);
+
+        lblPlayer2Card.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblPlayer2Card.setMaximumSize(null);
+        lblPlayer2Card.setMinimumSize(null);
+        lblPlayer2Card.setPreferredSize(new java.awt.Dimension(129, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer2.add(lblPlayer2Card, gridBagConstraints);
 
         lblPlayer2Stack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lblPlayer2Stack.setText("Player 2: 1000");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        pnlPlayer2.add(lblPlayer2Stack, gridBagConstraints);
 
-        btnPlayer2Fold.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer2Fold.setText("Fold");
-        btnPlayer2Fold.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer2FoldMouseClicked(evt);
-            }
-        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanelPlayers.add(pnlPlayer2, gridBagConstraints);
 
-        btnPlayer2Show.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnPlayer2Show.setText("Show");
-        btnPlayer2Show.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPlayer2ShowMouseClicked(evt);
-            }
-        });
-        btnPlayer2Show.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPlayer2ShowActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlPlayer2Layout = new javax.swing.GroupLayout(pnlPlayer2);
-        pnlPlayer2.setLayout(pnlPlayer2Layout);
-        pnlPlayer2Layout.setHorizontalGroup(
-            pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlPlayer2Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                        .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlayer2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                        .addComponent(btnPlayer2Bet)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPlayer2Stack)
-                            .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                                .addComponent(btnPlayer2Fold)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnPlayer2Show)))
-                        .addGap(0, 20, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        pnlPlayer2Layout.setVerticalGroup(
-            pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                .addComponent(lblPlayer2Stack)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnPlayer2Fold)
-                        .addComponent(jSliderPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnPlayer2Show)
-                    .addComponent(btnPlayer2Bet, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(pnlPlayer2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPlayer2Card, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlPlayer2Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(pnlPlayer2Img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0))
-        );
-
-        btnNext.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        btnNext.setText("Next");
-        btnNext.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnNextMouseClicked(evt);
-            }
-        });
-        btnNext.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNextActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnNext))
-                .addComponent(pnlGameControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlPlayer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlPlayer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNext)
-                        .addGap(18, 18, 18)))
-                .addComponent(pnlGameControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(jPanelPlayers, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnPlayer1ShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayer1ShowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPlayer1ShowActionPerformed
-
-    private void btnDealRiverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDealRiverActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDealRiverActionPerformed
-
-    private void btnPlayer2ShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayer2ShowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPlayer2ShowActionPerformed
-
-    private void btnDealFlopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDealFlopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDealFlopActionPerformed
-
-    private void btnDealTurnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDealTurnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDealTurnActionPerformed
 
     private void btnShuffleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShuffleActionPerformed
         // TODO add your handling code here:
@@ -545,42 +497,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         shuffle();
     }//GEN-LAST:event_btnShuffleMouseClicked
-
-    private void btnPlayer1ShowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1ShowMouseClicked
-        // TODO add your handling code here:
-        if (player1Show == false) {
-            lblPlayer1Card.setText(toString(holdem.players[0].getPrivateCard(), " "));
-            btnPlayer1Show.setText("Hide");
-            if (cardImageShow) {
-                showPlayerImage(0);
-            }
-            hidePlayerImage(1);
-            player1Show = true;
-        } else {
-            lblPlayer1Card.setText("");
-            btnPlayer1Show.setText("Show");
-            player1Show = false;
-            hidePlayerImage();
-        }
-    }//GEN-LAST:event_btnPlayer1ShowMouseClicked
-
-    private void btnPlayer2ShowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2ShowMouseClicked
-        // TODO add your handling code here:
-        if (player2Show == false) {
-            lblPlayer2Card.setText(toString(holdem.players[1].getPrivateCard(), " "));
-            btnPlayer2Show.setText("Hide");
-            if (cardImageShow) {
-                showPlayerImage(1);                
-            }
-            hidePlayerImage(0);
-            player2Show = true;
-        } else {
-            lblPlayer2Card.setText("");
-            btnPlayer2Show.setText("Show");
-            player2Show = false;
-            hidePlayerImage();
-        }
-    }//GEN-LAST:event_btnPlayer2ShowMouseClicked
     private void dealFlop() {
         String[] flopArray = holdem.getFlop();
         flop = toString(flopArray, " ");
@@ -590,11 +506,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             showBoardImage();
         }
     }
-    private void btnDealFlopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealFlopMouseClicked
-        // TODO add your handling code here:
-        dealFlop();
-    }//GEN-LAST:event_btnDealFlopMouseClicked
-
     private void dealTurn() {
         turn = holdem.dealTurn();
         board[3] = turn;
@@ -603,11 +514,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             showBoardImage();
         }
     }
-    private void btnDealTurnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealTurnMouseClicked
-        // TODO add your handling code here:
-        dealTurn();
-    }//GEN-LAST:event_btnDealTurnMouseClicked
-
     private void dealRiver() {
         river = holdem.dealRiver();
         board[4] = river;
@@ -617,41 +523,9 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         }            
     }
     
-    private void btnDealRiverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDealRiverMouseClicked
-        // TODO add your handling code here:
-        dealRiver();
-    }//GEN-LAST:event_btnDealRiverMouseClicked
-
-    private void btnPlayer1BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1BetMouseClicked
-        // TODO add your handling code here:
-        int player1BetValue = jSliderPlayer1.getValue();
-        holdem.players[0].incrStack(-player1BetValue);
-        lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
-        holdem.pot += player1BetValue;
-        lblPotValue.setText(Integer.toString(holdem.pot));
-        int[] playerBets = holdem.holdemState.getPlayerBets();
-        playerBets[0] += player1BetValue;
-        holdem.holdemState = holdem.holdemState.next(playerBets);
-        onStageChange();
-    }//GEN-LAST:event_btnPlayer1BetMouseClicked
-
-    private void btnPlayer2BetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2BetMouseClicked
-        // TODO add your handling code here:
-        int player2BetValue = jSliderPlayer2.getValue();
-        holdem.players[1].incrStack(-player2BetValue);
-        lblPlayer2Stack.setText("Player 2: " +Integer.toString(holdem.players[1].incrStack(0)));
-        holdem.pot += player2BetValue;
-        lblPotValue.setText(Integer.toString(holdem.pot));
-        int[] playerBets = holdem.holdemState.getPlayerBets();
-        playerBets[1] += player2BetValue;
-        holdem.holdemState = holdem.holdemState.next(playerBets);
-        onStageChange();
-    }//GEN-LAST:event_btnPlayer2BetMouseClicked
-
     private void onStageChange() {
         switch (holdem.holdemState.cardStage) {
             case PRE_FLOP:
-                shuffle();
                 break;
             case FLOP:
                 dealFlop();
@@ -666,6 +540,17 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 showDown();
                 break;
         }
+        int playerId = holdem.holdemState.playerStage;
+        TitledBorder border;
+        border = javax.swing.BorderFactory.createTitledBorder("Player " + (playerId + 1));
+        border.setBorder(new EtchedBorder(Color.GREEN, Color.GRAY));
+        arrPnlPlayer[playerId].setBorder(border);
+
+        border = javax.swing.BorderFactory.createTitledBorder("Player " + (1 - playerId + 1));
+        border.setBorder(new EtchedBorder(Color.BLACK, Color.GRAY));
+        arrPnlPlayer[1 - playerId].setBorder(border);
+        
+        hidePlayerImage();
     }
     
     private void btnShowCardImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowCardImageActionPerformed
@@ -697,7 +582,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         for (int i = 0; i < holdem.players.length; i++) {
             for (int j = 0; j < winners.size(); j++) {
                 if (i == winners.get(j)) {
-                    System.out.println("Adding " + prize + " to Player " + j + "'s stack.");
+                    System.out.println("Adding " + prize + " to Player " + i + "'s stack.");
                     holdem.players[i].incrStack((int)prize);
                     continue;
                 }
@@ -707,30 +592,50 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         lblPlayer2Stack.setText("Player 2: " + Integer.toString(holdem.players[1].incrStack(0)));
         lblPotValue.setText(Integer.toString(holdem.pot));
     }
-    private void btnShowDownMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowDownMouseClicked
-        showDown();
-    }//GEN-LAST:event_btnShowDownMouseClicked
-
-    private void btnShowDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDownActionPerformed
+    private void btnPlayerShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayerShowActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnShowDownActionPerformed
+    }//GEN-LAST:event_btnPlayerShowActionPerformed
 
-    private void btnPlayer1FoldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer1FoldMouseClicked
+    private void btnPlayerShowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayerShowMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnPlayer1FoldMouseClicked
+        int playerId = holdem.holdemState.playerStage;
+        if (!arrPlayerShow[playerId]) {
+            arrLblPlayerCard[playerId].setText(toString(holdem.players[playerId].getPrivateCard(), " "));
+            btnPlayerShow.setText("Hide");
+            if (cardImageShow) {
+                showPlayerImage(playerId);
+            }
+            hidePlayerImage(1 - playerId);
+            arrPlayerShow[playerId] = true;
+        } else {
+            arrLblPlayerCard[playerId].setText("");
+            btnPlayerShow.setText("Show");
+            arrPlayerShow[playerId] = false;
+            hidePlayerImage();
+        }
+    }//GEN-LAST:event_btnPlayerShowMouseClicked
 
-    private void btnPlayer2FoldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayer2FoldMouseClicked
+    private void btnPlayerFoldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayerFoldMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnPlayer2FoldMouseClicked
+    }//GEN-LAST:event_btnPlayerFoldMouseClicked
 
-    private void btnNextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseClicked
+    private void btnPlayerBetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayerBetMouseClicked
         // TODO add your handling code here:
-//        holdem.holdemState.next();
-    }//GEN-LAST:event_btnNextMouseClicked
+        int playerId = holdem.holdemState.playerStage;
+        int playerBetValue = jSliderPlayer.getValue();
+        holdem.players[playerId].incrStack(-playerBetValue);
+        arrLblPlayerStack[playerId].setText("Player " + playerId + ": " + Integer.toString(holdem.players[playerId].incrStack(0)));
+        holdem.pot += playerBetValue;
+        lblPotValue.setText(Integer.toString(holdem.pot));
+        int[] playerBets = holdem.holdemState.getPlayerBets();
+        playerBets[playerId] += playerBetValue;
+        holdem.holdemState = holdem.holdemState.next(playerBets);
+        onStageChange();
+    }//GEN-LAST:event_btnPlayerBetMouseClicked
 
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+    private void btnPlayerBetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayerBetActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnNextActionPerformed
+    }//GEN-LAST:event_btnPlayerBetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -774,10 +679,11 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     String flop;
     String turn;
     String river;
-    public boolean player1Show = false;
-    public boolean player2Show = false;
+    public boolean[] arrPlayerShow = {false, false};
     public boolean cardImageShow = false;
-    
+    javax.swing.JLabel[] arrLblPlayerCard = new javax.swing.JLabel[2];
+    javax.swing.JPanel[] arrPnlPlayer = new javax.swing.JPanel[2];
+    javax.swing.JLabel[] arrLblPlayerStack = new javax.swing.JLabel[2];
     private String toString(String[] stringArray, String delimiter) {
         String s = "";
         for (int i = 0; i < stringArray.length-1; i++) {
@@ -833,7 +739,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         cardLabel[1] = lblPlayerCardImg1;
         for (int i = 0; i < playerCardString.length; i++) {
             showCardImage(playerCardString[i], cardLabel[i]);
-
         }
     }
 
@@ -843,22 +748,23 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         }
     }
     
-    private void hidePlayerImage(int playerNum) {
+    private void hidePlayerImage(int playerId) {
         JLabel[] cardLabel = new JLabel[2];
         JLabel lblPlayerCardImg0 = null;
         JLabel lblPlayerCardImg1 = null;
-        if (playerNum == 0) {
+        if (playerId == 0) {
             lblPlayerCardImg0 = (JLabel) pnlPlayer1Img.getComponent(0);
             lblPlayerCardImg1 = (JLabel) pnlPlayer1Img.getComponent(1);
-        } else if (playerNum == 1) {
+        } else if (playerId == 1) {
             lblPlayerCardImg0 = (JLabel) pnlPlayer2Img.getComponent(0);
             lblPlayerCardImg1 = (JLabel) pnlPlayer2Img.getComponent(1);
         }
         cardLabel[0] = lblPlayerCardImg0;
         cardLabel[1] = lblPlayerCardImg1;
-        for (int i = 0; i < holdem.players[playerNum].getPrivateCard().length; i++) {
+        for (int i = 0; i < holdem.players[playerId].getPrivateCard().length; i++) {
             hideCardImage(cardLabel[i]);
         }
+        arrLblPlayerCard[playerId].setText("");
     }
         
     private int showBoardImageAt(int i) {
@@ -909,24 +815,18 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         for (int i = 0; i < numOfPlayers; i++) {
             holdem.dealCardForPlayer(i);
         }
-        btnShowDown.disable();
+        onStageChange();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDealFlop;
-    private javax.swing.JButton btnDealRiver;
-    private javax.swing.JButton btnDealTurn;
-    private javax.swing.JButton btnNext;
-    private javax.swing.JButton btnPlayer1Bet;
-    private javax.swing.JButton btnPlayer1Fold;
-    private javax.swing.JButton btnPlayer1Show;
-    private javax.swing.JButton btnPlayer2Bet;
-    private javax.swing.JButton btnPlayer2Fold;
-    private javax.swing.JButton btnPlayer2Show;
+    private javax.swing.JButton btnPlayerBet;
+    private javax.swing.JButton btnPlayerFold;
+    private javax.swing.JButton btnPlayerShow;
     private javax.swing.JToggleButton btnShowCardImage;
-    private javax.swing.JToggleButton btnShowDown;
     private javax.swing.JButton btnShuffle;
-    private javax.swing.JSlider jSliderPlayer1;
-    private javax.swing.JSlider jSliderPlayer2;
+    private javax.swing.JPanel jPanelPlayerConsole;
+    private javax.swing.JPanel jPanelPlayers;
+    private javax.swing.JPanel jPanelPot;
+    private javax.swing.JSlider jSliderPlayer;
     private javax.swing.JLabel lblBoard;
     private javax.swing.JLabel lblBoardImg0;
     private javax.swing.JLabel lblBoardImg1;

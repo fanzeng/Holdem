@@ -56,6 +56,7 @@ public class Holdem {
         river = "";
         board = new String[5];
         winners = new ArrayList<>();
+        holdemState = new HoldemState();
     }
     
     private String getCardAt(int i) {
@@ -143,7 +144,7 @@ public class Holdem {
             } 
         }
         showDownResultString[showDownResultString.length-1] += " has the best hand.";
-
+        System.out.println(showDownResultString);
         return showDownResultString;
     }
 
