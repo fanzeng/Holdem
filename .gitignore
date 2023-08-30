@@ -1,8 +1,8 @@
+.idea/**
 nbproject/**
 !nbproject/build-impl.xml
 !nbproject/project.xml
 !nbproject/project.properties
-#resource/**
 dist/**
 build/**
 manifest.mf
