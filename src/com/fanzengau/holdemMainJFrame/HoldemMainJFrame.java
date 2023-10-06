@@ -581,7 +581,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 }
             }
         }
-        lblPlayer1Stack.setText("Player 01: " + Integer.toString(holdem.players[0].incrStack(0)));
+        lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
         lblPlayer2Stack.setText("Player 2: " + Integer.toString(holdem.players[1].incrStack(0)));
         lblPotValue.setText(Integer.toString(holdem.pot));
     }
