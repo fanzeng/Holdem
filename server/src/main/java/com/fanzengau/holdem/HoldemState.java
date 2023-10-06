@@ -1,4 +1,4 @@
-package holdem;
+package com.fanzengau.holdem;
 import java.util.Scanner;
 
 public class HoldemState {

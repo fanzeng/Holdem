@@ -1,4 +1,4 @@
-package holdem;
+package com.fanzengau.holdem;
 
 public class Player {
     int stack;

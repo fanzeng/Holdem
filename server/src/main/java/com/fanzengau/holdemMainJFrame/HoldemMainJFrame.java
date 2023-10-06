@@ -101,10 +101,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
 
         pnlGameControl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        pnlGameControl.setMaximumSize(null);
-        pnlGameControl.setMinimumSize(null);
         pnlGameControl.setName(""); // NOI18N
-        pnlGameControl.setPreferredSize(null);
         pnlGameControl.setLayout(new java.awt.GridBagLayout());
 
         btnShuffle.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
@@ -351,7 +348,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         jPanelPlayers.setLayout(new java.awt.GridBagLayout());
 
         pnlPlayer1.setBorder(javax.swing.BorderFactory.createTitledBorder("Player 1"));
-        pnlPlayer1.setMinimumSize(null);
         pnlPlayer1.setLayout(new java.awt.GridBagLayout());
 
         pnlPlayer1Img.setLayout(new java.awt.GridBagLayout());
@@ -416,11 +412,8 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         jPanelPlayers.add(pnlPlayer1, gridBagConstraints);
 
         pnlPlayer2.setBorder(javax.swing.BorderFactory.createTitledBorder("Player 2"));
-        pnlPlayer2.setMinimumSize(null);
         pnlPlayer2.setLayout(new java.awt.GridBagLayout());
 
-        pnlPlayer2Img.setMinimumSize(null);
-        pnlPlayer2Img.setPreferredSize(null);
         pnlPlayer2Img.setLayout(new java.awt.GridBagLayout());
 
         lblPlayer2Img0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
