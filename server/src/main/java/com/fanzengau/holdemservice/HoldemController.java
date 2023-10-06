@@ -1,4 +1,4 @@
-package com.fanzengau.holdemserver;
+package com.fanzengau.holdemservice;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -5,7 +5,7 @@ plugins {
 }
 
 apply plugin: 'application'
-mainClassName = 'com.fanzengau.holdemserver.HoldemApplication'
+mainClassName = 'com.fanzengau.holdemservice.HoldemServiceApplication'
 
 group = 'com.fanzengau'
 version = '0.0.1-SNAPSHOT'

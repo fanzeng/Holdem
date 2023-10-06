@@ -1,4 +1,4 @@
-package com.fanzengau.holdemserver;
+package com.fanzengau.holdemservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
