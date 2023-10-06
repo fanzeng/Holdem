@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'application'
 mainClassName = 'com.fanzengau.holdem.HoldemApplication'
 
-group = 'com.example'
+group = 'com.fanzengau'
 version = '0.0.1-SNAPSHOT'
 
 java {
