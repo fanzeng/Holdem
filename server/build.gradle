@@ -5,7 +5,7 @@ plugins {
 }
 
 apply plugin: 'application'
-mainClassName = 'com.fanzengau.holdem.HoldemApplication'
+mainClassName = 'com.fanzengau.holdemserver.HoldemApplication'
 
 group = 'com.fanzengau'
 version = '0.0.1-SNAPSHOT'
@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation fileTree(dir: '../dist', include: ['*.jar'])
 }
 
 tasks.named('test') {

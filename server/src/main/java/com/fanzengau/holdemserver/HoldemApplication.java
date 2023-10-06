@@ -1,4 +1,4 @@
-package com.fanzengau.holdem;
+package com.fanzengau.holdemserver;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

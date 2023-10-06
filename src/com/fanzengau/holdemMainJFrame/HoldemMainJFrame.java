@@ -1,7 +1,7 @@
-package HoldemMainJFrame;
+package com.fanzengau.holdemMainJFrame;
 
 import java.util.*;
-import holdem.*;
+import com.fanzengau.holdem.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -581,7 +581,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
                 }
             }
         }
-        lblPlayer1Stack.setText("Player 1: " + Integer.toString(holdem.players[0].incrStack(0)));
+        lblPlayer1Stack.setText("Player 01: " + Integer.toString(holdem.players[0].incrStack(0)));
         lblPlayer2Stack.setText("Player 2: " + Integer.toString(holdem.players[1].incrStack(0)));
         lblPotValue.setText(Integer.toString(holdem.pot));
     }
