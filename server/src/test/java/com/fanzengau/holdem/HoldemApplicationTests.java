@@ -1,10 +1,10 @@
-package com.example.demo;
+package com.fanzengau.holdem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class HoldemApplicationTests {
 
 	@Test
 	void contextLoads() {
