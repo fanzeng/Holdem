@@ -1,9 +1,9 @@
 package com.fanzengau.holdem;
 
 public class Player {
-    int stack;
+    public int stack;
     String[] privateCard;
-    Player (int initialStack) {
+    public Player (int initialStack) {
         stack = initialStack;
     }
 
@@ -12,6 +12,10 @@ public class Player {
     }
     public int incrStack(int incr) {
         stack += incr;
+        return stack;
+    }
+    public int decrStack(int decr) {
+        stack -= decr;
         return stack;
     }
 }
