@@ -46,7 +46,7 @@ public class HoldemState {
     public int playerStage;  // Player0 always acts first
     int[] playerBets; // array of total bet amount of each single player
     boolean roundCompleted;
-    HoldemState() {
+    public HoldemState() {
         cardStage = CARD_STAGE.PRE_FLOP;
         playerStage = 0;
         playerBets = new int[2];
