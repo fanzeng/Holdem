@@ -8,7 +8,7 @@ export function Card({name}) {
   return <>
     <div className="center-flex">
     <span className="card-span">&nbsp;</span>
-    <img className="card-image" src={deckImages[`${name}.png`]} alt="" />
+    <img className="card-image" src={deckImages[`${name ? name.replace('T', '10') : 'red_back'}.png`]} alt="" />
     </div>
   </>
 }
