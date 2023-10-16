@@ -73,13 +73,15 @@ public class HoldemState {
         System.out.println("cardStage: " + cardStage + ", betStage: " + playerStage);
         System.out.println("Player 0's bet: " + playerBets[0] + ", Player 1's bet: " + playerBets[1]);
 
-        if (playerStage == 1) roundCompleted = true;
-        if (playerBets[playerStage] < playerBets[1-playerStage]) {
+        if (playerStage == 1) {
+            roundCompleted = true;
+            System.out.println("Round completed.");
+        }
+        if (roundCompleted && playerBets[playerStage] < playerBets[1-playerStage]) {
             System.out.println("Player " + playerStage + " folded.");
             System.out.println("Game ended at cardStage " + cardStage);
             return new HoldemState(CARD_STAGE.SHOW_DOWN, 0, playerBets, true);
-        } else if (playerBets[playerStage] == playerBets[1 - playerStage] && roundCompleted) {
-            System.out.println("Round completed.");
+        } else if (roundCompleted && playerBets[playerStage] == playerBets[1 - playerStage]) {
             cardStage = intToCardStage(cardStageToInt(cardStage) + 1);
             if (cardStageToInt(cardStage) == cardStageToInt(CARD_STAGE.SHOW_DOWN)) {
                 System.out.println("Show down.");

@@ -41,6 +41,7 @@ public class HoldemController {
     public String[] shuffle() {
         holdem = new Holdem(2);
         holdemState = new HoldemState();
+        System.out.println("reset holdemState.");
         holdem.dealCardForPlayer(0);
         holdem.dealCardForPlayer(1);
         holdem.getFlop();
@@ -71,15 +72,24 @@ public class HoldemController {
 
     @GetMapping("/deal-turn")
     @CrossOrigin(origins = "http://localhost:3000")
-    public String dealTurn() {
+    public String[] dealTurn() {
         var turn = holdem.dealTurn();
-        return turn;
+        return new String[]{turn};
     }
     @GetMapping("/deal-river")
     @CrossOrigin(origins = "http://localhost:3000")
-    public String dealRiver() {
+    public String[] dealRiver() {
         var river = holdem.dealRiver();
-        return river;
+        return new String[]{river};
+    }
+
+    @GetMapping("/get-community-cards")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String[] getCommunityCards() {
+        var flop = holdem.getFlop();
+        var turn = holdem.dealTurn();
+        var river = holdem.dealRiver();
+        return new String[]{flop[0], flop[1], flop[2], turn, river};
     }
 
     @GetMapping("/show-down")
@@ -88,14 +98,16 @@ public class HoldemController {
         return holdem.showDown();
     }
 
-    @GetMapping("/next-holdem-state")
+    @GetMapping("/get-holdem-state")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public HoldemState getHoldemState() {
+        return holdemState;
+    }
+
+    @PostMapping("/next-holdem-state")
     @CrossOrigin(origins = "http://localhost:3000")
     public HoldemState nextHoldemState() {
-        if (playerBets[0].betValue >= 0 && playerBets[1].betValue >= 0) {
-            holdemState = holdemState.next(new int[]{playerBets[0].betValue, playerBets[1].betValue});
-            playerBets[0].betValue = -1;
-            playerBets[1].betValue = -1;
-        }
+        holdemState = holdemState.next(new int[]{playerBets[0].betValue, playerBets[1].betValue});
         return holdemState;
     }
 
@@ -104,9 +116,14 @@ public class HoldemController {
     public PlayerBet[] playerBet(
             @RequestBody PlayerBet playerBet
     ) {
+        var cardStage = holdemState.cardStage;
         this.playerBets[Integer.parseInt(playerBet.id)] = playerBet;
         players[Integer.parseInt(playerBet.id)].decrStack(playerBet.betValue);
-        nextHoldemState();
+        var hs = nextHoldemState();
+        if (hs.cardStage != cardStage) {
+            playerBets[0].betValue = 0;
+            playerBets[1].betValue = 0;
+        }
         return playerBets;
     }
 }
