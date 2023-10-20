@@ -11,17 +11,19 @@
 }
 
 .label-text {
-  background-color: white;
+  background-color: darkgreen;
+  color: yellow;
+  margin: 10px;
+  font-size: large;
 }
 
 .holdem-game {
   width: 100%;
-  height: 30%;
   top:0;
   bottom: 0;
   left: 0;
   right: 0;
-  margin: auto;
+  margin-bottom: 20px;
 }
 
 .card-image {
@@ -40,4 +42,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button {
+  position: relative;
+  border: none;
+  border-radius: 3px;
+  padding: 3px;
+  margin: 3px;
+  cursor: pointer;
+  background-color: beige;
+  color: black;
+  font-size: large;
 }

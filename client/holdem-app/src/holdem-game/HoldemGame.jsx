@@ -4,7 +4,7 @@ import { Board } from "./board/Board";
 
 export function HoldemGame() {
   // const serverAddr = 'http://localhost:8080';
-  const serverAddr = process.env.NODE_ENV === 'production'? 'https://holdem-app.onrender.com' : 'http://localhost:8080';
+  const serverAddr = process.env.NODE_ENV === 'production' ? 'https://holdem-app.onrender.com' : 'http://localhost:8080';
 
   const [holdemState, setHoldemState] = useState({});
   const [playerPrivateCards, setPlayerPrivateCards] = useState([
@@ -42,8 +42,6 @@ export function HoldemGame() {
         ]);
         setShowDownResult('');
         return onHoldemStateShouldChange();
-      }).then(holdemState => {
-        // console.log(holdemState.cardStage);
       })
       .catch(error => console.error(error));
   }
@@ -92,7 +90,7 @@ export function HoldemGame() {
         .then(json => {
           console.log(json, typeof json)
           setCommunityCards(json);
-          onShowDownBtnClick();
+          onShowDown();
         })
         .catch(error => console.error(error));
     }
@@ -102,13 +100,19 @@ export function HoldemGame() {
     const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
     console.log('winnerIds is', winnderIds);
     let playerStackValuesTemp = playerStackValues;
-    playerStackValuesTemp[parseInt(winnderIds[0])-1] += potValue;
-    console.log('playerStackValuesTemp =', playerStackValuesTemp);
+    // handle tie
+    if (winnderIds.length == 2) {
+      playerStackValuesTemp[0] += potValue / 2.0;
+      playerStackValuesTemp[1] += potValue / 2.0;
+    }
+    else {
+      playerStackValuesTemp[parseInt(winnderIds[0]) - 1] += potValue;
+    }
     setPotValue(0);
     setPlayerStackValues(playerStackValuesTemp);
   }
 
-  const onShowDownBtnClick = () => {
+  const onShowDown = () => {
     fetch(`${serverAddr}/show-down`)
       .then(response => response.json())
       .then(json => {
@@ -137,7 +141,7 @@ export function HoldemGame() {
     updateCommunityCards(holdemState.cardStage);
   }, [holdemState])
 
-  const onPlayerBet = (id, betValue) => {
+  const onPlayerBet = (id, betValue, isFold = false) => {
     fetch(`${serverAddr}/player-bet`, {
       method: 'POST',
       headers: {
@@ -156,17 +160,30 @@ export function HoldemGame() {
         onHoldemStateShouldChange();
       })
       .catch(error => console.error(error));
-    setPotValue(potValue + betValue);
+      if (isFold) {
+        onPlayerFold(id);
+      }
+       else {
+        setPotValue(potValue + betValue);
+      }
+  }
+
+  const onPlayerFold = id => {
+    const winnerId = 1 - id;
+    let playerStackValuesTemp = playerStackValues;
+    playerStackValuesTemp[winnerId] += potValue;
+    setPotValue(0);
+    setPlayerStackValues(playerStackValuesTemp);
   }
 
   return <>
     <div className="background">
-      <div className="placeholder-top" style={{height: '10vh'}}></div>
+      <div className="placeholder-top" style={{ height: '10vh' }}></div>
       <div className="holdem-game">
         <Board cardStage={holdemState.cardStage} communityCards={communityCards} />
         <div className="center-flex" style={{ 'flexDirection': 'column' }}>
           <button className="btn-shuffle" onClick={onShuffleBtnClick}>Shuffle</button>
-          <div className="label-text" style={{ width: 'fit-content'}}>Potsize: {potValue}</div>
+          <div className="label-text" style={{ width: 'fit-content' }}>Potsize: {potValue}</div>
         </div>
       </div>
       <Player key="0" id="0"
@@ -193,11 +210,11 @@ export function HoldemGame() {
         }}
         currentBet={playerBets[0]}
       />
-      <div className="label-text" hidden={holdemState.cardStage !== 'SHOW_DOWN'}>Show Down: {showDownResult}</div>
-      {/* <button onClick={onShowDownBtnClick}>Shown Down</button> */}
+      <br />
+      <div className="label-text" hidden={holdemState.cardStage !== 'SHOW_DOWN'} style={{ 'width': '50vw', 'margin': 'auto' }}>{showDownResult}</div>
       <div className="center-flex" style={{ 'flexDirection': 'column' }}>
         <div className="label-text" style={{ width: 'fit-content' }} hidden={true}>Player {holdemState.playerStage}'s turn</div>
-        <button className="btn-next" disabled={holdemState.cardStage !== 'SHOW_DOWN'} onClick={onShuffleBtnClick}>Next</button>
+        <button className="btn-next" hidden={holdemState.cardStage !== 'SHOW_DOWN'} onClick={onShuffleBtnClick}>Next</button>
       </div>
     </div>
   </>
