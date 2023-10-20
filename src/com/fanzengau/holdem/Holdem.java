@@ -132,19 +132,20 @@ public class Holdem {
         }
         
         showDownResultString[showDownResultString.length-1] = "Player ";
+        String winnerString = "[";
+        winners = new ArrayList<>();
+
         for (int i = 0; i < Holdem.this.players.length; i++) {
             if (showDownResultValue[i] == maxShowDownResultValue) {
-                String winnerString = "";
                 if (!winners.isEmpty()) {
                     winnerString += ", ";
                 }
                 winnerString += Integer.toString(i+1);
-                showDownResultString[showDownResultString.length-1] += winnerString;
                 winners.add(i);
             } 
         }
-        showDownResultString[showDownResultString.length-1] += " has the best hand.";
-        System.out.println(showDownResultString);
+        showDownResultString[showDownResultString.length-1] += winnerString + "] has the best hand.";
+        System.out.println(showDownResultString[showDownResultString.length-1]);
         return showDownResultString;
     }
 

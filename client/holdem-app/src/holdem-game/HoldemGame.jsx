@@ -3,6 +3,9 @@ import { Player } from "./player/Player";
 import { Board } from "./board/Board";
 
 export function HoldemGame() {
+  // const serverAddr = 'http://localhost:8080';
+  const serverAddr = process.env.NODE_ENV === 'production'? 'https://holdem-app.onrender.com' : 'http://localhost:8080';
+
   const [holdemState, setHoldemState] = useState({});
   const [playerPrivateCards, setPlayerPrivateCards] = useState([
     ['red_back', 'red_back'],
@@ -19,7 +22,7 @@ export function HoldemGame() {
 
 
   useEffect(() => {
-    fetch('http://localhost:8080/new-game')
+    fetch(`${serverAddr}/new-game`)
       .then(response => response.json())
       .then(json => {
         console.log(json)
@@ -30,7 +33,7 @@ export function HoldemGame() {
   }, []);
 
   const onShuffleBtnClick = () => {
-    fetch('http://localhost:8080/shuffle')
+    fetch(`${serverAddr}/shuffle`)
       .then(response => response.json())
       .then(json => {
         setPlayerPrivateCards([
@@ -53,7 +56,7 @@ export function HoldemGame() {
       ]);
     }
     else if (cardStage === 'FLOP') {
-      fetch('http://localhost:8080/get-flop')
+      fetch(`${serverAddr}/get-flop`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -62,7 +65,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'TURN') {
-      fetch('http://localhost:8080/deal-turn')
+      fetch(`${serverAddr}/deal-turn`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -73,7 +76,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'RIVER') {
-      fetch('http://localhost:8080/deal-river')
+      fetch(`${serverAddr}/deal-river`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -84,7 +87,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'SHOW_DOWN') {
-      fetch('http://localhost:8080/get-community-cards')
+      fetch(`${serverAddr}/get-community-cards`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -96,16 +99,17 @@ export function HoldemGame() {
   }
 
   const givePotToWinner = showDownResult => {
-    const winnderId = parseInt(showDownResult[2][7]);
-    console.log('winnerId is', winnderId);
+    const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
+    console.log('winnerIds is', winnderIds);
     let playerStackValuesTemp = playerStackValues;
-    playerStackValuesTemp[winnderId] += potValue;
+    playerStackValuesTemp[parseInt(winnderIds[0])-1] += potValue;
+    console.log('playerStackValuesTemp =', playerStackValuesTemp);
     setPotValue(0);
     setPlayerStackValues(playerStackValuesTemp);
   }
 
   const onShowDownBtnClick = () => {
-    fetch('http://localhost:8080/show-down')
+    fetch(`${serverAddr}/show-down`)
       .then(response => response.json())
       .then(json => {
         setShowDownResult(json.join('. '));
@@ -115,7 +119,7 @@ export function HoldemGame() {
   }
 
   const onHoldemStateShouldChange = () => {
-    fetch('http://localhost:8080/get-holdem-state')
+    fetch(`${serverAddr}/get-holdem-state`)
       .then(response => response.json())
       .then(json => {
         console.log('holdem state json =', json)
@@ -134,7 +138,7 @@ export function HoldemGame() {
   }, [holdemState])
 
   const onPlayerBet = (id, betValue) => {
-    fetch('http://localhost:8080/player-bet', {
+    fetch(`${serverAddr}/player-bet`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -160,7 +164,7 @@ export function HoldemGame() {
       <div className="placeholder-top" style={{height: '10vh'}}></div>
       <div className="holdem-game">
         <Board cardStage={holdemState.cardStage} communityCards={communityCards} />
-        <div className="center-flex" style={{ 'flex-direction': 'column' }}>
+        <div className="center-flex" style={{ 'flexDirection': 'column' }}>
           <button className="btn-shuffle" onClick={onShuffleBtnClick}>Shuffle</button>
           <div className="label-text" style={{ width: 'fit-content'}}>Potsize: {potValue}</div>
         </div>
@@ -191,8 +195,8 @@ export function HoldemGame() {
       />
       <div className="label-text" hidden={holdemState.cardStage !== 'SHOW_DOWN'}>Show Down: {showDownResult}</div>
       {/* <button onClick={onShowDownBtnClick}>Shown Down</button> */}
-      <div className="center-flex" style={{ 'flex-direction': 'column' }}>
-        <div className="label-text" style={{ width: 'fit-content' }} hidden="true">Player {holdemState.playerStage}'s turn</div>
+      <div className="center-flex" style={{ 'flexDirection': 'column' }}>
+        <div className="label-text" style={{ width: 'fit-content' }} hidden={true}>Player {holdemState.playerStage}'s turn</div>
         <button className="btn-next" disabled={holdemState.cardStage !== 'SHOW_DOWN'} onClick={onShuffleBtnClick}>Next</button>
       </div>
     </div>
