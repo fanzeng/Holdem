@@ -4,6 +4,10 @@ import "./Player.css";
 
 export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setStackValue, currentBet }) {
   const [betValue, setBetValue] = useState(0);
+  const [callBtnJustClicked, setCallBtnJustClicked] = useState(false);
+  const [raiseBtnJustClicked, setRaiseBtnJustClicked] = useState(false);
+  const [checkFoldBtnJustClicked, setCheckFoldBtnJustClicked] = useState(false);
+
   const importImages = r => {
     let images = {};
     r.keys().forEach((item) => { images[item.replace('./', '')] = r(item); });
@@ -25,14 +29,44 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
     }
   }
   function onCallBtnClick() {
-    setStackValue(stackValue - betValue);
-    onPlayerBet(id, currentBet);
+    if (callBtnJustClicked) {
+      setTimeout(() => {
+        setCallBtnJustClicked(false);
+      }, 2000);
+    }
+    else {
+      setCallBtnJustClicked(true);
+      setStackValue(stackValue - betValue);
+      onPlayerBet(id, currentBet);
+    }
   }
 
   function onRaiseBtnClick() {
-    setStackValue(stackValue - betValue);
-    onPlayerBet(id, betValue);
+    if (raiseBtnJustClicked) {
+      setTimeout(() => {
+        setRaiseBtnJustClicked(false);
+      }, 2000);
+    }
+    else {
+      setRaiseBtnJustClicked(true);
+      setStackValue(stackValue - betValue);
+      onPlayerBet(id, betValue);
+    }
   }
+
+  function onCheckFoldBtnClick() {
+    if (checkFoldBtnJustClicked) {
+      setTimeout(() => {
+        setCheckFoldBtnJustClicked(false);
+      }, 2000);
+    }
+    else {
+      setCheckFoldBtnJustClicked(true);
+      setStackValue(stackValue - betValue);
+      onPlayerBet(id, 0, currentBet > 0)
+    }
+  }
+
   useEffect(() => {
     console.log('currentBet =', currentBet)
     setBetValue(currentBet ?? 0);
@@ -41,7 +75,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
   return <>
     <div className="center-flex">
       <div className={enable ? '' : 'widget-disabled'}>
-        <span className="label-text">Player {parseInt(id)+1} &nbsp;</span>
+        <span className="label-text">Player {parseInt(id) + 1} &nbsp;</span>
         <span className="label-text">Stack: {stackValue}&nbsp;</span>
         <div>
           <button onClick={onChipMinusBtnClick}><img src={chipImages[`gambling-chip.png`]} alt="my image" width="25px" height="25px" />-</button>
@@ -50,7 +84,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
           <button className={betValue > currentBet ? '' : 'widget-disabled'} onClick={onRaiseBtnClick}>Raise&nbsp;</button>
         </div>
         <button className={betValue === currentBet && currentBet > 0 ? '' : 'widget-disabled'} onClick={onCallBtnClick}>Call&nbsp;</button>
-        <button onClick={() => onPlayerBet(id, 0, currentBet > 0)}>{currentBet > 0 ? 'Fold' : 'Check'}</button>
+        <button onClick={onCheckFoldBtnClick}>{currentBet > 0 ? 'Fold' : 'Check'}</button>
 
         <div className="center-flex">
           <Card key="0" name={privateCards[0]} />

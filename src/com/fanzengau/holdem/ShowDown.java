@@ -131,7 +131,7 @@ class ShowDown {
                     kickers[0] = c.rank;
                     j = 1;
                     for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
-                        if (nextHigh == countResult.maxCountRank) {
+                        if (nextHigh % 13 == countResult.maxCountRank) {
                             continue;
                         }
                         if (countResult.rankCount[nextHigh % 13] > 0) {
