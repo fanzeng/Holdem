@@ -8,6 +8,8 @@
   left: 0;
   right: 0;
   margin: auto;
+  overflow: hidden;
+  z-index: -1;
 }
 
 .label-text {

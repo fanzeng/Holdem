@@ -326,6 +326,7 @@ class ShowDown {
         }
 
         // check for straight
+        // Test case of AKQJT seems to be failing for this
         int straightLength = 0;
         countResult.straightCards = new String[7];
         for (int j = 0; j < 3; j++) {
@@ -375,6 +376,9 @@ class ShowDown {
         }
 
         for (int i = 0; i < 13; i++) {
+// Should have been counting down from 14, if A is mapped to 14 and K to 13
+// See if the below can be reverted when unit tests suit becomes available            
+// https://github.com/fanzeng/Holdem/commit/ccbd7541cc9be464fa5c8045afc6c4915b950c13#diff-0bcc5058d2e07049e0dc44bd0e98f40a584a9120dcbdc4efe5c96cff165a98faL134
             if (countResult.rankCount[i] > countResult.maxRankCount) {
                 countResult.maxRankCount = countResult.rankCount[i];
                 countResult.maxCountRank = i;
