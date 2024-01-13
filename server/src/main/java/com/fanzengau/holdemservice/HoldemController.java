@@ -2,19 +2,27 @@ package com.fanzengau.holdemservice;
 
 import com.fanzengau.holdem.HoldemState;
 import com.fanzengau.holdem.Player;
+import com.fanzengau.holdemservice.models.GameSession;
+import com.fanzengau.holdemservice.repositories.GameSessionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.fanzengau.holdem.Holdem;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class HoldemController {
     private static Holdem holdem;
     private static HoldemState holdemState;
     private static Player[] players;
     private static PlayerBet[] playerBets;
+
+    @Autowired
+    private GameSessionRepository gameSessionRepository;
 
     @GetMapping("/")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
@@ -50,6 +58,13 @@ public class HoldemController {
         var privateCards0 = holdem.getPlayerCard(Integer.parseInt("0"));
         var privateCards1 = holdem.getPlayerCard(Integer.parseInt("1"));
 
+        GameSession gameSession = GameSession.builder()
+            .name("shuffled new")
+            .holdem(holdem)
+            .holdemState(holdemState)
+            .build();
+        var saved = gameSessionRepository.save(gameSession);
+        log.info(">>>> Created game session:" + saved.getId());
         return Stream.concat(Arrays.stream(privateCards0), Arrays.stream(privateCards1)).toArray(String[]::new);
     }
 
