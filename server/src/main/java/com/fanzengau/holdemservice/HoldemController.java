@@ -17,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class HoldemController {
-    private static Holdem holdem;
-    private static HoldemState holdemState;
     private static Player[] players;
     private static PlayerBet[] playerBets;
 
@@ -64,8 +62,7 @@ public class HoldemController {
     @GetMapping("/shuffle")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
     public String[] shuffle() {
-        holdem = new Holdem(2);
-        holdemState = new HoldemState();
+        var holdem = new Holdem(2);
         System.out.println("reset holdemState.");
         holdem.dealCardForPlayer(0);
         holdem.dealCardForPlayer(1);
@@ -100,66 +97,99 @@ public class HoldemController {
 
     @GetMapping("/get-flop")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] getFlop() {
+    public String[] getFlop(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
         var flop = holdem.getFlop();
         System.out.println(flop[0] + "," + flop[1] + "," + flop[2]);
+        saveHoldemToGameSession(holdem, gameSessionId);
         return flop;
     }
 
     @GetMapping("/deal-turn")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] dealTurn() {
+    public String[] dealTurn(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
         var turn = holdem.dealTurn();
+        saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{turn};
     }
     @GetMapping("/deal-river")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] dealRiver() {
+    public String[] dealRiver(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
         var river = holdem.dealRiver();
+        saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{river};
     }
 
     @GetMapping("/get-community-cards")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] getCommunityCards() {
+    public String[] getCommunityCards(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
         var flop = holdem.getFlop();
         var turn = holdem.dealTurn();
         var river = holdem.dealRiver();
+        saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{flop[0], flop[1], flop[2], turn, river};
     }
 
     @GetMapping("/show-down")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] showDown() {
-        return holdem.showDown();
+    public String[] showDown(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        var result = holdem.showDown();
+        saveHoldemToGameSession(holdem, gameSessionId);
+        return result;
     }
 
     @GetMapping("/get-holdem-state")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public HoldemState getHoldemState() {
-        return holdemState;
+    public HoldemState getHoldemState(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        return holdem.holdemState;
     }
 
     @PostMapping("/next-holdem-state")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public HoldemState nextHoldemState() {
+    public HoldemState nextHoldemState(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        var holdemState = holdem.holdemState;
         holdemState = holdemState.next(new int[]{playerBets[0].betValue, playerBets[1].betValue});
+        saveHoldemToGameSession(holdem, gameSessionId);
         return holdemState;
     }
 
     @PostMapping("/player-bet")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
     public PlayerBet[] playerBet(
-            @RequestBody PlayerBet playerBet
+        @RequestParam(required = true) String gameSessionId,
+        @RequestBody PlayerBet playerBet
     ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        var holdemState = holdem.holdemState;
         var cardStage = holdemState.cardStage;
         this.playerBets[Integer.parseInt(playerBet.id)] = playerBet;
         players[Integer.parseInt(playerBet.id)].decrStack(playerBet.betValue);
-        var hs = nextHoldemState();
+        var hs = nextHoldemState(gameSessionId);
         if (hs.cardStage != cardStage) {
             playerBets[0].betValue = 0;
             playerBets[1].betValue = 0;
         }
+        saveHoldemToGameSession(holdem, gameSessionId);
         return playerBets;
     }
 }
