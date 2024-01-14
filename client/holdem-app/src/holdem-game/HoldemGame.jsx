@@ -154,7 +154,6 @@ export function HoldemGame() {
   }, [holdemState])
 
   const onPlayerBet = (id, betValue, isFold = false) => {
-    console.log('clicked!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
       headers: {
