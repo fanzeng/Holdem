@@ -1,6 +1,5 @@
 package com.fanzengau.holdem;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class Holdem {
         HIGH_CARD
     };
     
-    private final Deck deck;
+    private Deck deck;
     private int posInDeck;
     int playerNum;
     public Player[] players = null;
@@ -29,9 +28,9 @@ public class Holdem {
     public int pot;
     List<Integer> winners = new ArrayList<>();
     public HoldemState holdemState = new HoldemState();
-    public Holdem(int playerNum_) {
+    public Holdem(int playerNum) {
         int initialStack = 1000;
-        playerNum = playerNum_;
+        this.playerNum = playerNum;
         deck = new Deck();
         deck.shuffle();
         posInDeck = 0;
@@ -59,9 +58,13 @@ public class Holdem {
         holdemState = new HoldemState();
     }
     
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+    
     private String getCardAt(int i) {
-        if (i < deck.cards.length) {
-            return deck.cards[i].toString();
+        if (i < deck.getCards().length) {
+            return deck.getCards()[i].toString();
         } else {
             return "i = " + i + " is invalid";
         }

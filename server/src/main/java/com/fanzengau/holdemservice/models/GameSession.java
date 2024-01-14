@@ -15,6 +15,5 @@ public class GameSession {
     private String id;
     private String name;
     private Holdem holdem;
-    private HoldemState holdemState;
 }
 

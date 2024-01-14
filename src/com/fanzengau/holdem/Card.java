@@ -6,6 +6,9 @@ public class Card {
     int rankNum;
     String suit;
     int suitNum;
+    
+    public Card() {} // TODO: Should return invalid card
+    
     public Card(int i) {
         value = i;
         suitNum = value / 13;

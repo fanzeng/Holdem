@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.fanzengau.holdem.Holdem;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,7 +62,6 @@ public class HoldemController {
         GameSession gameSession = GameSession.builder()
             .name("shuffled new")
             .holdem(holdem)
-            .holdemState(holdemState)
             .build();
         var saved = gameSessionRepository.save(gameSession);
         log.info(">>>> Created game session:" + saved.getId());
@@ -70,10 +70,22 @@ public class HoldemController {
 
     @GetMapping("/get-player-card")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] getPlayerCard(@RequestParam(required = true, defaultValue = "0") String id) {
-        holdem.dealCardForPlayer(Integer.parseInt(id));
-        var privateCards = holdem.getPlayerCard(Integer.parseInt(id));
-        System.out.println("private cards =" + privateCards);
+    public String[] getPlayerCard(
+        @RequestParam(required = true) String gameSessionId,
+        @RequestParam(required = true, defaultValue = "0") String playerId
+    ) {
+        String[] privateCards = new String[]{};
+        log.info(">>>> gameSessionId: " + gameSessionId);
+        var gameSession = gameSessionRepository.findById(gameSessionId);
+        if (gameSession.isPresent()) {
+            var g = gameSession.get();
+            var holdem = g.getHoldem();
+            holdem.dealCardForPlayer(Integer.parseInt(playerId));
+            privateCards = holdem.getPlayerCard(Integer.parseInt(playerId));
+            System.out.println("private cards =" + privateCards);
+            var saved = gameSessionRepository.save(g);
+            log.info(">>>> Created game session:" + saved.getId());
+        }
         return privateCards;
     }
 

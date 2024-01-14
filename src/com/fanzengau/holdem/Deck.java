@@ -3,7 +3,7 @@ package com.fanzengau.holdem;
 import java.util.Random;
 
 public class Deck{
-    public Card[] cards;
+    private Card[] cards;
 
     public Deck () {
         cards = new Card[52];
@@ -18,6 +18,15 @@ public class Deck{
         }
 
     }
+    
+    public Card[] getCards() {
+        return cards;
+    }
+    
+    public void setCards(Card[] cards) {
+        this.cards = cards;
+    }
+    
     private void swap(Card[] arr, int i, int j) {
         Card tmp = arr[i];
         arr[i] = arr[j];
