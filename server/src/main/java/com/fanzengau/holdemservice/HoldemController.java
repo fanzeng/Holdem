@@ -25,6 +25,22 @@ public class HoldemController {
     @Autowired
     private GameSessionRepository gameSessionRepository;
 
+    private Holdem getHoldemByGameSessionId(String gameSessionId) {
+        log.info(">>>> gameSessionId: " + gameSessionId);
+        var gameSession = gameSessionRepository.findById(gameSessionId);
+        if (gameSession.isPresent()) {
+            return gameSession.get().getHoldem();
+        }
+        return null;
+    }
+
+    private void saveHoldemToGameSession(Holdem holdem, String gameSessionId) {
+        var gameSession = gameSessionRepository.findById(gameSessionId).get();
+        gameSession.setHoldem(holdem);
+        var saved = gameSessionRepository.save(gameSession);
+        log.info(">>>> Saved game session:" + saved.getId());
+    }
+
     @GetMapping("/")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
     public String index() {
@@ -74,18 +90,11 @@ public class HoldemController {
         @RequestParam(required = true) String gameSessionId,
         @RequestParam(required = true, defaultValue = "0") String playerId
     ) {
-        String[] privateCards = new String[]{};
-        log.info(">>>> gameSessionId: " + gameSessionId);
-        var gameSession = gameSessionRepository.findById(gameSessionId);
-        if (gameSession.isPresent()) {
-            var g = gameSession.get();
-            var holdem = g.getHoldem();
-            holdem.dealCardForPlayer(Integer.parseInt(playerId));
-            privateCards = holdem.getPlayerCard(Integer.parseInt(playerId));
-            System.out.println("private cards =" + privateCards);
-            var saved = gameSessionRepository.save(g);
-            log.info(">>>> Created game session:" + saved.getId());
-        }
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        holdem.dealCardForPlayer(Integer.parseInt(playerId));
+        var privateCards = holdem.getPlayerCard(Integer.parseInt(playerId));
+        System.out.println("private cards =" + privateCards);
+        saveHoldemToGameSession(holdem, gameSessionId);
         return privateCards;
     }
 
