@@ -16,7 +16,6 @@ export function HoldemGame() {
   ]);
   const [playerStackValues, setPlayerStackValues] = useState([0, 0]);
   const [playerBets, setPlayerBets] = useState([0, 0]);
-  const [cardStage, setCardStage] = useState(0);
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
   const [gameSessionStatus, setGameSessionStatus] = useState('Session expired');
@@ -76,13 +75,13 @@ export function HoldemGame() {
   useEffect(() => {
     setGameSessionStatus('Session uninitialised');
     tryCreateNewGame();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log('gameSessionId =', gameSessionId)
     getPlayers();
     onShuffleBtnClick();
-  }, [gameSessionId]);
+  }, [gameSessionId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onShuffleBtnClick = () => {
     if (gameSessionId.length === 0) return;
@@ -193,12 +192,12 @@ export function HoldemGame() {
 
   useEffect(() => {
     onHoldemStateShouldChange();
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log('holdem state =', holdemState)
     updateCommunityCards(holdemState.cardStage);
-  }, [holdemState])
+  }, [holdemState]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {

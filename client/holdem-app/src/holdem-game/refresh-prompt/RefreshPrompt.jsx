@@ -26,7 +26,7 @@ export function RefreshPrompt({gameSessionStatus, retryCount}) {
       transform: 'translate(-50%, -50%)'
     }}>
       <p>
-        {gameSessionStatus}.&nbsp;
+        {gameSessionStatus}.&nbsp; It might take up to a minute to spin up a server container.&nbsp;
         {gameSessionStatus === 'Session uninitialised' ? 'Connecting ' + '...'.repeat(retryCount + 1) : <p>Please <a href='.'>Refresh</a> the page.</p> }
       </p>
     </div>

@@ -1,5 +1,8 @@
 # Holdem
 
+# Try here
+https://fanzengau.com/submodules/holdem/index.html
+
 # run local app
 java -jar dist/Holdem.jar
 
