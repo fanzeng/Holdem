@@ -78,7 +78,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
           <button className={betValue > currentBet ? '' : 'widget-disabled'} onClick={onRaiseBtnClick}>Raise&nbsp;</button>
         </div>
         <button className={betValue === currentBet && currentBet > 0 ? '' : 'widget-disabled'} onClick={onCallBtnClick}>Call&nbsp;</button>
-        <button onClick={onCheckFoldBtnClick}>{currentBet > 0 ? 'Fold' : 'Check'}</button>
+        <button className={betValue === 0 ? '' : 'widget-disabled'} onClick={onCheckFoldBtnClick}>{currentBet > 0 ? 'Fold' : 'Check'}</button>
 
         <div className="center-flex">
           <Card key="0" name={privateCards[0]} />

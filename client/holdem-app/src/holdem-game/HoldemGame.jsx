@@ -19,6 +19,8 @@ export function HoldemGame() {
   const [cardStage, setCardStage] = useState(0);
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
+  const [gameSessionStatus, setGameSessionStatus] = useState('Session expired');
+  const [retryCount, setRetryCount] = useState(0);
 
   const E_SESSION_EXPIRED = new Error('SESSION_EXPIRED');
 
@@ -34,19 +36,46 @@ export function HoldemGame() {
 
   const handleError = error => {
     console.error(error);
-    if (error.message === 'SESSION_EXPIRED') {
-      setGameSessionId('');
+    if (error.message === 'SESSION_EXPIRED' || true) { // at the moment assume all errors caused by session expiration
+      setGameSessionStatus(gameSessionId.length > 0 ? 'Session expired' : 'Session uninitialised');
+      setTimeout(() => {
+        setGameSessionId('');
+      }, 0);
     }
   }
 
-  useEffect(() => {
-    fetch(`${serverAddr}/new-game`)
+  const createNewGame = () => {
+    return fetch(`${serverAddr}/new-game`)
       .then(response => response.text())
       .then(newGameSessionId => {
         console.log('newGameSessionId =', newGameSessionId)
         setGameSessionId(newGameSessionId);
+        return newGameSessionId;
       })
-      .catch(handleError);
+      .catch(handleError)
+      .finally(() => Promise.resolve(gameSessionId));
+  }
+
+  const tryCreateNewGame = () => {
+    return createNewGame().then(newGameSessionId => {
+      if (newGameSessionId?.length > 0) {
+        console.log('successfully created new session:', gameSessionId);
+        setRetryCount(0);
+      }
+      else {
+        setTimeout(() => {
+          console.log('retrying in 2 secs.')
+          console.log('newGameSessionId', newGameSessionId);
+          setRetryCount(c => c + 1);
+          tryCreateNewGame();
+        }, 2000)
+      }
+    })
+  }
+
+  useEffect(() => {
+    setGameSessionStatus('Session uninitialised');
+    tryCreateNewGame();
   }, []);
 
   useEffect(() => {
@@ -84,7 +113,7 @@ export function HoldemGame() {
           console.log(json, typeof json)
           setCommunityCards([...json]);
         })
-        .catch(error => console.error(error));
+        .catch(handleError);
     }
     else if (cardStage === 'TURN') {
       fetch(`${serverAddr}/deal-turn?gameSessionId=${gameSessionId}`)
@@ -125,7 +154,7 @@ export function HoldemGame() {
     console.log('winnerIds is', winnderIds);
     let playerStackValuesTemp = playerStackValues;
     // handle tie
-    if (winnderIds.length == 2) {
+    if (winnderIds.length === 2) {
       playerStackValuesTemp[0] += potValue / 2.0;
       playerStackValuesTemp[1] += potValue / 2.0;
     }
@@ -189,7 +218,7 @@ export function HoldemGame() {
         setPlayerBets([json[0].betValue, json[1].betValue]);
         onHoldemStateShouldChange();
       })
-      .catch(error => console.error(error));
+      .catch(handleError);
     if (isFold) {
       onPlayerFold(id);
     }
@@ -252,7 +281,7 @@ export function HoldemGame() {
         left: 10,
         color: '#33aa33',
       }}>{gameSessionId}</div>
-      {gameSessionId.length > 0 ? null : <RefreshPrompt />}
+      {gameSessionId.length > 0 ? null : <RefreshPrompt gameSessionStatus={gameSessionStatus} retryCount={retryCount}/>}
     </div>
   </>
 }

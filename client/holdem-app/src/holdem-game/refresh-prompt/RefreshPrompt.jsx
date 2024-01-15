@@ -1,4 +1,4 @@
-export function RefreshPrompt() {
+export function RefreshPrompt({gameSessionStatus, retryCount}) {
   return <>
     <div style={{
       position: 'fixed',
@@ -14,7 +14,8 @@ export function RefreshPrompt() {
       color: 'black',
       backgroundColor: 'beige',
       fontSize: 'large',
-      padding: '5px',
+      padding: '15px',
+      borderRadius: '5px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -25,7 +26,8 @@ export function RefreshPrompt() {
       transform: 'translate(-50%, -50%)'
     }}>
       <p>
-        Session expired. Please <a href='.'>Refresh</a> the page.
+        {gameSessionStatus}.&nbsp;
+        {gameSessionStatus === 'Session uninitialised' ? 'Connecting ' + '...'.repeat(retryCount + 1) : <p>Please <a href='.'>Refresh</a> the page.</p> }
       </p>
     </div>
   </>
