@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Player } from "./player/Player";
 import { Board } from "./board/Board";
+import { RefreshPrompt } from "./refresh-prompt/RefreshPrompt";
 
 export function HoldemGame() {
   const serverAddr = process.env.NODE_ENV === 'production' ? 'https://holdem-app.onrender.com' : 'http://localhost:8080';
@@ -19,13 +20,23 @@ export function HoldemGame() {
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
 
+  const E_SESSION_EXPIRED = new Error('SESSION_EXPIRED');
+
   const getPlayers = () => {
+    if (gameSessionId.length === 0) return;
     return fetch(`${serverAddr}/players?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         console.log(json)
         setPlayerStackValues([json[0].stack, json[1].stack]);
       });
+  }
+
+  const handleError = error => {
+    console.error(error);
+    if (error.message === 'SESSION_EXPIRED') {
+      setGameSessionId('');
+    }
   }
 
   useEffect(() => {
@@ -35,7 +46,7 @@ export function HoldemGame() {
         console.log('newGameSessionId =', newGameSessionId)
         setGameSessionId(newGameSessionId);
       })
-      .catch(error => console.error(error));
+      .catch(handleError);
   }, []);
 
   useEffect(() => {
@@ -45,6 +56,7 @@ export function HoldemGame() {
   }, [gameSessionId]);
 
   const onShuffleBtnClick = () => {
+    if (gameSessionId.length === 0) return;
     fetch(`${serverAddr}/shuffle?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
@@ -55,7 +67,7 @@ export function HoldemGame() {
         setShowDownResult('');
         return onHoldemStateShouldChange();
       })
-      .catch(error => console.error(error));
+      .catch(handleError);
   }
 
   const updateCommunityCards = cardStage => {
@@ -83,7 +95,7 @@ export function HoldemGame() {
           communityCardsTemp[3] = json[0];
           setCommunityCards(communityCardsTemp);
         })
-        .catch(error => console.error(error));
+        .catch(handleError);
     }
     else if (cardStage === 'RIVER') {
       fetch(`${serverAddr}/deal-river?gameSessionId=${gameSessionId}`)
@@ -94,7 +106,7 @@ export function HoldemGame() {
           communityCardsTemp[4] = json[0];
           setCommunityCards(communityCardsTemp);
         })
-        .catch(error => console.error(error));
+        .catch(handleError);
     }
     else if (cardStage === 'SHOW_DOWN') {
       fetch(`${serverAddr}/get-community-cards?gameSessionId=${gameSessionId}`)
@@ -104,7 +116,7 @@ export function HoldemGame() {
           setCommunityCards(json);
           onShowDown();
         })
-        .catch(error => console.error(error));
+        .catch(handleError);
     }
   }
 
@@ -131,17 +143,23 @@ export function HoldemGame() {
         setShowDownResult(json.join('. '));
         givePotToWinner(json);
       })
-      .catch(error => console.error(error));
+      .catch(handleError);
   }
 
   const onHoldemStateShouldChange = () => {
+    if (gameSessionId.length === 0) return;
     fetch(`${serverAddr}/get-holdem-state?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         console.log('holdem state json =', json)
-        setHoldemState(json);
+        if (json.status === 404) {
+          throw E_SESSION_EXPIRED;
+        }
+        else {
+          setHoldemState(json);
+        }
       })
-      .catch(error => console.error(error));
+      .catch(handleError);
   }
 
   useEffect(() => {
@@ -172,12 +190,12 @@ export function HoldemGame() {
         onHoldemStateShouldChange();
       })
       .catch(error => console.error(error));
-      if (isFold) {
-        onPlayerFold(id);
-      }
-       else {
-        setPotValue(potValue + betValue);
-      }
+    if (isFold) {
+      onPlayerFold(id);
+    }
+    else {
+      setPotValue(potValue + betValue);
+    }
   }
 
   const onPlayerFold = id => {
@@ -228,7 +246,13 @@ export function HoldemGame() {
         <div className="label-text" style={{ width: 'fit-content' }} hidden={true}>Player {holdemState.playerStage}'s turn</div>
         <button className="btn-next" hidden={holdemState.cardStage !== 'SHOW_DOWN'} onClick={onShuffleBtnClick}>Next</button>
       </div>
-      {gameSessionId}
+      <div style={{
+        position: 'fixed',
+        top: 10,
+        left: 10,
+        color: '#33aa33',
+      }}>{gameSessionId}</div>
+      {gameSessionId.length > 0 ? null : <RefreshPrompt />}
     </div>
   </>
 }
