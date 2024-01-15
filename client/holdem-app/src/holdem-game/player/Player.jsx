@@ -29,39 +29,33 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
     }
   }
   function onCallBtnClick() {
-    if (callBtnJustClicked) {
+    if (!callBtnJustClicked) {
+      setCallBtnJustClicked(true);
       setTimeout(() => {
         setCallBtnJustClicked(false);
-      }, 2000);
-    }
-    else {
-      setCallBtnJustClicked(true);
+      }, 200);
       setStackValue(stackValue - betValue);
       onPlayerBet(id, currentBet);
     }
   }
 
   function onRaiseBtnClick() {
-    if (raiseBtnJustClicked) {
+    if (!raiseBtnJustClicked) {
+      setRaiseBtnJustClicked(true);
       setTimeout(() => {
         setRaiseBtnJustClicked(false);
-      }, 2000);
-    }
-    else {
-      setRaiseBtnJustClicked(true);
+      }, 200);
       setStackValue(stackValue - betValue);
       onPlayerBet(id, betValue);
     }
   }
 
   function onCheckFoldBtnClick() {
-    if (checkFoldBtnJustClicked) {
+    if (!checkFoldBtnJustClicked) {
+      setCheckFoldBtnJustClicked(true);
       setTimeout(() => {
         setCheckFoldBtnJustClicked(false);
-      }, 2000);
-    }
-    else {
-      setCheckFoldBtnJustClicked(true);
+      }, 200);
       setStackValue(stackValue - betValue);
       onPlayerBet(id, 0, currentBet > 0)
     }

@@ -3,8 +3,8 @@ package com.fanzengau.holdem;
 public class Player {
     public int stack;
     String[] privateCard;
-    public Player (int initialStack) {
-        stack = initialStack;
+    public Player (int stack) {
+        this.stack = stack;
     }
 
     public String[] getPrivateCard() {

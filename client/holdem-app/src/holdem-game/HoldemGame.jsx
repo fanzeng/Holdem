@@ -3,9 +3,8 @@ import { Player } from "./player/Player";
 import { Board } from "./board/Board";
 
 export function HoldemGame() {
-  // const serverAddr = 'http://localhost:8080';
   const serverAddr = process.env.NODE_ENV === 'production' ? 'https://holdem-app.onrender.com' : 'http://localhost:8080';
-
+  const [gameSessionId, setGameSessionId] = useState('');
   const [holdemState, setHoldemState] = useState({});
   const [playerPrivateCards, setPlayerPrivateCards] = useState([
     ['red_back', 'red_back'],
@@ -20,20 +19,33 @@ export function HoldemGame() {
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
 
-
-  useEffect(() => {
-    fetch(`${serverAddr}/new-game`)
+  const getPlayers = () => {
+    return fetch(`${serverAddr}/players?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         console.log(json)
         setPlayerStackValues([json[0].stack, json[1].stack]);
-        onShuffleBtnClick();
+      });
+  }
+
+  useEffect(() => {
+    fetch(`${serverAddr}/new-game`)
+      .then(response => response.text())
+      .then(newGameSessionId => {
+        console.log('newGameSessionId =', newGameSessionId)
+        setGameSessionId(newGameSessionId);
       })
       .catch(error => console.error(error));
   }, []);
 
+  useEffect(() => {
+    console.log('gameSessionId =', gameSessionId)
+    getPlayers();
+    onShuffleBtnClick();
+  }, [gameSessionId]);
+
   const onShuffleBtnClick = () => {
-    fetch(`${serverAddr}/shuffle`)
+    fetch(`${serverAddr}/shuffle?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         setPlayerPrivateCards([
@@ -54,7 +66,7 @@ export function HoldemGame() {
       ]);
     }
     else if (cardStage === 'FLOP') {
-      fetch(`${serverAddr}/get-flop`)
+      fetch(`${serverAddr}/get-flop?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -63,7 +75,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'TURN') {
-      fetch(`${serverAddr}/deal-turn`)
+      fetch(`${serverAddr}/deal-turn?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -74,7 +86,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'RIVER') {
-      fetch(`${serverAddr}/deal-river`)
+      fetch(`${serverAddr}/deal-river?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -85,7 +97,7 @@ export function HoldemGame() {
         .catch(error => console.error(error));
     }
     else if (cardStage === 'SHOW_DOWN') {
-      fetch(`${serverAddr}/get-community-cards`)
+      fetch(`${serverAddr}/get-community-cards?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -113,7 +125,7 @@ export function HoldemGame() {
   }
 
   const onShowDown = () => {
-    fetch(`${serverAddr}/show-down`)
+    fetch(`${serverAddr}/show-down?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         setShowDownResult(json.join('. '));
@@ -123,7 +135,7 @@ export function HoldemGame() {
   }
 
   const onHoldemStateShouldChange = () => {
-    fetch(`${serverAddr}/get-holdem-state`)
+    fetch(`${serverAddr}/get-holdem-state?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         console.log('holdem state json =', json)
@@ -142,7 +154,7 @@ export function HoldemGame() {
   }, [holdemState])
 
   const onPlayerBet = (id, betValue, isFold = false) => {
-    fetch(`${serverAddr}/player-bet`, {
+    fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -216,6 +228,7 @@ export function HoldemGame() {
         <div className="label-text" style={{ width: 'fit-content' }} hidden={true}>Player {holdemState.playerStage}'s turn</div>
         <button className="btn-next" hidden={holdemState.cardStage !== 'SHOW_DOWN'} onClick={onShuffleBtnClick}>Next</button>
       </div>
+      {gameSessionId}
     </div>
   </>
 }
