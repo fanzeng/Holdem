@@ -5,6 +5,7 @@ import com.fanzengau.holdem.Player;
 import com.fanzengau.holdemservice.models.GameSession;
 import com.fanzengau.holdemservice.repositories.GameSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.fanzengau.holdem.Holdem;
@@ -12,6 +13,7 @@ import com.fanzengau.holdem.Holdem;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @Slf4j
@@ -28,7 +30,9 @@ public class HoldemController {
         if (gameSession.isPresent()) {
             return gameSession.get().getHoldem();
         }
-        return null;
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SessionId Not Found");
+        }
     }
 
     private void saveHoldemToGameSession(Holdem holdem, String gameSessionId) {
