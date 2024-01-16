@@ -122,7 +122,7 @@ public class Holdem {
         for (int i = 0; i < Holdem.this.players.length; i++) {
             Player player = Holdem.this.players[i];
             ShowDown showDown = new ShowDown();
-            ShowDown.ShowDownResult showDownResult = showDown.getshowDownResult(player, board);
+            ShowDown.ShowDownResult showDownResult = showDown.getShowDownResult(player, board);
             showDownResultString[i] = "bestHand of Player " + (i+1) + ": " + showDownResult.toString();
             showDownResultValue[i] = showDownResult.getValue();
             System.out.println(showDownResultString[i]);

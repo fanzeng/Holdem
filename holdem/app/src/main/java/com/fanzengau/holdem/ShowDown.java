@@ -290,12 +290,12 @@ class ShowDown {
 
     ShowDownResult showDownResult;
 
-    CountResult countCards(String[] cards) {
+    CountResult countCards() {
         CountResult countResult = new CountResult(candidateCards);
         int[] ranks = new int[7];
         Arrays.fill(ranks, -1);
-        for (int i = 0; i < cards.length; i++) {
-            String card = cards[i];
+        for (int i = 0; i < candidateCards.length; i++) {
+            String card = candidateCards[i];
             Card c = new Card(card);
             int rank = c.rankNum;
             if (rank == 0) { // K
@@ -442,13 +442,13 @@ class ShowDown {
         return countResult.pairCount >= 1;
     }
 
-    ShowDownResult getshowDownResult(Player player, String[] board) {
+    ShowDownResult getShowDownResult(Player player, String[] board) {
         String[] privateCard = player.getPrivateCard();
         System.arraycopy(board, 0, candidateCards, 0, board.length);
         candidateCards[5] = privateCard[0];
         candidateCards[6] = privateCard[1];
 
-        CountResult countResult = countCards(candidateCards);
+        CountResult countResult = countCards();
         Holdem.BEST_HAND_TYPE bestHandType;
         if (checkRoyalFlush(countResult)) {
             bestHandType = Holdem.BEST_HAND_TYPE.ROYAL_FLUSH;

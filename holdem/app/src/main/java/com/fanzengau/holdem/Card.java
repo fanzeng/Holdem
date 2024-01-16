@@ -51,7 +51,7 @@ public class Card {
     }
 
     public Card(String cardString) {
-        rank = cardString.substring(0,1);
+        rank = cardString.substring(0, 1);
         switch (rank) {
             case "T":
                 rankNum = 10;
