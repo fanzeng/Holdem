@@ -1,8 +1,4 @@
-.idea/**
-nbproject/**
-!nbproject/build-impl.xml
-!nbproject/project.xml
-!nbproject/project.properties
-dist/**
-build/**
+.idea/
+nbproject/
+build/
 manifest.mf

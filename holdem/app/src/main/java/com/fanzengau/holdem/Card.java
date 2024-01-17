@@ -51,7 +51,7 @@ public class Card {
     }
 
     public Card(String cardString) {
-        rank = cardString.substring(0,1);
+        rank = cardString.substring(0, 1);
         switch (rank) {
             case "T":
                 rankNum = 10;
@@ -91,5 +91,31 @@ public class Card {
 
     public String toString() {
         return rank + suit;
+    }
+
+    public int getRankForCompareAceHigh() {
+        if (rankNum == 0) {
+            return 13;
+        }
+        if (rankNum == 1) {
+            return 14;
+        }
+        return rankNum;
+    }
+
+    public int getRankForCompareAceLow() {
+        if (rankNum == 0) {
+            return 13;
+        }
+        if (rankNum == 1) {
+            return 1;
+        }
+        return rankNum;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (! (other instanceof Card)) return false;
+        return toString().equals(other.toString());
     }
 }
