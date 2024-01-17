@@ -8,7 +8,7 @@ public class Deck{
     public Deck () {
         cards = new Card[52];
         for (int i = 0; i < 52; i++) {
-            cards[i] = new Card(i + 1);
+            cards[i] = new Card(i);
         }
     }
     public void shuffle() {

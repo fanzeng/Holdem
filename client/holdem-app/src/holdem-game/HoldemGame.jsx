@@ -106,7 +106,7 @@ export function HoldemGame() {
       ]);
     }
     else if (cardStage === 'FLOP') {
-      fetch(`${serverAddr}/get-flop?gameSessionId=${gameSessionId}`)
+      fetch(`${serverAddr}/deal-flop?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)

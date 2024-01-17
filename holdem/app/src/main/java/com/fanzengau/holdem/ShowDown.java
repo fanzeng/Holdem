@@ -80,7 +80,14 @@ class ShowDown {
                     kickers = new Card[]{new Card(countResult.maxCountRank)};
                     break;
                 case FULL_HOUSE:
-                    kickers = new Card[]{c = new Card(countResult.maxCountRank)};
+                    kickers = new Card[2];
+                    kickers[0] = new Card(countResult.maxCountRank);
+                    for (int i = 14; i > 0; i--) {
+                        if (countResult.rankCount[i % 13] >= 2 && i != countResult.maxCountRank) {
+                            kickers[1] = new Card(i);
+                            break;
+                        }
+                    }
                     break;
                 case FLUSH:
                     Comparator<Card> cardComparator
@@ -92,7 +99,16 @@ class ShowDown {
                     kickers = countResult.straightCards;
                     break;
                 case THREE_OF_A_KIND:
-                    kickers = new Card[]{new Card(countResult.maxCountRank)};
+                    kickers = new Card[3];
+                    kickers[0] = new Card(countResult.maxCountRank);
+                    int count = 1;
+                    for (int i = 14; i > 0; i--) {
+                        if (countResult.rankCount[i % 13] >= 1 && i != countResult.maxCountRank) {
+                            kickers[count] = new Card(i + 52);
+                            count++;
+                            if (count == 3) break;
+                        }
+                    }
                     break;
                 case TWO_PAIR:
                     kickers = new Card[3];
@@ -102,8 +118,7 @@ class ShowDown {
                         if (countResult.rankCount[pairRank % 13] == 2) {
                             pairRanks[j] = pairRank;
                             System.out.println(j + " of two pair = " + pairRank);
-                            c = new Card(pairRank);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(pairRank + 52);
                             j++;
                             if (j == 2) {
                                 break;
@@ -116,8 +131,7 @@ class ShowDown {
                             continue;
                         }
                         if (countResult.rankCount[nextHigh % 13] > 0) {
-                            c = new Card(nextHigh);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(nextHigh + 52);;
                             break;
                         }
                     }
@@ -125,16 +139,14 @@ class ShowDown {
                     break;
                 case PAIR:
                     kickers = new Card[4];
-                    c = new Card(countResult.maxCountRank);
-                    kickers[0] = new Card(c.rank + "S");
+                    kickers[0] = new Card(countResult.maxCountRank + 52);
                     j = 1;
                     for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                         if (nextHigh % 13 == countResult.maxCountRank) {
                             continue;
                         }
                         if (countResult.rankCount[nextHigh % 13] > 0) {
-                            c = new Card(nextHigh);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(nextHigh + 52);
                             j++;
                             if (j > 3) {
                                 break;
@@ -145,8 +157,7 @@ class ShowDown {
                 default: // high card
                     kickers = new Card[5];
                     for (int i = 0; i < 5; i++) {
-                        c = new Card(countResult.ranks[i]);
-                        kickers[i] = new Card(c.rank + "S");
+                        kickers[i] = new Card(countResult.ranks[i] + 52);
                     }
             }
         }
@@ -223,7 +234,6 @@ class ShowDown {
         int[] suitCount = new int[4];
         int[] rankCount = new int[13];
         int[] ranks = new int[7]; // In ranks of this class, A = 14, K = 13.
-        String[] pickedCards = null;
         int maxSuitCount = 0;
         int maxCountSuit;
         int maxRankCount = 0;
@@ -356,7 +366,6 @@ class ShowDown {
             }
         }
 
-
         // Check for Flush
         for (int i = 0; i < 4; i++) {
             if (countResult.suitCount[i] > countResult.maxSuitCount) {
@@ -364,7 +373,6 @@ class ShowDown {
                 countResult.maxCountSuit = i;
             }
         }
-
         if (countResult.maxSuitCount >= 5) {
             countResult.isFlush = true;
             countResult.flushCards = new Card[countResult.maxSuitCount];
@@ -382,15 +390,11 @@ class ShowDown {
         }
 
         for (int i = 0; i < 13; i++) {
-// Should have been counting down from 14, if A is mapped to 14 and K to 13
-// See if the below can be reverted when unit tests suit becomes available            
-// https://github.com/fanzeng/Holdem/commit/ccbd7541cc9be464fa5c8045afc6c4915b950c13#diff-0bcc5058d2e07049e0dc44bd0e98f40a584a9120dcbdc4efe5c96cff165a98faL134
             if (countResult.rankCount[i] > countResult.maxRankCount) {
                 countResult.maxRankCount = countResult.rankCount[i];
                 countResult.maxCountRank = i;
             }
         }
-
         System.out.println("countResult: \n" + countResult.toString(1));
         return countResult;
     }
@@ -400,21 +404,12 @@ class ShowDown {
     boolean checkRoyalFlush(CountResult countResult) {
         if (!checkStraightFlush(countResult)) {
             return false;
-        } else if (countResult.straightCards[-1].equals("A")) {
-            return true;
         }
-        return false;
+        return countResult.straightCards[0].rank.equals("A");
     }
 
     boolean checkStraightFlush(CountResult countResult) {
-        if (!countResult.isFlush) {
-            return false;
-        } else {
-            CountResult flushCountResult = new CountResult(
-                Stream.of(countResult.flushCards).map(c -> c.toString()).toArray(String[]::new)
-            );
-            return flushCountResult.isStraight;
-        }
+        return countResult.isStraight && countResult.isFlush;
     }
 
     boolean checkFourOfAKind(CountResult countResult) {
@@ -422,8 +417,7 @@ class ShowDown {
     }
 
     boolean checkFullHouse(CountResult countResult) {
-        return (countResult.setCount == 2
-                || (countResult.setCount == 1 && countResult.pairCount > 0));
+        return countResult.setCount == 2 || (countResult.setCount == 1 && countResult.pairCount > 0);
     }
 
     boolean checkFlush(CountResult countResult) {
@@ -478,7 +472,6 @@ class ShowDown {
 
         ShowDownResult res = new ShowDownResult(bestHandType, candidateCards, countResult);
         System.out.println("showDownResult: " + res);
-
         return res;
     }
 }
