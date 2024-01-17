@@ -101,9 +101,9 @@ public class HoldemState {
         while(true) {
             System.out.println("cardStage: " + hs.cardStage + ", betStage: " + hs.playerStage);
             if (hs.cardStage != CARD_STAGE.SHOW_DOWN) {
+                playerBets = hs.getPlayerBets();
                 System.out.println("Enter player" + hs.playerStage + "'s next bet:");
                 Scanner sc = new Scanner(System.in);
-                playerBets = hs.getPlayerBets();
                 playerBets[hs.playerStage] = sc.nextInt();
             }
             hs = hs.next(playerBets);
