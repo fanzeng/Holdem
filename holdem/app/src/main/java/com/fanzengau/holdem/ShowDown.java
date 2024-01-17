@@ -366,7 +366,6 @@ class ShowDown {
             }
         }
 
-
         // Check for Flush
         for (int i = 0; i < 4; i++) {
             if (countResult.suitCount[i] > countResult.maxSuitCount) {
@@ -374,7 +373,6 @@ class ShowDown {
                 countResult.maxCountSuit = i;
             }
         }
-
         if (countResult.maxSuitCount >= 5) {
             countResult.isFlush = true;
             countResult.flushCards = new Card[countResult.maxSuitCount];
@@ -392,15 +390,11 @@ class ShowDown {
         }
 
         for (int i = 0; i < 13; i++) {
-// Should have been counting down from 14, if A is mapped to 14 and K to 13
-// See if the below can be reverted when unit tests suit becomes available            
-// https://github.com/fanzeng/Holdem/commit/ccbd7541cc9be464fa5c8045afc6c4915b950c13#diff-0bcc5058d2e07049e0dc44bd0e98f40a584a9120dcbdc4efe5c96cff165a98faL134
             if (countResult.rankCount[i] > countResult.maxRankCount) {
                 countResult.maxRankCount = countResult.rankCount[i];
                 countResult.maxCountRank = i;
             }
         }
-
         System.out.println("countResult: \n" + countResult.toString(1));
         return countResult;
     }
@@ -478,7 +472,6 @@ class ShowDown {
 
         ShowDownResult res = new ShowDownResult(bestHandType, candidateCards, countResult);
         System.out.println("showDownResult: " + res);
-
         return res;
     }
 }
