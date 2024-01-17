@@ -80,7 +80,14 @@ class ShowDown {
                     kickers = new Card[]{new Card(countResult.maxCountRank)};
                     break;
                 case FULL_HOUSE:
-                    kickers = new Card[]{c = new Card(countResult.maxCountRank)};
+                    kickers = new Card[2];
+                    kickers[0] = new Card(countResult.maxCountRank);
+                    for (int i = 14; i > 0; i--) {
+                        if (countResult.rankCount[i % 13] >= 2 && i != countResult.maxCountRank) {
+                            kickers[1] = new Card(i);
+                            break;
+                        }
+                    }
                     break;
                 case FLUSH:
                     Comparator<Card> cardComparator
@@ -223,7 +230,6 @@ class ShowDown {
         int[] suitCount = new int[4];
         int[] rankCount = new int[13];
         int[] ranks = new int[7]; // In ranks of this class, A = 14, K = 13.
-        String[] pickedCards = null;
         int maxSuitCount = 0;
         int maxCountSuit;
         int maxRankCount = 0;
@@ -400,21 +406,12 @@ class ShowDown {
     boolean checkRoyalFlush(CountResult countResult) {
         if (!checkStraightFlush(countResult)) {
             return false;
-        } else if (countResult.straightCards[-1].equals("A")) {
-            return true;
         }
-        return false;
+        return countResult.straightCards[0].rank.equals("A");
     }
 
     boolean checkStraightFlush(CountResult countResult) {
-        if (!countResult.isFlush) {
-            return false;
-        } else {
-            CountResult flushCountResult = new CountResult(
-                Stream.of(countResult.flushCards).map(c -> c.toString()).toArray(String[]::new)
-            );
-            return flushCountResult.isStraight;
-        }
+        return countResult.isStraight && countResult.isFlush;
     }
 
     boolean checkFourOfAKind(CountResult countResult) {
@@ -422,8 +419,7 @@ class ShowDown {
     }
 
     boolean checkFullHouse(CountResult countResult) {
-        return (countResult.setCount == 2
-                || (countResult.setCount == 1 && countResult.pairCount > 0));
+        return countResult.setCount == 2 || (countResult.setCount == 1 && countResult.pairCount > 0);
     }
 
     boolean checkFlush(CountResult countResult) {
