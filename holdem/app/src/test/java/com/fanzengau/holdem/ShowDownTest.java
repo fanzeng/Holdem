@@ -12,6 +12,7 @@ import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.ROYAL_FLUSH;
 import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.STRAIGHT;
 import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.STRAIGHT_FLUSH;
 import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.THREE_OF_A_KIND;
+import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.TWO_PAIR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static com.fanzengau.holdem.Holdem.BEST_HAND_TYPE.FLUSH;
@@ -115,7 +116,7 @@ class ShowDownTest {
         var board = new String[]{"2H", "3C", "6H", "4C", "7C"};
         var expectedBestHandType = THREE_OF_A_KIND;
         var expectedKickers = new Card[]{
-            new Card("6S"), new Card("7C"), new Card("4C")
+            new Card("6S"), new Card("7*"), new Card("4*")
         };
         testShowDownResult(privateCard, board, expectedBestHandType, expectedKickers);
     }
@@ -124,9 +125,9 @@ class ShowDownTest {
     void getShowDownResultTwoPair() {
         var privateCard = new String[]{"AS", "QH"};
         var board = new String[]{"2H", "3C", "QD", "4C", "2C"};
-        var expectedBestHandType = PAIR;
+        var expectedBestHandType = TWO_PAIR;
         var expectedKickers = new Card[]{
-            new Card("QH"), new Card("2H"), new Card("AS")
+            new Card("Q*"), new Card("2*"), new Card("A*")
         };
         testShowDownResult(privateCard, board, expectedBestHandType, expectedKickers);
     }
@@ -137,8 +138,8 @@ class ShowDownTest {
         var board = new String[]{"2H", "3C", "QD", "4C", "2C"};
         var expectedBestHandType = PAIR;
         var expectedKickers = new Card[]{
-            new Card("2H"), new Card("AS"),
-            new Card("KH"), new Card("QD")
+            new Card("2*"), new Card("A*"),
+            new Card("K*"), new Card("Q*")
         };
         testShowDownResult(privateCard, board, expectedBestHandType, expectedKickers);
     }
@@ -149,8 +150,8 @@ class ShowDownTest {
         var board = new String[]{"2H", "3C", "5D", "6C", "7C"};
         var expectedBestHandType = HIGH_CARD;
         var expectedKickers = new Card[]{
-            new Card("AS"), new Card("KS"),
-            new Card("7C"), new Card("6C"), new Card("5D")
+            new Card("A*"), new Card("K*"),
+            new Card("7*"), new Card("6*"), new Card("5*")
         };
         testShowDownResult(privateCard, board, expectedBestHandType, expectedKickers);
     }

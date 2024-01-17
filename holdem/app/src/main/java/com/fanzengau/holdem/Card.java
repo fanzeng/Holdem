@@ -26,7 +26,7 @@ public class Card {
                 suit = "D";
                 break;
             default:
-                suit = "D";
+                suit = "*";
         }
         rankNum = value % 13;
         switch (rankNum) {
@@ -84,6 +84,9 @@ public class Card {
                 break;
             case "D":
                 suitNum = 3;
+                break;
+            case "*":
+                suitNum = 4;
                 break;
         }
         value = suitNum*13 + rankNum;

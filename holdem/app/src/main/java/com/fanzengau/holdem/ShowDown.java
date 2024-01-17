@@ -99,7 +99,16 @@ class ShowDown {
                     kickers = countResult.straightCards;
                     break;
                 case THREE_OF_A_KIND:
-                    kickers = new Card[]{new Card(countResult.maxCountRank)};
+                    kickers = new Card[3];
+                    kickers[0] = new Card(countResult.maxCountRank);
+                    int count = 1;
+                    for (int i = 14; i > 0; i--) {
+                        if (countResult.rankCount[i % 13] >= 1 && i != countResult.maxCountRank) {
+                            kickers[count] = new Card(i + 52);
+                            count++;
+                            if (count == 3) break;
+                        }
+                    }
                     break;
                 case TWO_PAIR:
                     kickers = new Card[3];
@@ -109,8 +118,7 @@ class ShowDown {
                         if (countResult.rankCount[pairRank % 13] == 2) {
                             pairRanks[j] = pairRank;
                             System.out.println(j + " of two pair = " + pairRank);
-                            c = new Card(pairRank);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(pairRank + 52);
                             j++;
                             if (j == 2) {
                                 break;
@@ -123,8 +131,7 @@ class ShowDown {
                             continue;
                         }
                         if (countResult.rankCount[nextHigh % 13] > 0) {
-                            c = new Card(nextHigh);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(nextHigh + 52);;
                             break;
                         }
                     }
@@ -132,16 +139,14 @@ class ShowDown {
                     break;
                 case PAIR:
                     kickers = new Card[4];
-                    c = new Card(countResult.maxCountRank);
-                    kickers[0] = new Card(c.rank + "S");
+                    kickers[0] = new Card(countResult.maxCountRank + 52);
                     j = 1;
                     for (int nextHigh = 14; nextHigh >= 2; nextHigh--) {
                         if (nextHigh % 13 == countResult.maxCountRank) {
                             continue;
                         }
                         if (countResult.rankCount[nextHigh % 13] > 0) {
-                            c = new Card(nextHigh);
-                            kickers[j] = new Card(c.rank + "S");
+                            kickers[j] = new Card(nextHigh + 52);
                             j++;
                             if (j > 3) {
                                 break;
@@ -152,8 +157,7 @@ class ShowDown {
                 default: // high card
                     kickers = new Card[5];
                     for (int i = 0; i < 5; i++) {
-                        c = new Card(countResult.ranks[i]);
-                        kickers[i] = new Card(c.rank + "S");
+                        kickers[i] = new Card(countResult.ranks[i] + 52);
                     }
             }
         }
