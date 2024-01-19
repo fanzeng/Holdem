@@ -1,6 +1,4 @@
 package com.fanzengau.holdemservice.models;
-import com.fanzengau.holdem.Holdem;
-import com.fanzengau.holdem.HoldemState;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -14,6 +12,6 @@ public class GameSession {
     @Id
     private String id;
     private String name;
-    private Holdem holdem;
+    private HoldemDto holdemDto;
 }
 

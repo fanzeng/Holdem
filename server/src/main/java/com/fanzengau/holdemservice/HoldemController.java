@@ -4,6 +4,7 @@ import com.fanzengau.holdem.HoldemState;
 import com.fanzengau.holdem.Player;
 import com.fanzengau.holdemservice.models.GameSession;
 import com.fanzengau.holdemservice.repositories.GameSessionRepository;
+import com.fanzengau.holdemservice.mappers.HoldemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,15 @@ public class HoldemController {
     private static PlayerBet[] playerBets;
 
     @Autowired
+    private HoldemMapper holdemMapper;
+    @Autowired
     private GameSessionRepository gameSessionRepository;
 
     private Holdem getHoldemByGameSessionId(String gameSessionId) {
         log.info(">>>> gameSessionId: " + gameSessionId);
         var gameSession = gameSessionRepository.findById(gameSessionId);
         if (gameSession.isPresent()) {
-            return gameSession.get().getHoldem();
+            return holdemMapper.holdemDtoToHoldem(gameSession.get().getHoldemDto());
         }
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SessionId Not Found");
@@ -37,7 +40,7 @@ public class HoldemController {
 
     private void saveHoldemToGameSession(Holdem holdem, String gameSessionId) {
         var gameSession = gameSessionRepository.findById(gameSessionId).get();
-        gameSession.setHoldem(holdem);
+        gameSession.setHoldemDto(holdemMapper.holdemToHoldemDto(holdem));
         var saved = gameSessionRepository.save(gameSession);
         log.info(">>>> Saved game session:" + saved.getId());
     }
@@ -48,7 +51,7 @@ public class HoldemController {
         var holdem = new Holdem(2);
         GameSession gameSession = GameSession.builder()
             .name("shuffled new")
-            .holdem(holdem)
+            .holdemDto(holdemMapper.holdemToHoldemDto(holdem))
             .build();
         var saved = gameSessionRepository.save(gameSession);
         log.info(">>>> Created game session:" + saved.getId());
@@ -69,11 +72,7 @@ public class HoldemController {
         @RequestParam(required = true) String gameSessionId
     ) {
         var holdem = new Holdem(2);
-        holdem.dealCardForPlayer(0);
-        holdem.dealCardForPlayer(1);
-        holdem.getFlop();
-        holdem.dealTurn();
-        holdem.dealRiver();
+        holdem.shuffle();
         saveHoldemToGameSession(holdem, gameSessionId);
         var privateCards0 = holdem.getPlayerCard(Integer.parseInt("0"));
         var privateCards1 = holdem.getPlayerCard(Integer.parseInt("1"));
@@ -93,9 +92,9 @@ public class HoldemController {
         return privateCards;
     }
 
-    @GetMapping("/deal-flop")
+    @GetMapping("/get-flop")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] dealFlop(
+    public String[] getFlop(
         @RequestParam(required = true) String gameSessionId
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
@@ -105,23 +104,23 @@ public class HoldemController {
         return flop;
     }
 
-    @GetMapping("/deal-turn")
+    @GetMapping("/get-turn")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] dealTurn(
+    public String[] getTurn(
         @RequestParam(required = true) String gameSessionId
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
-        var turn = holdem.dealTurn();
+        var turn = holdem.getTurn();
         saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{turn};
     }
-    @GetMapping("/deal-river")
+    @GetMapping("/get-river")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public String[] dealRiver(
+    public String[] getRiver(
         @RequestParam(required = true) String gameSessionId
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
-        var river = holdem.dealRiver();
+        var river = holdem.getRiver();
         saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{river};
     }
@@ -133,8 +132,8 @@ public class HoldemController {
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
         var flop = holdem.getFlop();
-        var turn = holdem.dealTurn();
-        var river = holdem.dealRiver();
+        var turn = holdem.getTurn();
+        var river = holdem.getRiver();
         saveHoldemToGameSession(holdem, gameSessionId);
         return new String[]{flop[0], flop[1], flop[2], turn, river};
     }

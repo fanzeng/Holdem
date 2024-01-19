@@ -20,26 +20,19 @@ public class Holdem {
     private Deck deck;
     private int posInDeck;
     int playerNum;
-    public Player[] players = null;
-    String[] board = null;
+    public Player[] players;
     String[] flop = null;
     String turn = "";
     String river = "";
+    public static final int initialStack = 1000;
     public int pot;
-    List<Integer> winners = new ArrayList<>();
+    List<Integer> winners;
     public HoldemState holdemState = new HoldemState();
     public Holdem(int playerNum) {
-        int initialStack = 1000;
         this.playerNum = playerNum;
         deck = new Deck();
         deck.shuffle();
         posInDeck = 0;
-        board = new String[5];
-        players = new Player[playerNum];
-        for (int i = 0; i < playerNum; i++) {
-            Player player = new Player(initialStack);
-            players[i] = player;
-        }
         pot = 0;
         winners = new ArrayList<>();
     }
@@ -47,21 +40,29 @@ public class Holdem {
     public void shuffle() {
         deck.shuffle();
         posInDeck = 0;
+        players = new Player[playerNum];
         for (int i = 0; i < playerNum; i++) {
-            players[i].privateCard = null;
+            Player player = new Player(initialStack);
+            players[i] = player;
         }
-        flop = null;
-        turn = "";
-        river = "";
-        board = new String[5];
+        for (int i = 0; i < playerNum; i++) {
+            dealCardForPlayer(i);
+        }
+        flop = dealFlop();
+        turn = dealTurn();
+        river = dealRiver();
         winners = new ArrayList<>();
         holdemState = new HoldemState();
     }
     
-    public void setDeck(Deck deck) {
-        this.deck = deck;
+    public Player[] getPlayers() {
+        return players;
     }
-    
+
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
     private String getCardAt(int i) {
         if (i < deck.getCards().length) {
             return deck.getCards()[i].toString();
@@ -88,31 +89,52 @@ public class Holdem {
     }
 
        
-    public String[] getFlop() {
+    private String[] dealFlop() {
         if (flop == null) {
             flop = new String[3];
             for (int i = 0; i < 3; i++) {
                 flop[i] = dealCard();
             }
         }
-        System.arraycopy(flop, 0, board, 0, flop.length);
         return flop;
     }
     
-    public String dealTurn() {
+    private String dealTurn() {
         if (turn.isEmpty()) {
            turn = dealCard();
         }
-        board[3] = turn;
         return turn;
     }
     
-    public String dealRiver() {
+    private String dealRiver() {
         if (river.isEmpty()) {
            river = dealCard();
         }
-        board[4] = river;
         return river;
+    }
+
+    public String[] getFlop() {
+        return flop;
+    }
+
+    public void setFlop(String[] flop) {
+        this.flop = flop;
+    }
+
+    public String getTurn() {
+        return turn;
+    }
+
+    public void setTurn(String turn) {
+        this.turn = turn;
+    }
+
+    public String getRiver() {
+        return river;
+    }
+
+    public void setRiver(String river) {
+        this.river = river;
     }
     
     public String[] showDown() {
@@ -122,7 +144,9 @@ public class Holdem {
         for (int i = 0; i < Holdem.this.players.length; i++) {
             Player player = Holdem.this.players[i];
             ShowDown showDown = new ShowDown();
-            ShowDown.ShowDownResult showDownResult = showDown.getShowDownResult(player, board);
+            ShowDown.ShowDownResult showDownResult = showDown.getShowDownResult(
+                player, new String[]{flop[0], flop[1], flop[2], turn, river}
+            );
             showDownResultString[i] = "bestHand of Player " + (i+1) + ": " + showDownResult.toString();
             showDownResultValue[i] = showDownResult.getValue();
             System.out.println(showDownResultString[i]);
@@ -155,6 +179,4 @@ public class Holdem {
     public List<Integer> getWinners() {
         return winners;
     }
-
-
 }

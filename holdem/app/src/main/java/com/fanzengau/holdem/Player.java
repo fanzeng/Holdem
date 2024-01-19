@@ -10,6 +10,12 @@ public class Player {
     public String[] getPrivateCard() {
         return privateCard;
     }
+
+    public void setPrivateCard(String[] privateCard)
+    {
+        this.privateCard = privateCard;
+    }
+
     public int incrStack(int incr) {
         stack += incr;
         return stack;
