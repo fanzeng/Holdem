@@ -23,7 +23,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
     }
   }
   const onChipMinusBtnClick = () => {
-    if (betValue - bb >= 0 && betValue - bb >= currentBet) {
+    if (betValue - bb >= 0) {
       setBetValue(betValue - bb);
       console.log(betValue)
     }
