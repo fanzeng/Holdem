@@ -490,7 +490,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         shuffle();
     }//GEN-LAST:event_btnShuffleMouseClicked
-    private void dealFlop() {
+    private void getFlop() {
         String[] flopArray = holdem.getFlop();
         flop = toString(flopArray, " ");
         System.arraycopy(flopArray, 0, board, 0, flopArray.length);
@@ -499,16 +499,16 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             showBoardImage();
         }
     }
-    private void dealTurn() {
-        turn = holdem.dealTurn();
+    private void getTurn() {
+        turn = holdem.getTurn();
         board[3] = turn;
         lblBoard.setText(flop + " " + turn);
         if (cardImageShow) {
             showBoardImage();
         }
     }
-    private void dealRiver() {
-        river = holdem.dealRiver();
+    private void getRiver() {
+        river = holdem.getRiver();
         board[4] = river;
         lblBoard.setText(flop + " " + turn + " " + river);
         if (cardImageShow) {
@@ -521,13 +521,13 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             case PRE_FLOP:
                 break;
             case FLOP:
-                dealFlop();
+                getFlop();
                 break;
             case TURN:
-                dealTurn();
+                getTurn();
                 break;
             case RIVER:
-                dealRiver();
+                getRiver();
                 break;
             case SHOW_DOWN:
                 showDown();
@@ -805,9 +805,6 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
             board[i] = null;
         }
         hideBoardImage();
-        for (int i = 0; i < numOfPlayers; i++) {
-            holdem.dealCardForPlayer(i);
-        }
         onStageChange();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

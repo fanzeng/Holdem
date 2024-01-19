@@ -56,13 +56,15 @@ export function HoldemGame() {
   }
 
   const tryCreateNewGame = () => {
+    let timeoutID;
     return createNewGame().then(newGameSessionId => {
       if (newGameSessionId?.length > 0) {
+        clearTimeout(timeoutID);
         console.log('successfully created new session:', gameSessionId);
         setRetryCount(0);
       }
       else {
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
           console.log('retrying in 2 secs.')
           console.log('newGameSessionId', newGameSessionId);
           setRetryCount(c => c + 1);
@@ -106,7 +108,7 @@ export function HoldemGame() {
       ]);
     }
     else if (cardStage === 'FLOP') {
-      fetch(`${serverAddr}/deal-flop?gameSessionId=${gameSessionId}`)
+      fetch(`${serverAddr}/get-flop?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -115,7 +117,7 @@ export function HoldemGame() {
         .catch(handleError);
     }
     else if (cardStage === 'TURN') {
-      fetch(`${serverAddr}/deal-turn?gameSessionId=${gameSessionId}`)
+      fetch(`${serverAddr}/get-turn?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -126,7 +128,7 @@ export function HoldemGame() {
         .catch(handleError);
     }
     else if (cardStage === 'RIVER') {
-      fetch(`${serverAddr}/deal-river?gameSessionId=${gameSessionId}`)
+      fetch(`${serverAddr}/get-river?gameSessionId=${gameSessionId}`)
         .then(response => response.json())
         .then(json => {
           console.log(json, typeof json)
@@ -197,7 +199,7 @@ export function HoldemGame() {
   useEffect(() => {
     console.log('holdem state =', holdemState)
     updateCommunityCards(holdemState.cardStage);
-  }, [holdemState]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [holdemState["cardStage"]]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
