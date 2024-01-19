@@ -199,7 +199,7 @@ export function HoldemGame() {
   useEffect(() => {
     console.log('holdem state =', holdemState)
     updateCommunityCards(holdemState.cardStage);
-  }, [holdemState]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [holdemState["cardStage"]]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
