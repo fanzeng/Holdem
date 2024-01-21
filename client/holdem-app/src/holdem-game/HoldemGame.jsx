@@ -18,7 +18,7 @@ export function HoldemGame() {
   const [playerBets, setPlayerBets] = useState([0, 0]);
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
-  const [gameSessionStatus, setGameSessionStatus] = useState('Session expired');
+  const [gameSessionStatus, setGameSessionStatus] = useState('Session uninitialised');
   const [retryCount, setRetryCount] = useState(0);
 
   const E_SESSION_EXPIRED = new Error('SESSION_EXPIRED');
@@ -30,6 +30,10 @@ export function HoldemGame() {
       .then(json => {
         console.log(json)
         setPlayerStackValues([json[0].stack, json[1].stack]);
+        setPlayerPrivateCards([
+          [json[0].privateCards[0], json[0].privateCards[1]],
+          [json[1].privateCards[0], json[1].privateCards[1]]
+        ]);
       });
   }
 
@@ -44,6 +48,7 @@ export function HoldemGame() {
   }
 
   const createNewGame = () => {
+    if (gameSessionId?.length > 0) return;
     return fetch(`${serverAddr}/new-game`)
       .then(response => response.text())
       .then(newGameSessionId => {
@@ -57,6 +62,8 @@ export function HoldemGame() {
 
   const tryCreateNewGame = () => {
     let timeoutID;
+    console.log('try creating new game, current gameSessionId =', gameSessionId);
+    if (gameSessionId?.length > 0) return;
     return createNewGame().then(newGameSessionId => {
       if (newGameSessionId?.length > 0) {
         clearTimeout(timeoutID);
@@ -75,7 +82,6 @@ export function HoldemGame() {
   }
 
   useEffect(() => {
-    setGameSessionStatus('Session uninitialised');
     tryCreateNewGame();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -202,6 +208,16 @@ export function HoldemGame() {
   }, [holdemState["cardStage"]]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
+    if (id === "0") {
+      setPlayerBets(playerBets => {
+        return [betValue, playerBets[1]];
+      });
+    }
+    else if (id === "1") {
+      setPlayerBets(playerBets => {
+        return [playerBets[0], betValue];
+      });
+    }
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
       headers: {
@@ -215,8 +231,10 @@ export function HoldemGame() {
     })
       .then(response => response.json())
       .then(json => {
-        console.log('player bets =', json)
-        setPlayerBets([json[0].betValue, json[1].betValue]);
+        console.log('after player bet, player stacks =', json)
+        console.log('playerBets =', playerBets)
+        // setPlayerBets([json[0].betValue, json[1].betValue]);
+        setPlayerStackValues(json)
         onHoldemStateShouldChange();
       })
       .catch(handleError);

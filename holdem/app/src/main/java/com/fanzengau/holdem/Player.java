@@ -7,6 +7,13 @@ public class Player {
         this.stack = stack;
     }
 
+    public int getStack() {
+        return stack;
+    }
+
+    public void setStack(int stack) {
+        this.stack = stack;
+    }
     public String[] getprivateCards() {
         return privateCards;
     }

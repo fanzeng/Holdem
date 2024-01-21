@@ -34,17 +34,17 @@ public class Holdem {
         deck.shuffle();
         posInDeck = 0;
         pot = 0;
+        players = new Player[playerNum];
+        for (int i = 0; i < playerNum; i++) {
+            players[i] = new Player(initialStack);
+            dealCardForPlayer(i);
+        }
         winners = new ArrayList<>();
     }
     
     public void shuffle() {
         deck.shuffle();
         posInDeck = 0;
-        players = new Player[playerNum];
-        for (int i = 0; i < playerNum; i++) {
-            Player player = new Player(initialStack);
-            players[i] = player;
-        }
         for (int i = 0; i < playerNum; i++) {
             dealCardForPlayer(i);
         }
@@ -54,7 +54,11 @@ public class Holdem {
         winners = new ArrayList<>();
         holdemState = new HoldemState();
     }
-    
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
     public Player[] getPlayers() {
         return players;
     }
@@ -76,12 +80,10 @@ public class Holdem {
         return getCardAt(posInDeck++);
     }
 
-    public void dealCardForPlayer(int playerID) {
-        if (players[playerID].privateCards == null) {
-            players[playerID].privateCards = new String[2];
-            for (int i = 0; i < 2; i++) {
-                players[playerID].privateCards[i] = dealCard();
-            }
+    private void dealCardForPlayer(int playerID) {
+        players[playerID].privateCards = new String[2];
+        for (int i = 0; i < 2; i++) {
+            players[playerID].privateCards[i] = dealCard();
         }
     }
     public String[] getPlayerCard(int playerID) {
@@ -90,26 +92,20 @@ public class Holdem {
 
        
     private String[] dealFlop() {
-        if (flop == null) {
-            flop = new String[3];
-            for (int i = 0; i < 3; i++) {
-                flop[i] = dealCard();
-            }
+        flop = new String[3];
+        for (int i = 0; i < 3; i++) {
+            flop[i] = dealCard();
         }
         return flop;
     }
     
     private String dealTurn() {
-        if (turn.isEmpty()) {
-           turn = dealCard();
-        }
+       turn = dealCard();
         return turn;
     }
     
     private String dealRiver() {
-        if (river.isEmpty()) {
-           river = dealCard();
-        }
+        river = dealCard();
         return river;
     }
 
