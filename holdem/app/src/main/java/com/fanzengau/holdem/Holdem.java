@@ -77,15 +77,15 @@ public class Holdem {
     }
 
     public void dealCardForPlayer(int playerID) {
-        if (players[playerID].privateCard == null) {
-            players[playerID].privateCard = new String[2];
+        if (players[playerID].privateCards == null) {
+            players[playerID].privateCards = new String[2];
             for (int i = 0; i < 2; i++) {
-                players[playerID].privateCard[i] = dealCard();
+                players[playerID].privateCards[i] = dealCard();
             }
         }
     }
     public String[] getPlayerCard(int playerID) {
-        return players[playerID].privateCard;
+        return players[playerID].privateCards;
     }
 
        

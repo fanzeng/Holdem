@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class PlayerDto {
-    String[] privateCard;
+    String[] privateCards;
 }

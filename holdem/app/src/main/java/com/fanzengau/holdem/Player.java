@@ -2,18 +2,18 @@ package com.fanzengau.holdem;
 
 public class Player {
     public int stack;
-    String[] privateCard;
+    String[] privateCards;
     public Player (int stack) {
         this.stack = stack;
     }
 
-    public String[] getPrivateCard() {
-        return privateCard;
+    public String[] getprivateCards() {
+        return privateCards;
     }
 
-    public void setPrivateCard(String[] privateCard)
+    public void setprivateCards(String[] privateCards)
     {
-        this.privateCard = privateCard;
+        this.privateCards = privateCards;
     }
 
     public int incrStack(int incr) {
