@@ -62,7 +62,23 @@ public class HoldemState {
     public int[] getPlayerBets() {
         return playerBets;
     }
-    
+
+    public void setPlayerBets(int[] playerBets) {
+        this.playerBets = playerBets;
+    }
+
+    private void clearPlayerBets() {
+        setPlayerBets(new int[]{0, 0});
+    }
+
+    public boolean getRoundCompleted() {
+        return roundCompleted;
+    }
+
+    public void setRoundCompleted(boolean roundCompleted) {
+        this.roundCompleted = roundCompleted;
+    }
+
     public HoldemState next(int[] playerBets_) {
         if (cardStageToInt(cardStage) == cardStageToInt(CARD_STAGE.SHOW_DOWN)) {
             System.out.println("Start new round.");
@@ -77,11 +93,13 @@ public class HoldemState {
             roundCompleted = true;
             System.out.println("Round completed.");
         }
-        if (roundCompleted && playerBets[playerStage] < playerBets[1-playerStage]) {
+        if (roundCompleted && playerBets[playerStage] < playerBets[1 - playerStage]) {
             System.out.println("Player " + playerStage + " folded.");
             System.out.println("Game ended at cardStage " + cardStage);
+            clearPlayerBets();
             return new HoldemState(CARD_STAGE.SHOW_DOWN, 0, playerBets, true);
         } else if (roundCompleted && playerBets[playerStage] == playerBets[1 - playerStage]) {
+            clearPlayerBets();
             cardStage = intToCardStage(cardStageToInt(cardStage) + 1);
             if (cardStageToInt(cardStage) == cardStageToInt(CARD_STAGE.SHOW_DOWN)) {
                 System.out.println("Show down.");

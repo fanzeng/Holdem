@@ -51,7 +51,7 @@ public class HoldemController {
             .holdemDto(holdemMapper.holdemToHoldemDto(holdem))
             .build();
         var saved = gameSessionRepository.save(gameSession);
-        log.info(">>>> Created game session:" + saved);
+        log.info(">>>> Created game session:" + saved.getId());
         return saved.getId();
     }
 
@@ -61,7 +61,6 @@ public class HoldemController {
         @RequestParam(required = true) String gameSessionId
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
-        System.out.println("holdem.players="+holdem.players.length);
         return holdem.players;
     }
 
@@ -158,11 +157,9 @@ public class HoldemController {
     }
 
     private HoldemState nextHoldemState(Holdem holdem, String gameSessionId, int []playerBets) {
-        var holdemState = holdem.holdemState;
-        holdemState = holdemState.next(new int[]{playerBets[0], playerBets[1]});
-        holdem.holdemState = holdemState;
+        holdem.holdemState = holdem.holdemState.next(new int[]{playerBets[0], playerBets[1]});
         saveHoldemToGameSession(holdem, gameSessionId);
-        return holdemState;
+        return holdem.holdemState;
     }
 
     @PostMapping("/player-bet")
@@ -175,6 +172,7 @@ public class HoldemController {
         int playerId = Integer.parseInt(playerBet.id);
         int[] playerBets = holdem.holdemState.getPlayerBets();
         playerBets[playerId] = playerBet.betValue;
+        // TODO: should only decrStack when round finishes
         holdem.players[playerId].decrStack(playerBet.betValue);
         nextHoldemState(holdem, gameSessionId, playerBets);
         return new int[]{ holdem.players[0].stack, holdem.players[1].stack };
