@@ -16,6 +16,7 @@ export function HoldemGame() {
   ]);
   const [playerStackValues, setPlayerStackValues] = useState([0, 0]);
   const [playerBets, setPlayerBets] = useState([0, 0]);
+  const [committedValue, setCommittedValue] = useState([0, 0]);
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
   const [gameSessionStatus, setGameSessionStatus] = useState('Session uninitialised');
@@ -203,19 +204,30 @@ export function HoldemGame() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    console.log('holdem state =', holdemState)
+    console.log('card stage changed, holdem state =', holdemState);
+    setPlayerBets([0, 0]);
+    setCommittedValue([0, 0]);
     updateCommunityCards(holdemState.cardStage);
   }, [holdemState["cardStage"]]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
+    let playerBet;
     if (id === "0") {
+      playerBet = betValue + committedValue[0];
       setPlayerBets(playerBets => {
-        return [betValue, playerBets[1]];
+        return [playerBet, playerBets[1]];
+      });
+      setCommittedValue(committedValue => {
+        return [betValue, committedValue[1]]
       });
     }
     else if (id === "1") {
+      playerBet = betValue + committedValue[1];
       setPlayerBets(playerBets => {
-        return [playerBets[0], betValue];
+        return [playerBets[0], playerBet];
+      });
+      setCommittedValue(committedValue => {
+        return [committedValue[0], betValue]
       });
     }
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
@@ -226,7 +238,7 @@ export function HoldemGame() {
       },
       body: JSON.stringify({
         "id": id,
-        "betValue": betValue
+        "betValue": playerBet
       })
     })
       .then(response => response.json())
@@ -274,7 +286,7 @@ export function HoldemGame() {
           playerStackValues[0] = stackValue;
           setPlayerStackValues(playerStackValuesTemp);
         }}
-        currentBet={playerBets[1]}
+        currentBet={holdemState.playerStage === 0 ? playerBets[1] - committedValue[0] : 0}
       /><br />
       <Player key="1" id="1"
         enable={holdemState.cardStage !== 'SHOW_DOWN' && holdemState.playerStage === 1}
@@ -286,7 +298,7 @@ export function HoldemGame() {
           playerStackValues[1] = stackValue;
           setPlayerStackValues(playerStackValuesTemp);
         }}
-        currentBet={playerBets[0]}
+        currentBet={holdemState.playerStage === 1 ? playerBets[0] - committedValue[1] : 0}
       />
       <br />
       <div className="label-text" hidden={holdemState.cardStage !== 'SHOW_DOWN'} style={{ 'width': '50vw', 'margin': 'auto' }}>{showDownResult}</div>
