@@ -67,6 +67,14 @@ public class Holdem {
         this.players = players;
     }
 
+    public int getPot() {
+        return pot;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+
     private String getCardAt(int i) {
         if (i < deck.getCards().length) {
             return deck.getCards()[i].toString();
@@ -166,6 +174,10 @@ public class Holdem {
                 winnerString += Integer.toString(i+1);
                 winners.add(i);
             } 
+        }
+        float potShare = pot / winners.size();
+        for (var winner : winners) {
+            players[winner].stack += potShare;
         }
         showDownResultString[showDownResultString.length-1] += winnerString + "] has the best hand.";
         System.out.println(showDownResultString[showDownResultString.length-1]);

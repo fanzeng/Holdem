@@ -8,6 +8,7 @@ public class HoldemDto {
     String[] flop;
     String turn;
     String river;
+    int pot;
     PlayerDto[] players;
     HoldemStateDto holdemState;
 }

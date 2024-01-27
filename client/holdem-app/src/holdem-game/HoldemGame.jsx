@@ -194,6 +194,7 @@ export function HoldemGame() {
         }
         else {
           setHoldemState(json);
+          setCommittedValue(json.playerBets);
         }
       })
       .catch(handleError);
@@ -217,18 +218,18 @@ export function HoldemGame() {
       setPlayerBets(playerBets => {
         return [playerBet, playerBets[1]];
       });
-      setCommittedValue(committedValue => {
-        return [betValue, committedValue[1]]
-      });
+      // setCommittedValue(committedValue => {
+      //   return [betValue, committedValue[1]]
+      // });
     }
     else if (id === "1") {
       playerBet = betValue + committedValue[1];
       setPlayerBets(playerBets => {
         return [playerBets[0], playerBet];
       });
-      setCommittedValue(committedValue => {
-        return [committedValue[0], betValue]
-      });
+      // setCommittedValue(committedValue => {
+      //   return [committedValue[0], betValue]
+      // });
     }
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
@@ -246,25 +247,20 @@ export function HoldemGame() {
         console.log('after player bet, player stacks =', json)
         console.log('playerBets =', playerBets)
         // setPlayerBets([json[0].betValue, json[1].betValue]);
-        setPlayerStackValues(json)
+        setPlayerStackValues(json);
         onHoldemStateShouldChange();
       })
       .catch(handleError);
-    if (isFold) {
-      onPlayerFold(id);
-    }
-    else {
-      setPotValue(potValue + betValue);
-    }
+    setPotValue(potValue + betValue);
   }
 
-  const onPlayerFold = id => {
-    const winnerId = 1 - id;
-    let playerStackValuesTemp = playerStackValues;
-    playerStackValuesTemp[winnerId] += potValue;
-    setPotValue(0);
-    setPlayerStackValues(playerStackValuesTemp);
-  }
+  // const onPlayerFold = id => {
+  //   const winnerId = 1 - id;
+  //   let playerStackValuesTemp = playerStackValues;
+  //   playerStackValuesTemp[winnerId] += potValue;
+  //   setPotValue(0);
+  //   setPlayerStackValues(playerStackValuesTemp);
+  // }
 
   return <>
     <div className="background">

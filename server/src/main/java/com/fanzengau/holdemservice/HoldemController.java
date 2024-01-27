@@ -171,9 +171,10 @@ public class HoldemController {
         var holdem = getHoldemByGameSessionId(gameSessionId);
         int playerId = Integer.parseInt(playerBet.id);
         int[] playerBets = holdem.holdemState.getPlayerBets();
+        int potIncr = playerBet.betValue - playerBets[playerId];
+        holdem.setPot(holdem.getPot() + potIncr);
+        holdem.players[playerId].decrStack(potIncr);
         playerBets[playerId] = playerBet.betValue;
-        // TODO: should only decrStack when round finishes
-        holdem.players[playerId].decrStack(playerBet.betValue);
         nextHoldemState(holdem, gameSessionId, playerBets);
         return new int[]{ holdem.players[0].stack, holdem.players[1].stack };
     }
