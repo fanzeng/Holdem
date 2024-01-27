@@ -16,9 +16,10 @@ export function HoldemGame() {
   ]);
   const [playerStackValues, setPlayerStackValues] = useState([0, 0]);
   const [playerBets, setPlayerBets] = useState([0, 0]);
+  const [committedValue, setCommittedValue] = useState([0, 0]);
   const [potValue, setPotValue] = useState(0);
   const [showDownResult, setShowDownResult] = useState('.');
-  const [gameSessionStatus, setGameSessionStatus] = useState('Session expired');
+  const [gameSessionStatus, setGameSessionStatus] = useState('Session uninitialised');
   const [retryCount, setRetryCount] = useState(0);
 
   const E_SESSION_EXPIRED = new Error('SESSION_EXPIRED');
@@ -30,6 +31,10 @@ export function HoldemGame() {
       .then(json => {
         console.log(json)
         setPlayerStackValues([json[0].stack, json[1].stack]);
+        setPlayerPrivateCards([
+          [json[0].privateCards[0], json[0].privateCards[1]],
+          [json[1].privateCards[0], json[1].privateCards[1]]
+        ]);
       });
   }
 
@@ -44,6 +49,7 @@ export function HoldemGame() {
   }
 
   const createNewGame = () => {
+    if (gameSessionId?.length > 0) return;
     return fetch(`${serverAddr}/new-game`)
       .then(response => response.text())
       .then(newGameSessionId => {
@@ -57,6 +63,8 @@ export function HoldemGame() {
 
   const tryCreateNewGame = () => {
     let timeoutID;
+    console.log('try creating new game, current gameSessionId =', gameSessionId);
+    if (gameSessionId?.length > 0) return;
     return createNewGame().then(newGameSessionId => {
       if (newGameSessionId?.length > 0) {
         clearTimeout(timeoutID);
@@ -75,7 +83,6 @@ export function HoldemGame() {
   }
 
   useEffect(() => {
-    setGameSessionStatus('Session uninitialised');
     tryCreateNewGame();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -150,28 +157,30 @@ export function HoldemGame() {
     }
   }
 
-  const givePotToWinner = showDownResult => {
-    const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
-    console.log('winnerIds is', winnderIds);
-    let playerStackValuesTemp = playerStackValues;
-    // handle tie
-    if (winnderIds.length === 2) {
-      playerStackValuesTemp[0] += potValue / 2.0;
-      playerStackValuesTemp[1] += potValue / 2.0;
-    }
-    else {
-      playerStackValuesTemp[parseInt(winnderIds[0]) - 1] += potValue;
-    }
-    setPotValue(0);
-    setPlayerStackValues(playerStackValuesTemp);
-  }
+  // const givePotToWinner = showDownResult => {
+  //   const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
+  //   console.log('winnerIds is', winnderIds);
+  //   let playerStackValuesTemp = playerStackValues;
+  //   // handle tie
+  //   if (winnderIds.length === 2) {
+  //     playerStackValuesTemp[0] += potValue / 2.0;
+  //     playerStackValuesTemp[1] += potValue / 2.0;
+  //   }
+  //   else {
+  //     playerStackValuesTemp[parseInt(winnderIds[0]) - 1] += potValue;
+  //   }
+  //   setPotValue(0);
+  //   setPlayerStackValues(playerStackValuesTemp);
+  // }
 
   const onShowDown = () => {
     fetch(`${serverAddr}/show-down?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         setShowDownResult(json.join('. '));
-        givePotToWinner(json);
+        setPotValue(0);
+        getPlayers();
+        // givePotToWinner(json);
       })
       .catch(handleError);
   }
@@ -187,6 +196,7 @@ export function HoldemGame() {
         }
         else {
           setHoldemState(json);
+          setCommittedValue(json.playerBets);
         }
       })
       .catch(handleError);
@@ -197,11 +207,26 @@ export function HoldemGame() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    console.log('holdem state =', holdemState)
+    console.log('card stage changed, holdem state =', holdemState);
+    setPlayerBets([0, 0]);
+    setCommittedValue([0, 0]);
     updateCommunityCards(holdemState.cardStage);
   }, [holdemState["cardStage"]]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPlayerBet = (id, betValue, isFold = false) => {
+    let playerBet;
+    if (id === "0") {
+      playerBet = betValue + committedValue[0];
+      setPlayerBets(playerBets => {
+        return [playerBet, playerBets[1]];
+      });
+    }
+    else if (id === "1") {
+      playerBet = betValue + committedValue[1];
+      setPlayerBets(playerBets => {
+        return [playerBets[0], playerBet];
+      });
+    }
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
       headers: {
@@ -210,30 +235,19 @@ export function HoldemGame() {
       },
       body: JSON.stringify({
         "id": id,
-        "betValue": betValue
+        "betValue": playerBet
       })
     })
       .then(response => response.json())
       .then(json => {
-        console.log('player bets =', json)
-        setPlayerBets([json[0].betValue, json[1].betValue]);
+        console.log('after player bet, player stacks =', json)
+        console.log('playerBets =', playerBets)
+        // setPlayerBets([json[0].betValue, json[1].betValue]);
+        setPlayerStackValues(json);
         onHoldemStateShouldChange();
       })
       .catch(handleError);
-    if (isFold) {
-      onPlayerFold(id);
-    }
-    else {
-      setPotValue(potValue + betValue);
-    }
-  }
-
-  const onPlayerFold = id => {
-    const winnerId = 1 - id;
-    let playerStackValuesTemp = playerStackValues;
-    playerStackValuesTemp[winnerId] += potValue;
-    setPotValue(0);
-    setPlayerStackValues(playerStackValuesTemp);
+    setPotValue(potValue + betValue);
   }
 
   return <>
@@ -256,7 +270,7 @@ export function HoldemGame() {
           playerStackValues[0] = stackValue;
           setPlayerStackValues(playerStackValuesTemp);
         }}
-        currentBet={playerBets[1]}
+        currentBet={holdemState.playerStage === 0 ? playerBets[1] - committedValue[0] : 0}
       /><br />
       <Player key="1" id="1"
         enable={holdemState.cardStage !== 'SHOW_DOWN' && holdemState.playerStage === 1}
@@ -268,7 +282,7 @@ export function HoldemGame() {
           playerStackValues[1] = stackValue;
           setPlayerStackValues(playerStackValuesTemp);
         }}
-        currentBet={playerBets[0]}
+        currentBet={holdemState.playerStage === 1 ? playerBets[0] - committedValue[1] : 0}
       />
       <br />
       <div className="label-text" hidden={holdemState.cardStage !== 'SHOW_DOWN'} style={{ 'width': '50vw', 'margin': 'auto' }}>{showDownResult}</div>

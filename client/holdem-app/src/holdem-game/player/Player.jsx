@@ -34,7 +34,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
       setTimeout(() => {
         setCallBtnJustClicked(false);
       }, 200);
-      setStackValue(stackValue - betValue);
+      // setStackValue(stackValue - betValue);
       onPlayerBet(id, currentBet);
     }
   }
@@ -45,7 +45,7 @@ export function Player({ id, enable, onPlayerBet, privateCards, stackValue, setS
       setTimeout(() => {
         setRaiseBtnJustClicked(false);
       }, 200);
-      setStackValue(stackValue - betValue);
+      // setStackValue(stackValue - betValue);
       onPlayerBet(id, betValue);
     }
   }

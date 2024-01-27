@@ -46,23 +46,50 @@ public class HoldemState {
     public int playerStage;  // Player0 always acts first
     int[] playerBets; // array of total bet amount of each single player
     boolean roundCompleted;
+    boolean[] playerFolded;
     public HoldemState() {
         cardStage = CARD_STAGE.PRE_FLOP;
         playerStage = 0;
         playerBets = new int[2];
         roundCompleted = false;
+        playerFolded = new boolean[2];
     }
-    HoldemState(CARD_STAGE cardStage_, int playerStage_, int[] playerBets_, boolean roundCompleted_) {
+    HoldemState(CARD_STAGE cardStage_, int playerStage_, int[] playerBets_, boolean roundCompleted_, boolean[] playerFolded_) {
         cardStage = cardStage_;
         playerStage = playerStage_;
         playerBets = playerBets_;
         roundCompleted = roundCompleted_;
+        playerFolded = playerFolded_;
     }
     
     public int[] getPlayerBets() {
         return playerBets;
     }
-    
+
+    public void setPlayerBets(int[] playerBets) {
+        this.playerBets = playerBets;
+    }
+
+    private void clearPlayerBets() {
+        setPlayerBets(new int[]{0, 0});
+    }
+
+    public boolean getRoundCompleted() {
+        return roundCompleted;
+    }
+
+    public void setRoundCompleted(boolean roundCompleted) {
+        this.roundCompleted = roundCompleted;
+    }
+
+    public boolean[] getPlayerFolded() {
+        return playerFolded;
+    }
+
+    public void setPlayerFolded(boolean[] playerFolded) {
+        this.playerFolded = playerFolded;
+    }
+
     public HoldemState next(int[] playerBets_) {
         if (cardStageToInt(cardStage) == cardStageToInt(CARD_STAGE.SHOW_DOWN)) {
             System.out.println("Start new round.");
@@ -77,21 +104,24 @@ public class HoldemState {
             roundCompleted = true;
             System.out.println("Round completed.");
         }
-        if (roundCompleted && playerBets[playerStage] < playerBets[1-playerStage]) {
+        if (roundCompleted && playerBets[playerStage] < playerBets[1 - playerStage]) {
             System.out.println("Player " + playerStage + " folded.");
             System.out.println("Game ended at cardStage " + cardStage);
-            return new HoldemState(CARD_STAGE.SHOW_DOWN, 0, playerBets, true);
+            playerFolded[playerStage] = true;
+            clearPlayerBets();
+            return new HoldemState(CARD_STAGE.SHOW_DOWN, 0, playerBets, true, playerFolded);
         } else if (roundCompleted && playerBets[playerStage] == playerBets[1 - playerStage]) {
+            clearPlayerBets();
             cardStage = intToCardStage(cardStageToInt(cardStage) + 1);
             if (cardStageToInt(cardStage) == cardStageToInt(CARD_STAGE.SHOW_DOWN)) {
                 System.out.println("Show down.");
-                return new HoldemState(cardStage, 0, playerBets, true);
+                return new HoldemState(cardStage, 0, playerBets, true, playerFolded);
             } else {
                 System.out.println("Card stage: " + cardStage);
-                return new HoldemState(cardStage, 0, playerBets, false);
+                return new HoldemState(cardStage, 0, playerBets, false, playerFolded);
             }
         } else {
-            return new HoldemState(cardStage, 1 - playerStage, playerBets, roundCompleted); 
+            return new HoldemState(cardStage, 1 - playerStage, playerBets, roundCompleted, playerFolded);
         }
     }
     

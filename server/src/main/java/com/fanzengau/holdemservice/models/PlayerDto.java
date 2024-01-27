@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class PlayerDto {
-    String[] privateCard;
+    int stack;
+    String[] privateCards;
 }

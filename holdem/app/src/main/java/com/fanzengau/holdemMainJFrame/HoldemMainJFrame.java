@@ -593,7 +593,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int playerId = holdem.holdemState.playerStage;
         if (!arrPlayerShow[playerId]) {
-            arrLblPlayerCard[playerId].setText(toString(holdem.players[playerId].getPrivateCard(), " "));
+            arrLblPlayerCard[playerId].setText(toString(holdem.players[playerId].getprivateCards(), " "));
             btnPlayerShow.setText("Hide");
             if (cardImageShow) {
                 showPlayerImage(playerId);
@@ -717,7 +717,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
     }
     
     private void showPlayerImage(int playerNum) {
-        String[] playerCardString = holdem.players[playerNum].getPrivateCard();
+        String[] playerCardString = holdem.players[playerNum].getprivateCards();
         JLabel[] cardLabel = new JLabel[2];
         JLabel lblPlayerCardImg0 = null;
         JLabel lblPlayerCardImg1 = null;
@@ -754,7 +754,7 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         }
         cardLabel[0] = lblPlayerCardImg0;
         cardLabel[1] = lblPlayerCardImg1;
-        for (int i = 0; i < holdem.players[playerId].getPrivateCard().length; i++) {
+        for (int i = 0; i < holdem.players[playerId].getprivateCards().length; i++) {
             hideCardImage(cardLabel[i]);
         }
         arrLblPlayerCard[playerId].setText("");

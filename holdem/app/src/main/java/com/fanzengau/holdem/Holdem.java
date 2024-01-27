@@ -34,17 +34,18 @@ public class Holdem {
         deck.shuffle();
         posInDeck = 0;
         pot = 0;
+        players = new Player[playerNum];
+        for (int i = 0; i < playerNum; i++) {
+            players[i] = new Player(initialStack);
+            dealCardForPlayer(i);
+        }
         winners = new ArrayList<>();
     }
     
     public void shuffle() {
         deck.shuffle();
         posInDeck = 0;
-        players = new Player[playerNum];
-        for (int i = 0; i < playerNum; i++) {
-            Player player = new Player(initialStack);
-            players[i] = player;
-        }
+        pot = 0;
         for (int i = 0; i < playerNum; i++) {
             dealCardForPlayer(i);
         }
@@ -54,13 +55,25 @@ public class Holdem {
         winners = new ArrayList<>();
         holdemState = new HoldemState();
     }
-    
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
     public Player[] getPlayers() {
         return players;
     }
 
     public void setPlayers(Player[] players) {
         this.players = players;
+    }
+
+    public int getPot() {
+        return pot;
+    }
+
+    public void setPot(int pot) {
+        this.pot = pot;
     }
 
     private String getCardAt(int i) {
@@ -76,40 +89,32 @@ public class Holdem {
         return getCardAt(posInDeck++);
     }
 
-    public void dealCardForPlayer(int playerID) {
-        if (players[playerID].privateCard == null) {
-            players[playerID].privateCard = new String[2];
-            for (int i = 0; i < 2; i++) {
-                players[playerID].privateCard[i] = dealCard();
-            }
+    private void dealCardForPlayer(int playerID) {
+        players[playerID].privateCards = new String[2];
+        for (int i = 0; i < 2; i++) {
+            players[playerID].privateCards[i] = dealCard();
         }
     }
     public String[] getPlayerCard(int playerID) {
-        return players[playerID].privateCard;
+        return players[playerID].privateCards;
     }
 
        
     private String[] dealFlop() {
-        if (flop == null) {
-            flop = new String[3];
-            for (int i = 0; i < 3; i++) {
-                flop[i] = dealCard();
-            }
+        flop = new String[3];
+        for (int i = 0; i < 3; i++) {
+            flop[i] = dealCard();
         }
         return flop;
     }
     
     private String dealTurn() {
-        if (turn.isEmpty()) {
-           turn = dealCard();
-        }
+       turn = dealCard();
         return turn;
     }
     
     private String dealRiver() {
-        if (river.isEmpty()) {
-           river = dealCard();
-        }
+        river = dealCard();
         return river;
     }
 
@@ -170,6 +175,20 @@ public class Holdem {
                 winnerString += Integer.toString(i+1);
                 winners.add(i);
             } 
+        }
+        // TODO: current logic assume only 2 players
+        if (holdemState.playerFolded[0]) {
+            System.out.println("Player 1 folded. Pot goes to Player 2.");
+            players[1].stack += pot;
+        } else if (holdemState.playerFolded[1]) {
+            System.out.println("Player 2 folded. Pot goes to Player 1.");
+            players[0].stack += pot;
+        } else {
+            System.out.println("Distributing pot " + pot + " among " + winners.size() + " player(s).");
+            float potShare = pot / winners.size();
+            for (var winner : winners) {
+                players[winner].stack += potShare;
+            }
         }
         showDownResultString[showDownResultString.length-1] += winnerString + "] has the best hand.";
         System.out.println(showDownResultString[showDownResultString.length-1]);

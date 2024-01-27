@@ -441,10 +441,10 @@ class ShowDown {
     }
 
     ShowDownResult getShowDownResult(Player player, String[] board) {
-        String[] privateCard = player.getPrivateCard();
+        String[] privateCards = player.getprivateCards();
         System.arraycopy(board, 0, candidateCards, 0, board.length);
-        candidateCards[5] = privateCard[0];
-        candidateCards[6] = privateCard[1];
+        candidateCards[5] = privateCards[0];
+        candidateCards[6] = privateCards[1];
 
         CountResult countResult = countCards();
         Holdem.BEST_HAND_TYPE bestHandType;

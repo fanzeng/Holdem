@@ -19,9 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @Slf4j
 public class HoldemController {
-    private static Player[] players;
-    private static PlayerBet[] playerBets;
-
     @Autowired
     private HoldemMapper holdemMapper;
     @Autowired
@@ -55,15 +52,16 @@ public class HoldemController {
             .build();
         var saved = gameSessionRepository.save(gameSession);
         log.info(">>>> Created game session:" + saved.getId());
-        players = new Player[]{new Player(1000), new Player(1000)};
-        playerBets = new PlayerBet[]{new PlayerBet("0", 0), new PlayerBet("1", 0)};
         return saved.getId();
     }
 
     @GetMapping("/players")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public Player[] players() {
-        return players;
+    public Player[] players(
+        @RequestParam(required = true) String gameSessionId
+    ) {
+        var holdem = getHoldemByGameSessionId(gameSessionId);
+        return holdem.players;
     }
 
     @GetMapping("/shuffle")
@@ -71,7 +69,7 @@ public class HoldemController {
     public String[] shuffle(
         @RequestParam(required = true) String gameSessionId
     ) {
-        var holdem = new Holdem(2);
+        var holdem = getHoldemByGameSessionId(gameSessionId);
         holdem.shuffle();
         saveHoldemToGameSession(holdem, gameSessionId);
         var privateCards0 = holdem.getPlayerCard(Integer.parseInt("0"));
@@ -86,7 +84,7 @@ public class HoldemController {
         @RequestParam(required = true, defaultValue = "0") String playerId
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
-        holdem.dealCardForPlayer(Integer.parseInt(playerId));
+        holdem.getPlayerCard(Integer.parseInt(playerId));
         var privateCards = holdem.getPlayerCard(Integer.parseInt(playerId));
         saveHoldemToGameSession(holdem, gameSessionId);
         return privateCards;
@@ -158,35 +156,26 @@ public class HoldemController {
         return holdem.holdemState;
     }
 
-    @PostMapping("/next-holdem-state")
-    @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public HoldemState nextHoldemState(
-        @RequestParam() String gameSessionId
-    ) {
-        var holdem = getHoldemByGameSessionId(gameSessionId);
-        var holdemState = holdem.holdemState;
-        holdemState = holdemState.next(new int[]{playerBets[0].betValue, playerBets[1].betValue});
-        holdem.holdemState = holdemState;
+    private HoldemState nextHoldemState(Holdem holdem, String gameSessionId, int []playerBets) {
+        holdem.holdemState = holdem.holdemState.next(new int[]{playerBets[0], playerBets[1]});
         saveHoldemToGameSession(holdem, gameSessionId);
-        return holdemState;
+        return holdem.holdemState;
     }
 
     @PostMapping("/player-bet")
     @CrossOrigin(origins = {"http://localhost:3000", "https://epicbeaver.netlify.app", "https://fanzengau.com"})
-    public PlayerBet[] playerBet(
+    public int[] playerBet(
         @RequestParam() String gameSessionId,
         @RequestBody PlayerBet playerBet
     ) {
         var holdem = getHoldemByGameSessionId(gameSessionId);
-        var holdemState = holdem.holdemState;
-        var cardStage = holdemState.cardStage;
-        this.playerBets[Integer.parseInt(playerBet.id)] = playerBet;
-        players[Integer.parseInt(playerBet.id)].decrStack(playerBet.betValue);
-        var hs = nextHoldemState(gameSessionId);
-        if (hs.cardStage != cardStage) {
-            playerBets[0].betValue = 0;
-            playerBets[1].betValue = 0;
-        }
-        return playerBets;
+        int playerId = Integer.parseInt(playerBet.id);
+        int[] playerBets = holdem.holdemState.getPlayerBets();
+        int potIncr = playerBet.betValue - playerBets[playerId];
+        holdem.setPot(holdem.getPot() + potIncr);
+        holdem.players[playerId].decrStack(potIncr);
+        playerBets[playerId] = playerBet.betValue;
+        nextHoldemState(holdem, gameSessionId, playerBets);
+        return new int[]{ holdem.players[0].stack, holdem.players[1].stack };
     }
 }
