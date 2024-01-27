@@ -45,6 +45,7 @@ public class Holdem {
     public void shuffle() {
         deck.shuffle();
         posInDeck = 0;
+        pot = 0;
         for (int i = 0; i < playerNum; i++) {
             dealCardForPlayer(i);
         }
@@ -175,9 +176,19 @@ public class Holdem {
                 winners.add(i);
             } 
         }
-        float potShare = pot / winners.size();
-        for (var winner : winners) {
-            players[winner].stack += potShare;
+        // TODO: current logic assume only 2 players
+        if (holdemState.playerFolded[0]) {
+            System.out.println("Player 1 folded. Pot goes to Player 2.");
+            players[1].stack += pot;
+        } else if (holdemState.playerFolded[1]) {
+            System.out.println("Player 2 folded. Pot goes to Player 1.");
+            players[0].stack += pot;
+        } else {
+            System.out.println("Distributing pot " + pot + " among " + winners.size() + " player(s).");
+            float potShare = pot / winners.size();
+            for (var winner : winners) {
+                players[winner].stack += potShare;
+            }
         }
         showDownResultString[showDownResultString.length-1] += winnerString + "] has the best hand.";
         System.out.println(showDownResultString[showDownResultString.length-1]);

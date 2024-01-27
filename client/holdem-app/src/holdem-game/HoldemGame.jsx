@@ -157,28 +157,30 @@ export function HoldemGame() {
     }
   }
 
-  const givePotToWinner = showDownResult => {
-    const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
-    console.log('winnerIds is', winnderIds);
-    let playerStackValuesTemp = playerStackValues;
-    // handle tie
-    if (winnderIds.length === 2) {
-      playerStackValuesTemp[0] += potValue / 2.0;
-      playerStackValuesTemp[1] += potValue / 2.0;
-    }
-    else {
-      playerStackValuesTemp[parseInt(winnderIds[0]) - 1] += potValue;
-    }
-    setPotValue(0);
-    setPlayerStackValues(playerStackValuesTemp);
-  }
+  // const givePotToWinner = showDownResult => {
+  //   const winnderIds = JSON.parse(showDownResult[2].match(/Player (\[.+\])/)[1]);
+  //   console.log('winnerIds is', winnderIds);
+  //   let playerStackValuesTemp = playerStackValues;
+  //   // handle tie
+  //   if (winnderIds.length === 2) {
+  //     playerStackValuesTemp[0] += potValue / 2.0;
+  //     playerStackValuesTemp[1] += potValue / 2.0;
+  //   }
+  //   else {
+  //     playerStackValuesTemp[parseInt(winnderIds[0]) - 1] += potValue;
+  //   }
+  //   setPotValue(0);
+  //   setPlayerStackValues(playerStackValuesTemp);
+  // }
 
   const onShowDown = () => {
     fetch(`${serverAddr}/show-down?gameSessionId=${gameSessionId}`)
       .then(response => response.json())
       .then(json => {
         setShowDownResult(json.join('. '));
-        givePotToWinner(json);
+        setPotValue(0);
+        getPlayers();
+        // givePotToWinner(json);
       })
       .catch(handleError);
   }
@@ -218,18 +220,12 @@ export function HoldemGame() {
       setPlayerBets(playerBets => {
         return [playerBet, playerBets[1]];
       });
-      // setCommittedValue(committedValue => {
-      //   return [betValue, committedValue[1]]
-      // });
     }
     else if (id === "1") {
       playerBet = betValue + committedValue[1];
       setPlayerBets(playerBets => {
         return [playerBets[0], playerBet];
       });
-      // setCommittedValue(committedValue => {
-      //   return [committedValue[0], betValue]
-      // });
     }
     fetch(`${serverAddr}/player-bet?gameSessionId=${gameSessionId}`, {
       method: 'POST',
@@ -253,14 +249,6 @@ export function HoldemGame() {
       .catch(handleError);
     setPotValue(potValue + betValue);
   }
-
-  // const onPlayerFold = id => {
-  //   const winnerId = 1 - id;
-  //   let playerStackValuesTemp = playerStackValues;
-  //   playerStackValuesTemp[winnerId] += potValue;
-  //   setPotValue(0);
-  //   setPlayerStackValues(playerStackValuesTemp);
-  // }
 
   return <>
     <div className="background">

@@ -9,4 +9,5 @@ public class HoldemStateDto {
     public int playerStage;
     int[] playerBets;
     boolean roundCompleted;
+    boolean[] playerFolded;
 }
