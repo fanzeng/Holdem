@@ -773,14 +773,13 @@ public class HoldemMainJFrame extends javax.swing.JFrame {
         BufferedImage image = null;
         try {
             System.out.println(cardString);
-            File imageFile = Paths.get(System.getProperty("user.dir"), "resource", "deck", cardString + ".png").toFile();
+            File imageFile = Paths.get(System.getProperty("user.dir"), "..", "resource", "deck", cardString + ".png").toFile();
             if (!imageFile.exists()) {
                 String cardName = "";
                 if (cardString.charAt(0) == 'T') {
                     cardName = "10" + cardString.charAt(1);
                 }
-                
-                imageFile = Paths.get("resource", "deck", cardName + ".png").toFile();
+                imageFile = Paths.get("..", "resource", "deck", cardName + ".png").toFile();
             }
             if (!imageFile.exists()) {
                 throw new IOException("Cannot load card image. Maybe resource folder does not exist?");
