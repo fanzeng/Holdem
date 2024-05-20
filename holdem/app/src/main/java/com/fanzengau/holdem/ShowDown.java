@@ -103,8 +103,9 @@ class ShowDown {
                     kickers[0] = new Card(countResult.maxCountRank);
                     int count = 1;
                     for (int i = 14; i > 0; i--) {
-                        if (countResult.rankCount[i % 13] >= 1 && i != countResult.maxCountRank) {
-                            kickers[count] = new Card(i + 52);
+                        if (countResult.rankCount[i % 13] >= 1 && i % 13 != countResult.maxCountRank) {
+                            kickers[count] = new Card(i + 52); // add 52 to get a spade card as kicker, since suit is
+                                                               // unimportant.
                             count++;
                             if (count == 3)
                                 break;

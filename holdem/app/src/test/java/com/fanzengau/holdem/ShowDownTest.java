@@ -128,17 +128,17 @@ class ShowDownTest {
         testShowDownResult(privateCards, board, expectedBestHandType, expectedKickers);
     }
 
-    // @Test
-    // void getShowDownResultThreeOfAKind2() {
-    // var privateCards = new String[]{"5C", "4C"};
-    // var board = new String[]{"2C", "3S", "KS", "KH", "KD"};
-    // var expectedBestHandType = THREE_OF_A_KIND;
-    // var expectedKickers = new Card[]{
-    // new Card("KS"), new Card("5*"), new Card("4*")
-    // };
-    // testShowDownResult(privateCards, board, expectedBestHandType,
-    // expectedKickers);
-    // }
+    @Test
+    void getShowDownResultThreeOfAKind2() {
+        var privateCards = new String[] { "5C", "4C" };
+        var board = new String[] { "2C", "3S", "KS", "KH", "KD" };
+        var expectedBestHandType = THREE_OF_A_KIND;
+        var expectedKickers = new Card[] {
+                new Card("KS"), new Card("5*"), new Card("4*")
+        };
+        testShowDownResult(privateCards, board, expectedBestHandType,
+                expectedKickers);
+    }
 
     @Test
     void getShowDownResultTwoPair() {
