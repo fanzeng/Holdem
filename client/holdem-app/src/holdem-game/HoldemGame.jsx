@@ -88,7 +88,6 @@ export function HoldemGame() {
 
   useEffect(() => {
     console.log('gameSessionId =', gameSessionId)
-    getPlayers();
     onShuffleBtnClick();
   }, [gameSessionId]); // eslint-disable-line react-hooks/exhaustive-deps
 
