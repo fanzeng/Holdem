@@ -11,16 +11,10 @@ export function HoldemGame() {
   const [gameSessionId, setGameSessionId] = useState("");
   const [holdemState, setHoldemState] = useState({});
   const [playerPrivateCards, setPlayerPrivateCards] = useState([
-    ["red_back", "red_back"],
-    ["red_back", "red_back"],
+    ["", ""],
+    ["", ""],
   ]);
-  const [communityCards, setCommunityCards] = useState([
-    "red_back",
-    "red_back",
-    "red_back",
-    "red_back",
-    "red_back",
-  ]);
+  const [communityCards, setCommunityCards] = useState(["", "", "", "", ""]);
   const [playerStackValues, setPlayerStackValues] = useState([0, 0]);
   const [playerBets, setPlayerBets] = useState([0, 0]);
   const [committedValue, setCommittedValue] = useState([0, 0]);
@@ -123,13 +117,7 @@ export function HoldemGame() {
   const updateCommunityCards = (cardStage) => {
     console.log("cardStage =", cardStage);
     if (cardStage === "PRE_FLOP") {
-      setCommunityCards([
-        "red_back",
-        "red_back",
-        "red_back",
-        "red_back",
-        "red_back",
-      ]);
+      setCommunityCards(["", "", "", "", ""]);
     } else if (cardStage === "FLOP") {
       fetch(`${serverAddr}/get-flop?gameSessionId=${gameSessionId}`)
         .then((response) => response.json())
