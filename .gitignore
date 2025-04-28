@@ -2,3 +2,7 @@
 nbproject/
 build/
 manifest.mf
+**/.DS_STORE
+**/.classpath
+**/.project
+**/.settings
