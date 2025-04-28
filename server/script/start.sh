@@ -1,2 +1,2 @@
 /usr/bin/redis-server &
-java -jar /app.jar
+java -jar -noverify -XX:TieredStopAtLevel=1 /app.jar
