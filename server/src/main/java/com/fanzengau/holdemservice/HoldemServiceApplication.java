@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
 
 @SpringBootApplication (exclude = {
-	JacksonAutoConfiguration.class,
 	MetricsAutoConfiguration.class,
 	LogbackMetricsAutoConfiguration.class,
 	MetricsAutoConfiguration.class
