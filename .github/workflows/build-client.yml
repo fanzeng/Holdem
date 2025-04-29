@@ -34,7 +34,7 @@ jobs:
       run: |
         git clone https://github.com/fanzeng/fanzengau.com.git
         cp -r build/* fanzengau.com/submodules/holdem/
-        ls fanzengau.com/submodules/holdem
+        ls fanzengau.com/submodules/holdem/static
 
     - name: Commit and push changes
       run: |
