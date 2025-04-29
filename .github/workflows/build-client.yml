@@ -60,3 +60,5 @@ jobs:
         body: "This PR updates the holdem submodule files with the latest release."
         labels: release
 
+    - name: Clean up
+      run: rm -rf fanzengau.com
