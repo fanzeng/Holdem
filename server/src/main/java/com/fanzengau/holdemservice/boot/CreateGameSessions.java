@@ -17,10 +17,5 @@ public class CreateGameSessions implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        if (gameSessionRepository.count() == 0) {
-//            GameSession gameSession = GameSession.builder().name("test game session").build();
-//            gameSessionRepository.save(gameSession);
-//            log.info(">>>> Created game session");
-//        }
     }
 }

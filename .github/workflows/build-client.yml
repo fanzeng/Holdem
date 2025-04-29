@@ -1,12 +1,14 @@
 name: Build client
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
-    tags:
-      - release
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - main
+  #   tags:
+  #     - release
+  push:
+
 
 jobs:
   build-and-deploy:
