@@ -49,12 +49,12 @@ jobs:
         git status
         git add submodules/holdem
         git commit -m "Update Holdem client build"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fanzeng/fanzengau.com.git update-holdem-client
+        git push https://x-access-token:${{ secrets.CLIENT_PR_GH_TOK }}@github.com/fanzeng/fanzengau.com.git update-holdem-client
 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.CLIENT_PR_GH_TOK }}
         branch: update-files
         title: "Update Holdem client build"
         body: "This PR updates the holdem submodule files with the latest release."
