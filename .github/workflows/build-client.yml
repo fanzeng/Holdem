@@ -9,9 +9,8 @@ on:
   #     - release
   push:
 
-
 jobs:
-  build-and-deploy:
+  build-and-create-pull-request:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,11 +33,13 @@ jobs:
     - name: Clone target repository
       run: |
         git clone https://github.com/fanzeng/fanzengau.com.git
-        cp -r build/* submodules/holdem
+        ls fanzengau.com
+        ls fanzengau.com/submodules
+        cp -r build/* fanzengau.com/submodules/holdem
 
     - name: Commit and push changes
       run: |
-        cd target-repo
+        cd fanzengau.com
         git config --global user.email "fanzengau@gmail.com"
         git config --global user.name "Fan Zeng"
         git checkout -b update-holdem-client
