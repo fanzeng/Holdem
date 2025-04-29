@@ -1,21 +1,23 @@
 name: Build client
 
 on:
-  # pull_request:
-  #   types: [closed]
-  #   branches:
-  #     - main
-  #   tags:
-  #     - release
-  push:
+  pull_request:
+    types: [labeled]
+    branches:
+      - main
+  # push:
+
+permissions:
+  contents: write
 
 
 jobs:
-  build-and-deploy:
+  build-and-create-pull-request:
+    if: contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     defaults:
-    run:
-    working-directory: your-directory
+      run:
+        working-directory: client/holdem-app
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -34,24 +36,28 @@ jobs:
     - name: Clone target repository
       run: |
         git clone https://github.com/fanzeng/fanzengau.com.git
-        cp -r build/* target-repo/path/to/files
+        cp -r build/* fanzengau.com/submodules/holdem/
+        ls fanzengau.com/submodules/holdem/static/js
 
     - name: Commit and push changes
       run: |
-        cd target-repo
+        cd fanzengau.com
         git config --global user.email "fanzengau@gmail.com"
         git config --global user.name "Fan Zeng"
         git checkout -b update-holdem-client
-        git add .
+        git status
+        git add submodules/holdem
         git commit -m "Update Holdem client build"
-        git push origin update-holdem-client
+        git push https://x-access-token:${{ secrets.CLIENT_PR_GH_TOK }}@github.com/fanzeng/fanzengau.com.git update-holdem-client
 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.CLIENT_PR_GH_TOK }}
         branch: update-files
         title: "Update Holdem client build"
         body: "This PR updates the holdem submodule files with the latest release."
         labels: release
 
+    - name: Clean up
+      run: rm -rf fanzengau.com
