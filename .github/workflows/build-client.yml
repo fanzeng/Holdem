@@ -14,8 +14,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
-    run:
-    working-directory: your-directory
+      run:
+        working-directory: client/holdem-app
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
