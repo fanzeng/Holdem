@@ -33,8 +33,6 @@ jobs:
     - name: Clone target repository
       run: |
         git clone https://github.com/fanzeng/fanzengau.com.git
-        ls fanzengau.com
-        ls fanzengau.com/submodules
         cp -r build/* fanzengau.com/submodules/holdem
 
     - name: Commit and push changes
@@ -43,7 +41,8 @@ jobs:
         git config --global user.email "fanzengau@gmail.com"
         git config --global user.name "Fan Zeng"
         git checkout -b update-holdem-client
-        git add .
+        git status
+        git add submodules/holdem
         git commit -m "Update Holdem client build"
         git push origin update-holdem-client
 
