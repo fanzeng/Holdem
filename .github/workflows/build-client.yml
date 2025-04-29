@@ -1,0 +1,57 @@
+name: Build client
+
+on:
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - main
+  #   tags:
+  #     - release
+  push:
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+    run:
+    working-directory: your-directory
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build artifact
+      run: npm run build
+
+    - name: Clone target repository
+      run: |
+        git clone https://github.com/fanzeng/fanzengau.com.git
+        cp -r build/* target-repo/path/to/files
+
+    - name: Commit and push changes
+      run: |
+        cd target-repo
+        git config --global user.email "fanzengau@gmail.com"
+        git config --global user.name "Fan Zeng"
+        git checkout -b update-holdem-client
+        git add .
+        git commit -m "Update Holdem client build"
+        git push origin update-holdem-client
+
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: update-files
+        title: "Update Holdem client build"
+        body: "This PR updates the holdem submodule files with the latest release."
+        labels: release
+
