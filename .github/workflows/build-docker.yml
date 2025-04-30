@@ -2,9 +2,9 @@ name: Build Docker
 
 on:
   pull_request:
-    branches: [master]
-    types:
-      - closed
+    types: [labeled]
+    branches:
+      - master
 
 jobs:
   build:
